@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import pl.net.szafraniec.NFCTagmaker.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;

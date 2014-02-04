@@ -38,7 +38,6 @@ package pl.net.szafraniec.NFCTagmaker;
 
 import java.io.IOException;
 
-import pl.net.szafraniec.NFCTagmaker.R;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -153,7 +152,8 @@ public class WriteNFCActivity extends Activity {
 
 					} catch (FormatException e) {
 						e.printStackTrace();
-						Log.e(NFCTagmakerSettings.LOG_TAG, "FormatExceptionFormat");
+						Log.e(NFCTagmakerSettings.LOG_TAG,
+								"FormatExceptionFormat");
 						Toast.makeText(getApplicationContext(),
 								"FormatExceptionFormat", Toast.LENGTH_SHORT)
 								.show();

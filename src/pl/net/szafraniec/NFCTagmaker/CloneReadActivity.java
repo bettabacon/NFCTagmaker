@@ -55,7 +55,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import pl.net.szafraniec.NFCTagmaker.R;
 
 public class CloneReadActivity extends Activity {
 	@Override
@@ -117,14 +116,15 @@ public class CloneReadActivity extends Activity {
 					msgs[j] = (NdefMessage) rawMsgs[j];
 					NdefRecord record = msgs[j].getRecords()[0];
 					if (record.getTnf() == NdefRecord.TNF_MIME_MEDIA) {
-/*						String mimetype = record.toMimeType();
-						if (mimetype.equals(NFCTagmakerSettings.nfc_mime_type)
-								|| mimetype
-										.equals(NFCTagmakerSettings.nfc_mime_type_hidden)) {
-*/										
-							payload = record.getPayload();
-						}
-//					}
+						/*
+						 * String mimetype = record.toMimeType(); if
+						 * (mimetype.equals(NFCTagmakerSettings.nfc_mime_type)
+						 * || mimetype
+						 * .equals(NFCTagmakerSettings.nfc_mime_type_hidden)) {
+						 */
+						payload = record.getPayload();
+					}
+					// }
 				}
 			}
 		}

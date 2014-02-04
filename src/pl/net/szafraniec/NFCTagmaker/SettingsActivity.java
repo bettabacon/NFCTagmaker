@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
-import pl.net.szafraniec.NFCTagmaker.R;
 
 public class SettingsActivity extends Activity {
 
@@ -20,12 +19,12 @@ public class SettingsActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		EditText url = (EditText) findViewById(R.id.uri);
-		NFCTagmakerSettings.uri = url.getText().toString();		
+		NFCTagmakerSettings.uri = url.getText().toString();
 		SharedPreferences settings = getSharedPreferences(
 				NFCTagmakerSettings.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("uri", NFCTagmakerSettings.uri);
 		editor.commit();
 	}
-	
+
 }

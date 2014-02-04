@@ -36,10 +36,10 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -49,10 +49,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import pl.net.szafraniec.NFCTagmaker.AboutDialog;
-import pl.net.szafraniec.NFCTagmaker.R;
-import android.provider.Settings;
-import android.content.pm.PackageManager.NameNotFoundException;
 
 public class MainActivity extends Activity {
 
@@ -73,19 +69,20 @@ public class MainActivity extends Activity {
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.CantFindNFCAdapter), Toast.LENGTH_LONG)
 					.show();
-//			finish();
+			// finish();
 		}
 		if (Nfc != null) {
 			if (Nfc.isEnabled() != true) {
 				Toast.makeText(getApplicationContext(),
 						getString(R.string.EnabeNFCFirst), Toast.LENGTH_LONG)
 						.show();
-//				startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
+				// startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
 			}
 		}
 		SharedPreferences settings = getSharedPreferences(
 				NFCTagmakerSettings.PREFS_NAME, 0);
-		NFCTagmakerSettings.uri = settings.getString("uri", getString(R.string.defaultUri));
+		NFCTagmakerSettings.uri = settings.getString("uri",
+				getString(R.string.defaultUri));
 		Button x = (Button) findViewById(R.id.quit);
 		x.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -109,21 +106,25 @@ public class MainActivity extends Activity {
 		wu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-				NdefRecord ndef_records = NdefRecord.createUri(NFCTagmakerSettings.uri);
+				NdefRecord ndef_records = NdefRecord
+						.createUri(NFCTagmakerSettings.uri);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_records);
 				Intent intent = new Intent(getApplicationContext(),
 						WriteNFCActivity.class);
 				startActivity(intent);
 			}
 		});
-		
+
 		Button wp = (Button) findViewById(R.id.Writephone);
 		wp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-				NdefRecord ndef_phone = NdefRecord.createUri("tel:"+NFCTagmakerSettings.phone);
-		        NdefRecord ndef_uri = NdefRecord.createUri(NFCTagmakerSettings.uri);
-				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_phone,ndef_uri);
+				NdefRecord ndef_phone = NdefRecord.createUri("tel:"
+						+ NFCTagmakerSettings.phone);
+				NdefRecord ndef_uri = NdefRecord
+						.createUri(NFCTagmakerSettings.uri);
+				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_phone,
+						ndef_uri);
 				Intent intent = new Intent(getApplicationContext(),
 						WriteNFCActivity.class);
 				startActivity(intent);

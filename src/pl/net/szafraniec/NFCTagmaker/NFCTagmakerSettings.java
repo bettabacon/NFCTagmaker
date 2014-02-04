@@ -39,11 +39,11 @@ package pl.net.szafraniec.NFCTagmaker;
 import android.nfc.NdefMessage;
 
 public class NFCTagmakerSettings {
-	public static final String PREFS_NAME= "NFCTagmaker";
+	public static final String PREFS_NAME = "NFCTagmaker";
 	public static NdefMessage nfc_payload;
 	public static String uri;
 	public static String phone = "1234567890";
 	public static String name = "Nazwa";
 	public static final String LOG_TAG = "NFCTagmaker";
-	
+
 }
