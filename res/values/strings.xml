@@ -10,7 +10,6 @@
 	<string name="PlaceSourceTag">Place a SOURCE tag against your device to read from it.</string>
 	<string name="PlaceCloneTag">Place a NEW tag against your device to clone to it.</string>
 	<string name="Exit">Exit</string>
-	<string name="LaunchingKeePass">Launching KeePassDroid&#8230;</string>
 	<string name="missing">[MISSING]</string>
 	<string name="About">About</string>
 	<string name="Donate">Donate</string>
@@ -28,5 +27,5 @@
 	<string name="EnabeNFCFirst">NFC adapter is disabled. Please enable it first</string>
 	<string name="Settings">Settings</string>
 	<string name="Autodetect">Autodetect</string>
-	<string name="defaultUri">http://www.teletorium.pl</string>
+	<string name="defaultUri" tools:ignore="MissingTranslation">http://nexusgsm.pl/?page_id=37</string>
 </resources>
