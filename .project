@@ -3,7 +3,6 @@
 	<name>NFC-Tag-maker</name>
 	<comment></comment>
 	<projects>
-		<project>aFileChooser</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

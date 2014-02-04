@@ -11,12 +11,12 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/Writeurl"
+            android:id="@+id/Writeuri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="Write url" />
+            android:text="Write uri" />
 
         <Button
             android:id="@+id/quit"
@@ -38,10 +38,12 @@
                     android:id="@+id/Writephone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/Writeurl"
+                    android:layout_below="@+id/Writeuri"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
-                    android:text="Write phone" />
+                    android:enabled="false"
+                    android:text="Write phone number"
+                    android:visibility="visible" />
 
     </RelativeLayout>
 

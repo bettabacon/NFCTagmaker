@@ -44,6 +44,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,14 +70,13 @@ public class MainActivity extends Activity {
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.CantFindNFCAdapter), Toast.LENGTH_LONG)
 					.show();
-			// finish();
 		}
 		if (Nfc != null) {
 			if (Nfc.isEnabled() != true) {
 				Toast.makeText(getApplicationContext(),
 						getString(R.string.EnabeNFCFirst), Toast.LENGTH_LONG)
 						.show();
-				// startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
+				startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
 			}
 		}
 		SharedPreferences settings = getSharedPreferences(
@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button wu = (Button) findViewById(R.id.Writeurl);
+		Button wu = (Button) findViewById(R.id.Writeuri);
 		wu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {

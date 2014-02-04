@@ -54,6 +54,21 @@ public class AboutDialog extends Dialog {
 
 	private static Context mContext = null;
 
+	public static String readRawTextFile(int id) {
+		InputStream inputStream = mContext.getResources().openRawResource(id);
+		InputStreamReader in = new InputStreamReader(inputStream);
+		BufferedReader buf = new BufferedReader(in);
+		String line;
+		StringBuilder text = new StringBuilder();
+		try {
+			while ((line = buf.readLine()) != null)
+				text.append(line);
+		} catch (IOException e) {
+			return null;
+		}
+		return text.toString();
+	}
+
 	public AboutDialog(Context context) {
 		super(context);
 		mContext = context;
@@ -76,21 +91,6 @@ public class AboutDialog extends Dialog {
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
 
-	}
-
-	public static String readRawTextFile(int id) {
-		InputStream inputStream = mContext.getResources().openRawResource(id);
-		InputStreamReader in = new InputStreamReader(inputStream);
-		BufferedReader buf = new BufferedReader(in);
-		String line;
-		StringBuilder text = new StringBuilder();
-		try {
-			while ((line = buf.readLine()) != null)
-				text.append(line);
-		} catch (IOException e) {
-			return null;
-		}
-		return text.toString();
 	}
 
 }
