@@ -40,13 +40,18 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -59,6 +64,84 @@ public class MainActivity extends Activity {
 
 	final public int ABOUT = 0;
 	public static String version;
+
+	protected static NdefRecord createNdefUriRecord(String address, byte idCode) {
+		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
+	}
+	
+	protected static NdefRecord createNdefTelRecord(String phone) {
+	/*	byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		byte idCode = 0x05;
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
+	*/
+		return createNdefUriRecord(phone, (byte) 0x05);
+	}
+
+	private static NdefRecord createNdefSmartPosterRecord(String text,
+			String[] uri) {
+		NdefRecord[] records = new NdefRecord[1 + uri.length];
+		records[0] = createNdefTextRecord(text);
+		for (int i = 1; i < records.length; i++)
+			// records[i] = createNdefUriRecord(uri[i - 1]) ;
+			records[i] = createNdefTelRecord(uri[i - 1]);
+		NdefMessage nm = new NdefMessage(records);
+		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+				NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
+		return record;
+	}
+
+	protected static NdefRecord createNdefTextRecord(String text) {
+		String lang = "en";
+		byte[] textBytes = text.getBytes();
+		byte[] langBytes = null;
+		try {
+			langBytes = lang.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(MainActivity.class.getSimpleName(), e.getLocalizedMessage());
+		}
+		int langLength = langBytes.length;
+		int textLength = textBytes.length;
+		byte[] payload = new byte[1 + langLength + textLength];
+		payload[0] = (byte) langLength;
+		System.arraycopy(langBytes, 0, payload, 1, langLength);
+		System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
+				new byte[0], payload);
+	}
+/*
+	protected static NdefRecord createNdefUriRecord(String address) {
+		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		byte idCode = 0x00;
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
+	}
+*/
+	private void nfc_disable() {
+		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
+		adapter.disableForegroundDispatch(this);
+	}
+
+	private void nfc_enable() {
+		// Register for any NFC event (only while we're in the foreground)
+
+		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
+		PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
+				new Intent(this, getClass())
+						.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		adapter.enableForegroundDispatch(this, pending_intent, null, null);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +211,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View self) {
 				NdefRecord[] ndef_name = new NdefRecord[1];
-				String[] uri = new String[] { NFCTagmakerSettings.phone, "1234567890" };
+				String[] uri = new String[] { NFCTagmakerSettings.phone,
+						"1234567890" };
 				ndef_name[0] = createNdefSmartPosterRecord(
 						NFCTagmakerSettings.name, uri);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
@@ -145,6 +229,21 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		String action = intent.getAction();
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
+				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			Ndef ndef = Ndef.get(tag);
+			Toast.makeText(getApplicationContext(),
+					"Type:" + ndef.getType() + "size:" + ndef.getMaxSize(),
+					Toast.LENGTH_LONG).show();
+			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			v.vibrate(100);
+		}
 	}
 
 	@Override
@@ -170,64 +269,16 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	// Returns a text record according to the propositions given by the NFC
-	// Forum
-	protected static NdefRecord createNdefTextRecord(String text) {
-		String lang = "en";
-		byte[] textBytes = text.getBytes();
-		byte[] langBytes = null;
-		try {
-			langBytes = lang.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			Log.e(MainActivity.class.getSimpleName(), e.getLocalizedMessage());
-		}
-		int langLength = langBytes.length;
-		int textLength = textBytes.length;
-		byte[] payload = new byte[1 + langLength + textLength];
-		// Sets status byte
-		payload[0] = (byte) langLength;
-		// Copies langbytes and textbytes into payload
-		System.arraycopy(langBytes, 0, payload, 1, langLength);
-		System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
-				new byte[0], payload);
+	@Override
+	protected void onPause() {
+		super.onPause();
+		nfc_disable();
 	}
 
-	// Creates a URI record according to the propositions given by the NFC Forum
-	protected static NdefRecord createNdefUriRecord(String address) {
-		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-		byte[] payload = new byte[uriField.length + 1];
-		byte idCode = 0x00;
-		payload[0] = idCode;
-		System.arraycopy(uriField, 0, payload, 1, uriField.length);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-				new byte[0], payload);
-	}
-
-	protected static NdefRecord createNdefPhoneRecord(String address) {
-		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-		byte[] payload = new byte[uriField.length + 1];
-		byte idCode = 0x05;
-		payload[0] = idCode;
-		System.arraycopy(uriField, 0, payload, 1, uriField.length);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-				new byte[0], payload);
-	}
-
-	// Creates a smartposter record according to the propositions given by the
-	// NFC Forum
-
-	private static NdefRecord createNdefSmartPosterRecord(String text,
-			String[] uri) {
-		NdefRecord[] records = new NdefRecord[1 + uri.length];
-		records[0] = createNdefTextRecord(text);
-		for (int i = 1; i < records.length; i++)
-			// records[i] = createNdefUriRecord(uri[i - 1]) ;
-			records[i] = createNdefPhoneRecord(uri[i - 1]);
-		NdefMessage nm = new NdefMessage(records);
-		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-				NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
-		return record;
+	@Override
+	protected void onResume() {
+		super.onResume();
+		nfc_enable();
 	}
 
 }
