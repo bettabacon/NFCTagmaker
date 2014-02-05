@@ -17,6 +17,11 @@ public class SettingsActivity extends Activity {
 		name.setText(NFCTagmakerSettings.name);
 		EditText phone = (EditText) findViewById(R.id.phone);
 		phone.setText(NFCTagmakerSettings.phone);
+		EditText email = (EditText) findViewById(R.id.email);
+		email.setText(NFCTagmakerSettings.email);
+		EditText web = (EditText) findViewById(R.id.web);
+		web.setText(NFCTagmakerSettings.web);
+
 	}
 
 	@Override
@@ -28,12 +33,18 @@ public class SettingsActivity extends Activity {
 		NFCTagmakerSettings.name = name.getText().toString();
 		EditText phone = (EditText) findViewById(R.id.phone);
 		NFCTagmakerSettings.phone = phone.getText().toString();
+		EditText email = (EditText) findViewById(R.id.email);
+		NFCTagmakerSettings.email = email.getText().toString();
+		EditText web = (EditText) findViewById(R.id.web);
+		NFCTagmakerSettings.web = web.getText().toString();
 		SharedPreferences settings = getSharedPreferences(
 				NFCTagmakerSettings.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("uri", NFCTagmakerSettings.uri);
 		editor.putString("name", NFCTagmakerSettings.name);
 		editor.putString("phone", NFCTagmakerSettings.phone);
+		editor.putString("web", NFCTagmakerSettings.web);
+		editor.putString("email", NFCTagmakerSettings.email);
 		editor.commit();
 	}
 

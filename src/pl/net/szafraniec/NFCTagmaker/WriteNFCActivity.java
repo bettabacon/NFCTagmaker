@@ -151,6 +151,13 @@ public class WriteNFCActivity extends Activity {
 				}
 			}
 			setResult(success);
+			if (success == 1) {
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.Success), Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.Failed), Toast.LENGTH_SHORT).show();
+			}
 			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			v.vibrate(100);
 			finish();

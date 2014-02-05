@@ -44,6 +44,8 @@ public class NFCTagmakerSettings {
 	public static String uri;
 	public static String phone;
 	public static String name;
+	public static String email;
+	public static String web;
 	public static final String LOG_TAG = "NFCTagmaker";
 
 }

@@ -65,27 +65,6 @@ public class MainActivity extends Activity {
 	final public int ABOUT = 0;
 	public static String version;
 
-	protected static NdefRecord createNdefUriRecord(String address, byte idCode) {
-		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-		byte[] payload = new byte[uriField.length + 1];
-		payload[0] = idCode;
-		System.arraycopy(uriField, 0, payload, 1, uriField.length);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-				new byte[0], payload);
-	}
-	
-	protected static NdefRecord createNdefTelRecord(String phone) {
-	/*	byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-		byte[] payload = new byte[uriField.length + 1];
-		byte idCode = 0x05;
-		payload[0] = idCode;
-		System.arraycopy(uriField, 0, payload, 1, uriField.length);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-				new byte[0], payload);
-	*/
-		return createNdefUriRecord(phone, (byte) 0x05);
-	}
-
 	private static NdefRecord createNdefSmartPosterRecord(String text,
 			String[] uri) {
 		NdefRecord[] records = new NdefRecord[1 + uri.length];
@@ -97,6 +76,17 @@ public class MainActivity extends Activity {
 		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
 				NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
 		return record;
+	}
+
+	protected static NdefRecord createNdefTelRecord(String phone) {
+		/*
+		 * byte[] uriField = address.getBytes(Charset.forName("UTF-8")); byte[]
+		 * payload = new byte[uriField.length + 1]; byte idCode = 0x05;
+		 * payload[0] = idCode; System.arraycopy(uriField, 0, payload, 1,
+		 * uriField.length); return new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+		 * NdefRecord.RTD_URI, new byte[0], payload);
+		 */
+		return createNdefUriRecord(phone, (byte) 0x05);
 	}
 
 	protected static NdefRecord createNdefTextRecord(String text) {
@@ -117,17 +107,24 @@ public class MainActivity extends Activity {
 		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
 				new byte[0], payload);
 	}
-/*
-	protected static NdefRecord createNdefUriRecord(String address) {
+
+	protected static NdefRecord createNdefUriRecord(String address, byte idCode) {
 		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
 		byte[] payload = new byte[uriField.length + 1];
-		byte idCode = 0x00;
 		payload[0] = idCode;
 		System.arraycopy(uriField, 0, payload, 1, uriField.length);
 		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
 				new byte[0], payload);
 	}
-*/
+
+	/*
+	 * protected static NdefRecord createNdefUriRecord(String address) { byte[]
+	 * uriField = address.getBytes(Charset.forName("UTF-8")); byte[] payload =
+	 * new byte[uriField.length + 1]; byte idCode = 0x00; payload[0] = idCode;
+	 * System.arraycopy(uriField, 0, payload, 1, uriField.length); return new
+	 * NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0],
+	 * payload); }
+	 */
 	private void nfc_disable() {
 		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
 		adapter.disableForegroundDispatch(this);
@@ -174,6 +171,11 @@ public class MainActivity extends Activity {
 				getString(R.string.defaultPhone));
 		NFCTagmakerSettings.name = settings.getString("name",
 				getString(R.string.defaultName));
+		NFCTagmakerSettings.email = settings.getString("email",
+				getString(R.string.defaultEmail));
+		NFCTagmakerSettings.web = settings.getString("web",
+				getString(R.string.defaultWeb));
+
 		Button x = (Button) findViewById(R.id.quit);
 		x.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -189,7 +191,6 @@ public class MainActivity extends Activity {
 				Intent intent = new Intent(getApplicationContext(),
 						CloneReadActivity.class);
 				startActivity(intent);
-				finish();
 			}
 		});
 
@@ -211,8 +212,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View self) {
 				NdefRecord[] ndef_name = new NdefRecord[1];
-				String[] uri = new String[] { NFCTagmakerSettings.phone,
-						"1234567890" };
+				String[] uri = new String[] { NFCTagmakerSettings.phone };
 				ndef_name[0] = createNdefSmartPosterRecord(
 						NFCTagmakerSettings.name, uri);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
@@ -222,6 +222,24 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		Button wvc = (Button) findViewById(R.id.WritevCard);
+		wvc.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				String vcardcontent = "BEGIN:VCARD\r\nVERSION:2.1\r\nN:"
+						+ NFCTagmakerSettings.name + "\r\nTEL;CELL:"
+						+ NFCTagmakerSettings.phone + "\r\n"
+						+ "EMAIL;INTERNET:" + NFCTagmakerSettings.email
+						+ "\r\nURL:" + NFCTagmakerSettings.web
+						+ "\r\nEND:VCARD\r\n";
+				NdefRecord ndef_records = NdefRecord.createMime("text/x-vCard",
+						vcardcontent.getBytes());
+				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_records);
+				Intent intent = new Intent(getApplicationContext(),
+						WriteNFCActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -238,9 +256,11 @@ public class MainActivity extends Activity {
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			Ndef ndef = Ndef.get(tag);
-			Toast.makeText(getApplicationContext(),
-					"Type:" + ndef.getType() + "size:" + ndef.getMaxSize(),
-					Toast.LENGTH_LONG).show();
+			if (ndef != null) {
+				Toast.makeText(getApplicationContext(),
+						"Type:" + ndef.getType() + "size:" + ndef.getMaxSize(),
+						Toast.LENGTH_LONG).show();
+			}
 			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			v.vibrate(100);
 		}
