@@ -103,7 +103,7 @@ public class CloneReadActivity extends Activity {
 				for (int j = 0; j < rawMsgs.length; j++) {
 					msgs[j] = (NdefMessage) rawMsgs[j];
 					NdefRecord record = msgs[j].getRecords()[0];
-					if (record.getTnf() == NdefRecord.TNF_MIME_MEDIA) {
+					//if (record.getTnf() == NdefRecord.TNF_MIME_MEDIA) {
 						/*
 						 * String mimetype = record.toMimeType(); if
 						 * (mimetype.equals(NFCTagmakerSettings.nfc_mime_type)
@@ -111,7 +111,7 @@ public class CloneReadActivity extends Activity {
 						 * .equals(NFCTagmakerSettings.nfc_mime_type_hidden)) {
 						 */
 						payload = record.getPayload();
-					}
+					//}
 					// }
 				}
 			}

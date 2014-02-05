@@ -127,31 +127,8 @@ public class MainActivity extends Activity {
 		wp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-				/*
-				 * NdefRecord ndef_phone = NdefRecord.createUri("tel:" +
-				 * NFCTagmakerSettings.phone); String text = "Hello, World!";
-				 * String lang = "en"; byte[] textBytes = text.getBytes();
-				 * byte[] langBytes = null; try { langBytes =
-				 * lang.getBytes("UTF-8"); } catch (UnsupportedEncodingException
-				 * e) { // TODO Auto-generated catch block e.printStackTrace();
-				 * } int langLength = langBytes.length; int textLength =
-				 * textBytes.length; byte[] payload = new byte[1 + langLength +
-				 * textLength];
-				 * 
-				 * // set status byte (see NDEF spec for actual bits) payload[0]
-				 * = (byte) langLength;
-				 * 
-				 * // copy langbytes and textbytes into payload
-				 * System.arraycopy(langBytes, 0, payload, 1, langLength);
-				 * System.arraycopy(textBytes, 0, payload, 1 + langLength,
-				 * textLength);
-				 * 
-				 * NdefRecord ndef_name = new
-				 * NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
-				 * NdefRecord.RTD_SMART_POSTER, new byte[0], payload);
-				 */
 				NdefRecord[] ndef_name = new NdefRecord[1];
-				String[] uri = new String[] { NFCTagmakerSettings.phone };
+				String[] uri = new String[] { NFCTagmakerSettings.phone, "1234567890" };
 				ndef_name[0] = createNdefSmartPosterRecord(
 						NFCTagmakerSettings.name, uri);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
