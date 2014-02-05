@@ -28,4 +28,6 @@
 	<string name="Settings">Settings</string>
 	<string name="Autodetect">Autodetect</string>
 	<string name="defaultUri" tools:ignore="MissingTranslation">http://nexusgsm.pl/?page_id=37</string>
+	<string name="defaultName">Teletorium</string>
+	<string name="defaultPhone">601789117</string>
 </resources>

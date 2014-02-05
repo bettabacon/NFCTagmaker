@@ -87,6 +87,10 @@ public class MainActivity extends Activity {
 				NFCTagmakerSettings.PREFS_NAME, 0);
 		NFCTagmakerSettings.uri = settings.getString("uri",
 				getString(R.string.defaultUri));
+		NFCTagmakerSettings.phone = settings.getString("phone",
+				getString(R.string.defaultPhone));
+		NFCTagmakerSettings.name = settings.getString("name",
+				getString(R.string.defaultName));
 		Button x = (Button) findViewById(R.id.quit);
 		x.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -123,38 +127,33 @@ public class MainActivity extends Activity {
 		wp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-/*				NdefRecord ndef_phone = NdefRecord.createUri("tel:"
-						+ NFCTagmakerSettings.phone);
-				String text       = "Hello, World!";
-			    String lang       = "en";
-			    byte[] textBytes  = text.getBytes();
-			    byte[] langBytes = null;
-				try {
-					langBytes = lang.getBytes("UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			    int    langLength = langBytes.length;
-			    int    textLength = textBytes.length;
-			    byte[] payload    = new byte[1 + langLength + textLength];
-
-			    // set status byte (see NDEF spec for actual bits)
-			    payload[0] = (byte) langLength;
-
-			    // copy langbytes and textbytes into payload
-			    System.arraycopy(langBytes, 0, payload, 1,              langLength);
-			    System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-
-			    NdefRecord ndef_name = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, 
-			                                       NdefRecord.RTD_TEXT,
-			    								NdefRecord.RTD_SMART_POSTER,
-			                                       new byte[0], 
-			                                       payload);
-*/
+				/*
+				 * NdefRecord ndef_phone = NdefRecord.createUri("tel:" +
+				 * NFCTagmakerSettings.phone); String text = "Hello, World!";
+				 * String lang = "en"; byte[] textBytes = text.getBytes();
+				 * byte[] langBytes = null; try { langBytes =
+				 * lang.getBytes("UTF-8"); } catch (UnsupportedEncodingException
+				 * e) { // TODO Auto-generated catch block e.printStackTrace();
+				 * } int langLength = langBytes.length; int textLength =
+				 * textBytes.length; byte[] payload = new byte[1 + langLength +
+				 * textLength];
+				 * 
+				 * // set status byte (see NDEF spec for actual bits) payload[0]
+				 * = (byte) langLength;
+				 * 
+				 * // copy langbytes and textbytes into payload
+				 * System.arraycopy(langBytes, 0, payload, 1, langLength);
+				 * System.arraycopy(textBytes, 0, payload, 1 + langLength,
+				 * textLength);
+				 * 
+				 * NdefRecord ndef_name = new
+				 * NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
+				 * NdefRecord.RTD_SMART_POSTER, new byte[0], payload);
+				 */
 				NdefRecord[] ndef_name = new NdefRecord[1];
-				String[] uri = new String[] {NFCTagmakerSettings.phone};
-				ndef_name[0] = createNdefSmartPosterRecord(NFCTagmakerSettings.name,uri);
+				String[] uri = new String[] { NFCTagmakerSettings.phone };
+				ndef_name[0] = createNdefSmartPosterRecord(
+						NFCTagmakerSettings.name, uri);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
 				Intent intent = new Intent(getApplicationContext(),
 						WriteNFCActivity.class);
@@ -193,65 +192,65 @@ public class MainActivity extends Activity {
 		}
 		return true;
 	}
+
 	// Returns a text record according to the propositions given by the NFC
 	// Forum
 	protected static NdefRecord createNdefTextRecord(String text) {
-	String lang = "en";
-	byte [] textBytes = text.getBytes();
-	byte [] langBytes = null ;
-	try {
-	langBytes = lang.getBytes("UTF-8");
-	} catch (UnsupportedEncodingException e) {
-	Log.e (MainActivity.class.getSimpleName () , e . getLocalizedMessage () ) ;
-	}
-	int langLength = langBytes.length;
-	int textLength = textBytes.length;
-	byte [] payload = new byte [1 + langLength + textLength];
-	// Sets status byte
-	payload[0] = (byte) langLength ;
-	// Copies langbytes and textbytes into payload
-	System.arraycopy(langBytes, 0, payload, 1, langLength);
-	System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-	return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
-	new byte [0] , payload) ;
+		String lang = "en";
+		byte[] textBytes = text.getBytes();
+		byte[] langBytes = null;
+		try {
+			langBytes = lang.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(MainActivity.class.getSimpleName(), e.getLocalizedMessage());
+		}
+		int langLength = langBytes.length;
+		int textLength = textBytes.length;
+		byte[] payload = new byte[1 + langLength + textLength];
+		// Sets status byte
+		payload[0] = (byte) langLength;
+		// Copies langbytes and textbytes into payload
+		System.arraycopy(langBytes, 0, payload, 1, langLength);
+		System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
+				new byte[0], payload);
 	}
 
 	// Creates a URI record according to the propositions given by the NFC Forum
 	protected static NdefRecord createNdefUriRecord(String address) {
-	byte [] uriField = address.getBytes(Charset.forName("UTF-8") ) ;
-	byte [] payload = new byte [uriField.length + 1];
-	byte idCode = 0x00;
-	payload[0] = idCode;
-	System . arraycopy ( uriField , 0 , payload , 1 , uriField . length ) ;
-	return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-	new byte [0] , payload) ;
+		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		byte idCode = 0x00;
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
 	}
-	
+
 	protected static NdefRecord createNdefPhoneRecord(String address) {
-	byte [] uriField = address.getBytes(Charset.forName("UTF-8") ) ;
-	byte [] payload = new byte [uriField.length + 1];
-	byte idCode = 0x05;
-	payload[0] = idCode;
-	System . arraycopy ( uriField , 0 , payload , 1 , uriField . length ) ;
-	return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-	new byte [0] , payload) ;
+		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		byte idCode = 0x05;
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
 	}
 
 	// Creates a smartposter record according to the propositions given by the
 	// NFC Forum
 
 	private static NdefRecord createNdefSmartPosterRecord(String text,
-	String[] uri) {
-	NdefRecord [ ] records = new NdefRecord[1 + uri.length];
-	records[0] = createNdefTextRecord(text);
-	for ( int i = 1; i < records.length; i++)
-	//records[i] = createNdefUriRecord(uri[i - 1]) ;
-	records[i] =createNdefPhoneRecord(uri[i - 1]) ;
-	NdefMessage nm = new NdefMessage ( records ) ;
-	NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-	NdefRecord.RTD_SMART_POSTER, new byte [0] , nm. toByteArray () ) ;
-	return record ;
+			String[] uri) {
+		NdefRecord[] records = new NdefRecord[1 + uri.length];
+		records[0] = createNdefTextRecord(text);
+		for (int i = 1; i < records.length; i++)
+			// records[i] = createNdefUriRecord(uri[i - 1]) ;
+			records[i] = createNdefPhoneRecord(uri[i - 1]);
+		NdefMessage nm = new NdefMessage(records);
+		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+				NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
+		return record;
 	}
-
 
 }
