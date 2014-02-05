@@ -41,7 +41,6 @@
                     android:layout_below="@+id/Writeuri"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
-                    android:enabled="false"
                     android:text="Write phone number"
                     android:visibility="visible" />
 

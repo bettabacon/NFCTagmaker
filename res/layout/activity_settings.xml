@@ -41,15 +41,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:enabled="false"
-            android:text="Name" android:inputType="text"/>
+            android:inputType="text"
+            android:text="Name" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:enabled="false"
             android:inputType="phone"
             android:text="12 34 56 789" />
 
