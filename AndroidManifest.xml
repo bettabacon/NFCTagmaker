@@ -13,26 +13,27 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:allowBackup="true">
-        <activity android:name="MainActivity" android:label="@string/app_name" android:screenOrientation="nosensor">
+        <activity android:name="MainActivity" android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+           	<intent-filter>
+	                <action android:name="android.intent.action.SEND" />
+    				<category android:name="android.intent.category.DEFAULT" />
+    				<data android:mimeType="text/plain" />
+	        </intent-filter>
+
         </activity>
-	    <activity android:name="DonateActivity" android:icon="@drawable/ic_launcher" android:screenOrientation="nosensor">
-	        <intent-filter></intent-filter>
+	    <activity android:name="DonateActivity" android:screenOrientation="nosensor">
 	    </activity>
-	    <activity android:name="CloneReadActivity" android:screenOrientation="nosensor" android:icon="@drawable/ic_launcher">
-	        <intent-filter></intent-filter>
+	    <activity android:name="CloneReadActivity" android:screenOrientation="nosensor">
 	    </activity>
-	    <activity android:name="CloneWriteNFCActivity" android:screenOrientation="nosensor" android:icon="@drawable/ic_launcher">
-	        <intent-filter></intent-filter>
+	    <activity android:name="CloneWriteNFCActivity" android:screenOrientation="nosensor">
 	    </activity>
-	    <activity android:name="SettingsActivity">
-	        <intent-filter></intent-filter>
+	    <activity android:name="SettingsActivity" android:label="@string/app_name" android:icon="@drawable/ic_launcher">
 	    </activity>
 	    <activity android:name="WriteNFCActivity">
-	        <intent-filter></intent-filter>
 	    </activity>
 	    		    
 	        

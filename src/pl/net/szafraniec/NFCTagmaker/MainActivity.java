@@ -16,22 +16,22 @@
  * along with NFCKey; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Ten plik jest czÄ™Ĺ›ciÄ… NFCKey.
+ * Ten plik jest częścią NFCKey.
  *
- * NFCKey jest wolnym oprogramowaniem; moĹĽesz go rozprowadzaÄ‡ dalej
- * i/lub modyfikowaÄ‡ na warunkach Powszechnej Licencji Publicznej GNU,
- * wydanej przez FundacjÄ™ Wolnego Oprogramowania - wedĹ‚ug wersji 2 tej
- * Licencji lub (wedĹ‚ug twojego wyboru) ktĂłrejĹ› z pĂłĹşniejszych wersji.
+ * NFCKey jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
+ * i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU,
+ * wydanej przez Fundację Wolnego Oprogramowania - według wersji 2 tej
+ * Licencji lub (według twojego wyboru) którejś z późniejszych wersji.
  *
- * Niniejszy program rozpowszechniany jest z nadziejÄ…, iĹĽ bÄ™dzie on
- * uĹĽyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyĹ›lnej
- * gwarancji PRZYDATNOĹšCI HANDLOWEJ albo PRZYDATNOĹšCI DO OKREĹšLONYCH
- * ZASTOSOWAĹ�. W celu uzyskania bliĹĽszych informacji siÄ™gnij do
+ * Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on
+ * użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej
+ * gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH
+ * ZASTOSOWAŃ. W celu uzyskania bliższych informacji sięgnij do
  * Powszechnej Licencji Publicznej GNU.
  *
- * Z pewnoĹ›ciÄ… wraz z niniejszym programem otrzymaĹ‚eĹ› teĹĽ egzemplarz
+ * Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz
  * Powszechnej Licencji Publicznej GNU (GNU General Public License);
- * jeĹ›li nie - napisz do Free Software Foundation, Inc., 59 Temple
+ * jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
  * Place, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package pl.net.szafraniec.NFCTagmaker;
@@ -65,12 +65,32 @@ public class MainActivity extends Activity {
 	final public int ABOUT = 0;
 	public static String version;
 
+	private static NdefRecord createNdefMySmartPosterRecord(String text,
+			String[] uri, byte[] type) {
+		NdefRecord[] records = new NdefRecord[1 + uri.length];
+		records[0] = createNdefTextRecord(text);
+		for (int i = 1; i < records.length; i++)
+			records[i] = createNdefRecord(uri[i - 1], type[i - 1]);
+		NdefMessage nm = new NdefMessage(records);
+		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+				NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
+		return record;
+	}
+
+	protected static NdefRecord createNdefRecord(String address, byte idCode) {
+		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
+		byte[] payload = new byte[uriField.length + 1];
+		payload[0] = idCode;
+		System.arraycopy(uriField, 0, payload, 1, uriField.length);
+		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
+				new byte[0], payload);
+	}
+
 	private static NdefRecord createNdefSmartPosterRecord(String text,
 			String[] uri) {
 		NdefRecord[] records = new NdefRecord[1 + uri.length];
 		records[0] = createNdefTextRecord(text);
 		for (int i = 1; i < records.length; i++)
-			// records[i] = createNdefUriRecord(uri[i - 1]) ;
 			records[i] = createNdefTelRecord(uri[i - 1]);
 		NdefMessage nm = new NdefMessage(records);
 		NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
@@ -79,14 +99,7 @@ public class MainActivity extends Activity {
 	}
 
 	protected static NdefRecord createNdefTelRecord(String phone) {
-		/*
-		 * byte[] uriField = address.getBytes(Charset.forName("UTF-8")); byte[]
-		 * payload = new byte[uriField.length + 1]; byte idCode = 0x05;
-		 * payload[0] = idCode; System.arraycopy(uriField, 0, payload, 1,
-		 * uriField.length); return new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-		 * NdefRecord.RTD_URI, new byte[0], payload);
-		 */
-		return createNdefUriRecord(phone, (byte) 0x05);
+		return createNdefRecord(phone, (byte) 0x05);
 	}
 
 	protected static NdefRecord createNdefTextRecord(String text) {
@@ -108,23 +121,10 @@ public class MainActivity extends Activity {
 				new byte[0], payload);
 	}
 
-	protected static NdefRecord createNdefUriRecord(String address, byte idCode) {
-		byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-		byte[] payload = new byte[uriField.length + 1];
-		payload[0] = idCode;
-		System.arraycopy(uriField, 0, payload, 1, uriField.length);
-		return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-				new byte[0], payload);
+	protected static NdefRecord createNdefUriRecord(String phone) {
+		return createNdefRecord(phone, (byte) 0x00);
 	}
 
-	/*
-	 * protected static NdefRecord createNdefUriRecord(String address) { byte[]
-	 * uriField = address.getBytes(Charset.forName("UTF-8")); byte[] payload =
-	 * new byte[uriField.length + 1]; byte idCode = 0x00; payload[0] = idCode;
-	 * System.arraycopy(uriField, 0, payload, 1, uriField.length); return new
-	 * NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI, new byte[0],
-	 * payload); }
-	 */
 	private void nfc_disable() {
 		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
 		adapter.disableForegroundDispatch(this);
@@ -163,6 +163,7 @@ public class MainActivity extends Activity {
 				startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
 			}
 		}
+
 		SharedPreferences settings = getSharedPreferences(
 				NFCTagmakerSettings.PREFS_NAME, 0);
 		NFCTagmakerSettings.uri = settings.getString("uri",
@@ -175,7 +176,16 @@ public class MainActivity extends Activity {
 				getString(R.string.defaultEmail));
 		NFCTagmakerSettings.web = settings.getString("web",
 				getString(R.string.defaultWeb));
-
+		
+		Intent intent = getIntent();
+		String action = intent.getAction();
+    	if (action.equalsIgnoreCase(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) { 
+    	    String s = intent.getStringExtra(Intent.EXTRA_TEXT); 
+    	    NFCTagmakerSettings.uri = s;
+    		SharedPreferences.Editor editor = settings.edit();
+    	    editor.putString("uri", NFCTagmakerSettings.uri);
+    	    editor.commit();
+    }
 		Button x = (Button) findViewById(R.id.quit);
 		x.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -222,16 +232,89 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		Button sp = (Button) findViewById(R.id.Writesp);
+		sp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				NdefRecord[] ndef_name = new NdefRecord[1];
+				int ile = 0;
+				int gdzie = 0;
+
+				if (NFCTagmakerSettings.phone.length() > 3) {
+					ile = ile + 1;
+				}
+
+				if (NFCTagmakerSettings.uri.length() > 3) {
+					ile = ile + 1;
+				}
+
+				if (NFCTagmakerSettings.email.length() > 6) {
+					ile = ile + 1;
+				}
+				if (NFCTagmakerSettings.web.length() > 6) {
+					ile = ile + 1;
+				}
+
+				String[] uri = new String[ile];
+				byte[] type = new byte[ile];
+
+				if (NFCTagmakerSettings.phone.length() > 3) {
+					uri[gdzie] = NFCTagmakerSettings.phone;
+					type[gdzie] = 0x05;
+					gdzie = gdzie + 1;
+				}
+
+				if (NFCTagmakerSettings.uri.length() > 3) {
+					uri[gdzie] = NFCTagmakerSettings.uri;
+					type[gdzie] = 0x00;
+					gdzie = gdzie + 1;
+				}
+
+				if (NFCTagmakerSettings.email.length() > 6) {
+					uri[gdzie] = NFCTagmakerSettings.email;
+					type[gdzie] = 0x06;
+					gdzie = gdzie + 1;
+				}
+				if (NFCTagmakerSettings.web.length() > 6) {
+					uri[gdzie] = NFCTagmakerSettings.web;
+					type[gdzie] = 0x00;
+					gdzie = gdzie + 1;
+				}
+				Toast.makeText(getApplicationContext(),
+						"Gdzie:" + gdzie + " ile:" + ile, Toast.LENGTH_LONG)
+						.show();
+				ndef_name[0] = createNdefMySmartPosterRecord(
+						NFCTagmakerSettings.name, uri, type);
+				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
+				Intent intent = new Intent(getApplicationContext(),
+						WriteNFCActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		Button wvc = (Button) findViewById(R.id.WritevCard);
 		wvc.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
 				String vcardcontent = "BEGIN:VCARD\r\nVERSION:2.1\r\nN:"
-						+ NFCTagmakerSettings.name + "\r\nTEL;CELL:"
-						+ NFCTagmakerSettings.phone + "\r\n"
-						+ "EMAIL;INTERNET:" + NFCTagmakerSettings.email
-						+ "\r\nURL:" + NFCTagmakerSettings.web
-						+ "\r\nEND:VCARD\r\n";
+						+ NFCTagmakerSettings.name + "\r\n";
+
+				if (NFCTagmakerSettings.phone.length() > 3) {
+					vcardcontent = vcardcontent + "TEL;CELL:"
+							+ NFCTagmakerSettings.phone + "\r\n";
+				}
+
+				if (NFCTagmakerSettings.email.length() > 6) {
+					vcardcontent = vcardcontent + "EMAIL;INTERNET:"
+							+ NFCTagmakerSettings.email + "\r\n";
+				}
+
+				if (NFCTagmakerSettings.web.length() > 6) {
+					vcardcontent = vcardcontent + "URL:"
+							+ NFCTagmakerSettings.web + "\r\n";
+				}
+
+				vcardcontent = vcardcontent + "END:VCARD\r\n";
 				NdefRecord ndef_records = NdefRecord.createMime("text/x-vCard",
 						vcardcontent.getBytes());
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_records);
