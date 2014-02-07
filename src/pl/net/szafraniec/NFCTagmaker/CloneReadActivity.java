@@ -1,13 +1,13 @@
 /**
  * Copyright (C) 2014 Mateusz Szafraniec
- * This file is part of NFCKey.
+ * This file is part of NFCTagMaker.
  *
- * NFCKey is free software; you can redistribute it and/or modify
+ * NFCTagMaker is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * NFCKey is distributed in the hope that it will be useful,
+ * NFCTagMaker is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -16,9 +16,9 @@
  * along with NFCKey; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Ten plik jest częścią NFCKey.
+ * Ten plik jest częścią NFCTagMaker.
  *
- * NFCKey jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
+ * NFCTagMaker jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
  * i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU,
  * wydanej przez Fundację Wolnego Oprogramowania - według wersji 2 tej
  * Licencji lub (według twojego wyboru) którejś z późniejszych wersji.
@@ -147,8 +147,8 @@ public class CloneReadActivity extends Activity {
 				Toast.makeText(getApplicationContext(),
 						"FormatExceptionCloneRead", Toast.LENGTH_SHORT).show();
 			}
-			ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-			pb1.setVisibility(View.INVISIBLE);
+			//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+			//pb1.setVisibility(View.INVISIBLE);
 			Intent intent2 = new Intent(getApplicationContext(),
 					CloneWriteNFCActivity.class);
 			startActivity(intent2);

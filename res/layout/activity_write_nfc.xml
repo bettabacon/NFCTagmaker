@@ -43,7 +43,8 @@
         android:maxHeight="200dp"
         android:maxWidth="200dp"
         android:minHeight="200dip"
-        android:minWidth="200dip" />
+        android:minWidth="200dip"
+        android:visibility="invisible" />
 
     <ProgressBar
         android:id="@+id/progressBar2"

@@ -19,51 +19,6 @@
             android:layout_centerHorizontal="true"
             android:text="@string/Exit" />
 
-                <Button
-                    android:id="@+id/clone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/quit"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/CloneNFCTag" />
-
-                <Button
-                    android:id="@+id/Writeuri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="44dp"
-                    android:text="Write uri" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="30dp"
-                    android:text="NFC Forum type (1) URi record"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/WritevCard"
-                    android:layout_centerHorizontal="true"
-                    android:text="MIME vCard"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <Button
-                    android:id="@+id/WritevCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/clone"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="34dp"
-                    android:text="Write vCard" />
-
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -83,13 +38,58 @@
                     android:text="Write phone number"
                     android:visibility="visible" />
 
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="NFC Forum type (1) URi record"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Button
+                    android:id="@+id/Writeuri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView1"
+                    android:layout_centerHorizontal="true"
+                    android:text="Write uri" />
+
                 <Button
                     android:id="@+id/Writesp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/Writephone"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp"
                     android:text="Write smart poster" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/Writesp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="26dp"
+                    android:text="MIME vCard"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Button
+                    android:id="@+id/WritevCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView3"
+                    android:layout_centerHorizontal="true"
+                    android:text="Write vCard" />
+
+                <Button
+                    android:id="@+id/clone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/WritevCard"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/CloneNFCTag" />
 
     </RelativeLayout>
 

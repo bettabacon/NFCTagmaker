@@ -1,13 +1,13 @@
 /**
  * Copyright (C) 2014 Mateusz Szafraniec
- * This file is part of NFCKey.
+ * This file is part of NFCTagMaker.
  *
- * NFCKey is free software; you can redistribute it and/or modify
+ * NFCTagMaker is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * NFCKey is distributed in the hope that it will be useful,
+ * NFCTagMaker is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -16,9 +16,9 @@
  * along with NFCKey; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Ten plik jest częścią NFCKey.
+ * Ten plik jest częścią NFCTagMaker.
  *
- * NFCKey jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
+ * NFCTagMaker jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
  * i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU,
  * wydanej przez Fundację Wolnego Oprogramowania - według wersji 2 tej
  * Licencji lub (według twojego wyboru) którejś z późniejszych wersji.
@@ -78,8 +78,8 @@ public class CloneWriteNFCActivity extends Activity {
 		setContentView(R.layout.activity_write_nfc);
 		TextView tv1 = (TextView) findViewById(R.id.textView);
 		tv1.setText(getString(R.string.PlaceCloneTag));
-		ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-		pb1.setVisibility(View.INVISIBLE);
+		//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+		//pb1.setVisibility(View.INVISIBLE);
 		setResult(0);
 		Button b = (Button) findViewById(R.id.cancel_nfc_write_button);
 		b.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +93,9 @@ public class CloneWriteNFCActivity extends Activity {
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+		//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
 		String action = intent.getAction();
-		pb1.setVisibility(View.VISIBLE);
+		//pb1.setVisibility(View.VISIBLE);
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			int success = 0;
