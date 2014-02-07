@@ -1,6 +1,6 @@
-Changelog <br>
-Source code <br>
-License <br>
+Changelog: https://raw2.github.com/mateusz-szafraniec/NFCTagmaker/master/changelog.txt<br>
+Source code: https://github.com/mateusz-szafraniec/NFCTagmaker<br>
+License: https://raw2.github.com/mateusz-szafraniec/NFCTagmaker/master/LICENSE.txt<br>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

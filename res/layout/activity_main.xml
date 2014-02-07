@@ -19,23 +19,13 @@
             android:layout_centerHorizontal="true"
             android:text="@string/Exit" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/Writeuri"
-                    android:layout_below="@+id/Writeuri"
-                    android:layout_marginTop="21dp"
-                    android:text="Smart poster"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
                 <Button
                     android:id="@+id/Writephone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView2"
                     android:layout_centerHorizontal="true"
-                    android:text="Write phone number"
+                    android:text="@string/writephonenumber"
                     android:visibility="visible" />
 
                 <TextView
@@ -44,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:text="NFC Forum type (1) URi record"
+                    android:text="@string/type1uri"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <Button
@@ -53,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView1"
                     android:layout_centerHorizontal="true"
-                    android:text="Write uri" />
+                    android:text="@string/writeuri" />
 
                 <Button
                     android:id="@+id/Writesp"
@@ -62,7 +52,7 @@
                     android:layout_below="@+id/Writephone"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="14dp"
-                    android:text="Write smart poster" />
+                    android:text="@string/writesmartposter" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -71,7 +61,7 @@
                     android:layout_below="@+id/Writesp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="26dp"
-                    android:text="MIME vCard"
+                    android:text="@string/mimevcard"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <Button
@@ -80,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
                     android:layout_centerHorizontal="true"
-                    android:text="Write vCard" />
+                    android:text="@string/writevcard" />
 
                 <Button
                     android:id="@+id/clone"
@@ -90,6 +80,16 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:text="@string/CloneNFCTag" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView3"
+                    android:layout_below="@+id/Writeuri"
+                    android:layout_marginTop="23dp"
+                    android:text="@string/smartposter"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
 

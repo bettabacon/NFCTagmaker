@@ -176,16 +176,17 @@ public class MainActivity extends Activity {
 				getString(R.string.defaultEmail));
 		NFCTagmakerSettings.web = settings.getString("web",
 				getString(R.string.defaultWeb));
-		
+
 		Intent intent = getIntent();
 		String action = intent.getAction();
-    	if (action.equalsIgnoreCase(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) { 
-    	    String s = intent.getStringExtra(Intent.EXTRA_TEXT); 
-    	    NFCTagmakerSettings.uri = s;
-    		SharedPreferences.Editor editor = settings.edit();
-    	    editor.putString("uri", NFCTagmakerSettings.uri);
-    	    editor.commit();
-    }
+		if (action.equalsIgnoreCase(Intent.ACTION_SEND)
+				&& intent.hasExtra(Intent.EXTRA_TEXT)) {
+			String s = intent.getStringExtra(Intent.EXTRA_TEXT);
+			NFCTagmakerSettings.uri = s;
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString("uri", NFCTagmakerSettings.uri);
+			editor.commit();
+		}
 		Button x = (Button) findViewById(R.id.quit);
 		x.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -280,9 +281,6 @@ public class MainActivity extends Activity {
 					type[gdzie] = 0x00;
 					gdzie = gdzie + 1;
 				}
-				Toast.makeText(getApplicationContext(),
-						"Gdzie:" + gdzie + " ile:" + ile, Toast.LENGTH_LONG)
-						.show();
 				ndef_name[0] = createNdefMySmartPosterRecord(
 						NFCTagmakerSettings.name, uri, type);
 				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
@@ -339,6 +337,9 @@ public class MainActivity extends Activity {
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			Ndef ndef = Ndef.get(tag);
+			Toast.makeText(getApplicationContext(),
+					"ID:"+getHex(tag.getId()),
+					Toast.LENGTH_LONG).show();
 			if (ndef != null) {
 				Toast.makeText(getApplicationContext(),
 						"Type:" + ndef.getType() + "size:" + ndef.getMaxSize(),
@@ -383,5 +384,18 @@ public class MainActivity extends Activity {
 		super.onResume();
 		nfc_enable();
 	}
-
+	
+	 private String getHex(byte[] bytes) {
+	        StringBuilder sb = new StringBuilder();
+	        for (int i = bytes.length - 1; i >= 0; --i) {
+	            int b = bytes[i] & 0xff;
+	            if (b < 0x10)
+	                sb.append('0');
+	            sb.append(Integer.toHexString(b));
+	            if (i > 0) {
+	                sb.append(" ");
+	            }
+	        }
+	        return sb.toString();
+	    }
 }

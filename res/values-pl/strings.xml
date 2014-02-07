@@ -25,4 +25,12 @@
 	<string name="EnabeNFCFirst">Adapter NFC jest wyłączony. Proszę go włączyć.</string>
 	<string name="Settings">Ustawienia</string>
 	<string name="Autodetect">Wykryj automatycznie</string>
+	<string name="type1uri">NFC Forum typ (1) URi</string>
+	<string name="writeuri">Zapisz URI</string>
+	<string name="writesmartposter">Zapisz smart poster</string>
+	<string name="writephonenumber">Zapisz numer telefonu</string>
+	<string name="mimevcard">MIME vCard</string>
+	<string name="writevcard">Zapisz vCard</string>
+	<string name="name">Nazwa</string>
+	<string name="phone">Telefon</string>
 </resources>

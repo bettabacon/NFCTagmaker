@@ -52,7 +52,6 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,8 +77,8 @@ public class CloneWriteNFCActivity extends Activity {
 		setContentView(R.layout.activity_write_nfc);
 		TextView tv1 = (TextView) findViewById(R.id.textView);
 		tv1.setText(getString(R.string.PlaceCloneTag));
-		//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-		//pb1.setVisibility(View.INVISIBLE);
+		// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+		// pb1.setVisibility(View.INVISIBLE);
 		setResult(0);
 		Button b = (Button) findViewById(R.id.cancel_nfc_write_button);
 		b.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +92,9 @@ public class CloneWriteNFCActivity extends Activity {
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+		// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
 		String action = intent.getAction();
-		//pb1.setVisibility(View.VISIBLE);
+		// pb1.setVisibility(View.VISIBLE);
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			int success = 0;

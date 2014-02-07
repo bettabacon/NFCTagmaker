@@ -54,7 +54,6 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,8 +146,8 @@ public class CloneReadActivity extends Activity {
 				Toast.makeText(getApplicationContext(),
 						"FormatExceptionCloneRead", Toast.LENGTH_SHORT).show();
 			}
-			//ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-			//pb1.setVisibility(View.INVISIBLE);
+			// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
+			// pb1.setVisibility(View.INVISIBLE);
 			Intent intent2 = new Intent(getApplicationContext(),
 					CloneWriteNFCActivity.class);
 			startActivity(intent2);

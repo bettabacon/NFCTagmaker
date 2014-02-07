@@ -27,9 +27,21 @@
 	<string name="EnabeNFCFirst">NFC adapter is disabled. Please enable it first</string>
 	<string name="Settings">Settings</string>
 	<string name="Autodetect">Autodetect</string>
-	<string name="defaultUri" tools:ignore="MissingTranslation">http://nexusgsm.pl/?page_id=37</string>
-	<string name="defaultName">Teletorium</string>
-	<string name="defaultPhone">601789117</string>
-	<string name="defaultWeb">http://pieklo.com</string>
-	<string name="defaultEmail">diabel@pieklo.com</string>
+	<string name="defaultUri"></string>
+	<string name="defaultName"></string>
+	<string name="defaultPhone"></string>
+	<string name="defaultWeb"></string>
+	<string name="defaultEmail"></string>
+	<string name="type1uri">NFC Forum type (1) URi record</string>
+	<string name="writeuri">Write URI</string>
+	<string name="smartposter">Smart poster</string>
+	<string name="writesmartposter">Write smart poster</string>
+	<string name="writephonenumber">Write phone number</string>
+	<string name="mimevcard">MIME vCard</string>
+	<string name="writevcard">Write vCard</string>
+	<string name="uri">URI</string>
+	<string name="name">Name</string>
+	<string name="phone">Phone</string>
+	<string name="email">Email</string>
+	<string name="web">Web</string>
 </resources>

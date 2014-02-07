@@ -39,6 +39,8 @@ package pl.net.szafraniec.NFCTagmaker;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class SettingsActivity extends Activity {
@@ -57,6 +59,14 @@ public class SettingsActivity extends Activity {
 		email.setText(NFCTagmakerSettings.email);
 		EditText web = (EditText) findViewById(R.id.web);
 		web.setText(NFCTagmakerSettings.web);
+
+		Button x = (Button) findViewById(R.id.ok);
+		x.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				finish();
+			}
+		});
 
 	}
 

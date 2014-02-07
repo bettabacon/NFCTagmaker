@@ -45,6 +45,7 @@ import android.content.Intent;
 import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
@@ -95,12 +96,22 @@ public class WriteNFCActivity extends Activity {
 			int success = 0;
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			Ndef ndef = Ndef.get(tag);
+			int payload_length = NFCTagmakerSettings.nfc_payload.getByteArrayLength();
 			if (ndef != null) {
 				try {
+					int tag_size = ndef.getMaxSize();
+					if (tag_size>=payload_length) {
 					ndef.connect();
 					ndef.writeNdefMessage(NFCTagmakerSettings.nfc_payload);
 					ndef.close();
 					success = 1;
+					}
+					else {
+						Toast.makeText(getApplicationContext(), 
+								"NFC Tag size is too small\r\nMessage size: "+payload_length
+								+" Tag size: "+tag_size,
+								Toast.LENGTH_LONG).show();
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					Log.e(NFCTagmakerSettings.LOG_TAG, "IOExceptionWrite");
@@ -122,8 +133,12 @@ public class WriteNFCActivity extends Activity {
 
 			} else {
 				NdefFormatable format = NdefFormatable.get(tag);
+				MifareClassic mifareTag = MifareClassic.get(tag);
+				int tag_size = mifareTag.getSize();
 				if (format != null) {
 					try {
+						Toast.makeText(getApplicationContext(),
+								"Format: "+tag_size, Toast.LENGTH_SHORT).show();
 						format.connect();
 						format.format(NFCTagmakerSettings.nfc_payload);
 						format.close();
