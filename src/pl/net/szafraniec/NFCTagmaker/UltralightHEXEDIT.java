@@ -145,8 +145,12 @@ public class UltralightHEXEDIT extends Activity {
 				EditText et11 = (EditText) findViewById(R.id.editText11);
 				EditText et12 = (EditText) findViewById(R.id.editText12);
 				EditText et13 = (EditText) findViewById(R.id.editText13);
+				EditText et00 = (EditText) findViewById(R.id.editText00);
+				EditText et01 = (EditText) findViewById(R.id.editText01);
+				EditText et02 = (EditText) findViewById(R.id.editText02);
 
 				if (!typ) {
+					
 					byte[] buffer = readpage(tag, 3);
 					et1.setText(bytesToHex(buffer));
 					buffer = readpage(tag, 4);
@@ -173,6 +177,12 @@ public class UltralightHEXEDIT extends Activity {
 					et12.setText(bytesToHex(buffer));
 					buffer = readpage(tag, 15);
 					et13.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 0);
+					et00.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 1);
+					et01.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 2);
+					et02.setText(bytesToHex(buffer));
 				} else {
 					byte[] buffer1 = hexStringToByteArray(et1.getText()
 							.toString());
@@ -200,6 +210,12 @@ public class UltralightHEXEDIT extends Activity {
 							.toString());
 					byte[] buffer13 = hexStringToByteArray(et13.getText()
 							.toString());
+					byte[] buffer00 = hexStringToByteArray(et00.getText()
+							.toString());
+					byte[] buffer01 = hexStringToByteArray(et01.getText()
+							.toString());
+					byte[] buffer02 = hexStringToByteArray(et02.getText()
+							.toString());
 					CheckBox cb1 = (CheckBox) findViewById(R.id.checkBox1);
 					CheckBox cb2 = (CheckBox) findViewById(R.id.checkBox2);
 					CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
@@ -213,6 +229,9 @@ public class UltralightHEXEDIT extends Activity {
 					CheckBox cb11 = (CheckBox) findViewById(R.id.checkBox11);
 					CheckBox cb12 = (CheckBox) findViewById(R.id.checkBox12);
 					CheckBox cb13 = (CheckBox) findViewById(R.id.checkBox13);
+					CheckBox cb00 = (CheckBox) findViewById(R.id.checkBox00);
+					CheckBox cb01 = (CheckBox) findViewById(R.id.checkBox01);
+					CheckBox cb02 = (CheckBox) findViewById(R.id.checkBox02);
 					if (cb1.isChecked()) {
 						writeTag(tag, 3, buffer1);
 					}
@@ -251,6 +270,15 @@ public class UltralightHEXEDIT extends Activity {
 					}
 					if (cb13.isChecked()) {
 						writeTag(tag, 15, buffer13);
+					}
+					if (cb00.isChecked()) {
+						writeTag(tag, 0, buffer00);
+					}
+					if (cb01.isChecked()) {
+						writeTag(tag, 1, buffer01);
+					}
+					if (cb02.isChecked()) {
+						writeTag(tag, 2, buffer02);
 					}
 				}
 				Toast.makeText(getApplicationContext(),

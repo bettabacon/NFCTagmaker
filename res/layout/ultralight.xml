@@ -47,6 +47,109 @@
             android:layout_weight="1"
             android:text="@string/disc02" />
 
+<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="[00]"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#CC0000"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/editText00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textCapCharacters|textNoSuggestions"
+                android:maxLength="8"
+                android:text="@string/emptyHEX"
+                android:textAllCaps="true"
+                android:textColor="#CC0000" />
+
+            <CheckBox
+                android:id="@+id/checkBox00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/write" />
+        </LinearLayout>
+        
+<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="[01]"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#CC0000"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/editText01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="8"
+                android:ems="10"
+                android:inputType="textCapCharacters|textNoSuggestions"
+                android:text="@string/emptyHEX"
+                android:textColor="#CC0000" />
+
+            <CheckBox
+                android:id="@+id/checkBox01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/write" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="[02]"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#CC0000"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/editText02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:maxLength="8"
+                android:inputType="textCapCharacters|textNoSuggestions"
+                android:text="@string/emptyHEX"
+                android:textColor="#CC0000" />
+
+            <CheckBox
+                android:id="@+id/checkBox02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/write" />
+        </LinearLayout>
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX"
                 android:textColor="#CC0000" />
@@ -100,7 +204,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:inputType="textCapCharacters|textNoSuggestions"
+                android:maxLength="8"
                 android:text="@string/emptyHEX" >
 
                 <requestFocus />
@@ -134,6 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -165,6 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -196,6 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -227,6 +337,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -258,6 +369,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -289,6 +401,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -320,6 +433,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -351,6 +465,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -382,6 +497,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -413,6 +529,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
@@ -444,6 +561,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:maxLength="8"
                 android:inputType="textCapCharacters|textNoSuggestions"
                 android:text="@string/emptyHEX" />
 
