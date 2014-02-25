@@ -233,6 +233,16 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		Button ul = (Button) findViewById(R.id.ultralight);
+		ul.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				Intent intent = new Intent(getApplicationContext(),
+						UltraLightWriteActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		Button sp = (Button) findViewById(R.id.Writesp);
 		sp.setOnClickListener(new View.OnClickListener() {
 			@Override
