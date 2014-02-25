@@ -44,4 +44,8 @@
 	<string name="phone">Phone</string>
 	<string name="email">Email</string>
 	<string name="web">Web</string>
+	<string name="advanced">Advanced</string>
+	<string name="write">Write</string>
+	<string name="read">Read</string>
+	<string name="emptyHEX">00000000</string>
 </resources>

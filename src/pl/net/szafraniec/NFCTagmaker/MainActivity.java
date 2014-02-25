@@ -125,6 +125,20 @@ public class MainActivity extends Activity {
 		return createNdefRecord(phone, (byte) 0x00);
 	}
 
+	private String getHex(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = bytes.length - 1; i >= 0; --i) {
+			int b = bytes[i] & 0xff;
+			if (b < 0x10)
+				sb.append('0');
+			sb.append(Integer.toHexString(b));
+			if (i > 0) {
+				sb.append(" ");
+			}
+		}
+		return sb.toString();
+	}
+
 	private void nfc_disable() {
 		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
 		adapter.disableForegroundDispatch(this);
@@ -195,12 +209,12 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button clone = (Button) findViewById(R.id.clone);
-		clone.setOnClickListener(new View.OnClickListener() {
+		Button advanced = (Button) findViewById(R.id.advanced);
+		advanced.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
 				Intent intent = new Intent(getApplicationContext(),
-						CloneReadActivity.class);
+						AdvancedActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -233,16 +247,6 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button ul = (Button) findViewById(R.id.ultralight);
-		ul.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View self) {
-				Intent intent = new Intent(getApplicationContext(),
-						UltraLightWriteActivity.class);
-				startActivity(intent);
-			}
-		});
-		
 		Button sp = (Button) findViewById(R.id.Writesp);
 		sp.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -348,8 +352,7 @@ public class MainActivity extends Activity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			Ndef ndef = Ndef.get(tag);
 			Toast.makeText(getApplicationContext(),
-					"ID:"+getHex(tag.getId()),
-					Toast.LENGTH_LONG).show();
+					"ID:" + getHex(tag.getId()), Toast.LENGTH_LONG).show();
 			if (ndef != null) {
 				Toast.makeText(getApplicationContext(),
 						"Type:" + ndef.getType() + "size:" + ndef.getMaxSize(),
@@ -394,18 +397,4 @@ public class MainActivity extends Activity {
 		super.onResume();
 		nfc_enable();
 	}
-	
-	 private String getHex(byte[] bytes) {
-	        StringBuilder sb = new StringBuilder();
-	        for (int i = bytes.length - 1; i >= 0; --i) {
-	            int b = bytes[i] & 0xff;
-	            if (b < 0x10)
-	                sb.append('0');
-	            sb.append(Integer.toHexString(b));
-	            if (i > 0) {
-	                sb.append(" ");
-	            }
-	        }
-	        return sb.toString();
-	    }
 }

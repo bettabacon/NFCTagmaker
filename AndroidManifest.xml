@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.net.szafraniec.NFCTagmaker"
-    android:versionCode="3"
-    android:versionName="0.03" xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="4"
+    android:versionName="0.04" xmlns:tools="http://schemas.android.com/tools">
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
@@ -35,7 +35,8 @@
 	    </activity>
 	    <activity android:name="WriteNFCActivity">
 	    </activity>
-	    <activity android:name="UltraLightWriteActivity" android:screenOrientation="nosensor"></activity>
+	    <activity android:name="UltralightHEXEDIT" android:screenOrientation="nosensor"></activity>
+	    <activity android:name="AdvancedActivity"></activity>
 	    		    
 	        
     </application>

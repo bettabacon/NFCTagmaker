@@ -33,4 +33,7 @@
 	<string name="writevcard">Zapisz vCard</string>
 	<string name="name">Nazwa</string>
 	<string name="phone">Telefon</string>
+	<string name="advanced">Zaawansowane</string>
+	<string name="write">Zapis</string>
+	<string name="read">Odczyt</string>
 </resources>
