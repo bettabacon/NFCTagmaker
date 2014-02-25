@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true" xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
@@ -28,7 +28,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:text="Mifare Ultralight HEXEDIT"
-            android:textColor="#CC0000" />
+            android:textColor="#CC0000"
+            tools:ignore="HardcodedText" />
 
     </RelativeLayout>
 

@@ -1,6 +1,5 @@
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -10,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -48,6 +48,39 @@ public class UltralightHEXEDIT extends Activity {
 		return data;
 	}
 
+	private String getMifareType(Tag tag) {
+		String type = "Unknown";
+		for (String tech : tag.getTechList()) {
+			if (tech.equals(MifareClassic.class.getName())) {
+				MifareClassic mifareTag = MifareClassic.get(tag);
+				switch (mifareTag.getType()) {
+				case MifareClassic.TYPE_CLASSIC:
+					type = "Classic";
+					break;
+				case MifareClassic.TYPE_PLUS:
+					type = "Plus";
+					break;
+				case MifareClassic.TYPE_PRO:
+					type = "Pro";
+					break;
+				}
+			}
+
+			if (tech.equals(MifareUltralight.class.getName())) {
+				MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+				switch (mifareUlTag.getType()) {
+				case MifareUltralight.TYPE_ULTRALIGHT:
+					type = "Ultralight";
+					break;
+				case MifareUltralight.TYPE_ULTRALIGHT_C:
+					type = "Ultralight C";
+					break;
+				}
+			}
+		}
+		return type;
+	}
+
 	private void nfc_disable() {
 		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
 		adapter.disableForegroundDispatch(this);
@@ -72,8 +105,7 @@ public class UltralightHEXEDIT extends Activity {
 			@Override
 			public void onClick(View self) {
 				Toast.makeText(getApplicationContext(),
-						"place tag against your device to READ HEX values",
-						Toast.LENGTH_LONG).show();
+						getString(R.string.readHEX), Toast.LENGTH_LONG).show();
 				typ = false;
 			}
 		});
@@ -82,8 +114,7 @@ public class UltralightHEXEDIT extends Activity {
 			@Override
 			public void onClick(View self) {
 				Toast.makeText(getApplicationContext(),
-						"place tag against your device to WRITE HEX values",
-						Toast.LENGTH_LONG).show();
+						getString(R.string.writeHEX), Toast.LENGTH_LONG).show();
 				typ = true;
 			}
 		});
@@ -96,122 +127,142 @@ public class UltralightHEXEDIT extends Activity {
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			EditText et1 = (EditText) findViewById(R.id.editText1);
-			EditText et2 = (EditText) findViewById(R.id.editText2);
-			EditText et3 = (EditText) findViewById(R.id.editText3);
-			EditText et4 = (EditText) findViewById(R.id.editText4);
-			EditText et5 = (EditText) findViewById(R.id.editText5);
-			EditText et6 = (EditText) findViewById(R.id.editText6);
-			EditText et7 = (EditText) findViewById(R.id.editText7);
-			EditText et8 = (EditText) findViewById(R.id.editText8);
-			EditText et9 = (EditText) findViewById(R.id.editText9);
-			EditText et10 = (EditText) findViewById(R.id.editText10);
-			EditText et11 = (EditText) findViewById(R.id.editText11);
-			EditText et12 = (EditText) findViewById(R.id.editText12);
-			EditText et13 = (EditText) findViewById(R.id.editText13);
+			String typ_karty = getMifareType(tag);
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.card_type) + typ_karty,
+					Toast.LENGTH_LONG).show();
+			if ((typ_karty == "Ultralight") || (typ_karty == "Ultralight C")) {
+				EditText et1 = (EditText) findViewById(R.id.editText1);
+				EditText et2 = (EditText) findViewById(R.id.editText2);
+				EditText et3 = (EditText) findViewById(R.id.editText3);
+				EditText et4 = (EditText) findViewById(R.id.editText4);
+				EditText et5 = (EditText) findViewById(R.id.editText5);
+				EditText et6 = (EditText) findViewById(R.id.editText6);
+				EditText et7 = (EditText) findViewById(R.id.editText7);
+				EditText et8 = (EditText) findViewById(R.id.editText8);
+				EditText et9 = (EditText) findViewById(R.id.editText9);
+				EditText et10 = (EditText) findViewById(R.id.editText10);
+				EditText et11 = (EditText) findViewById(R.id.editText11);
+				EditText et12 = (EditText) findViewById(R.id.editText12);
+				EditText et13 = (EditText) findViewById(R.id.editText13);
 
-			if (!typ) {
-				byte[] buffer = readpage(tag, 3);
-				et1.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 4);
-				et2.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 5);
-				et3.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 6);
-				et4.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 7);
-				et5.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 8);
-				et6.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 9);
-				et7.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 10);
-				et8.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 11);
-				et9.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 12);
-				et10.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 13);
-				et11.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 14);
-				et12.setText(bytesToHex(buffer));
-				buffer = readpage(tag, 15);
-				et13.setText(bytesToHex(buffer));
+				if (!typ) {
+					byte[] buffer = readpage(tag, 3);
+					et1.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 4);
+					et2.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 5);
+					et3.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 6);
+					et4.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 7);
+					et5.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 8);
+					et6.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 9);
+					et7.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 10);
+					et8.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 11);
+					et9.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 12);
+					et10.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 13);
+					et11.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 14);
+					et12.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 15);
+					et13.setText(bytesToHex(buffer));
+				} else {
+					byte[] buffer1 = hexStringToByteArray(et1.getText()
+							.toString());
+					byte[] buffer2 = hexStringToByteArray(et2.getText()
+							.toString());
+					byte[] buffer3 = hexStringToByteArray(et3.getText()
+							.toString());
+					byte[] buffer4 = hexStringToByteArray(et4.getText()
+							.toString());
+					byte[] buffer5 = hexStringToByteArray(et5.getText()
+							.toString());
+					byte[] buffer6 = hexStringToByteArray(et6.getText()
+							.toString());
+					byte[] buffer7 = hexStringToByteArray(et7.getText()
+							.toString());
+					byte[] buffer8 = hexStringToByteArray(et8.getText()
+							.toString());
+					byte[] buffer9 = hexStringToByteArray(et9.getText()
+							.toString());
+					byte[] buffer10 = hexStringToByteArray(et10.getText()
+							.toString());
+					byte[] buffer11 = hexStringToByteArray(et11.getText()
+							.toString());
+					byte[] buffer12 = hexStringToByteArray(et12.getText()
+							.toString());
+					byte[] buffer13 = hexStringToByteArray(et13.getText()
+							.toString());
+					CheckBox cb1 = (CheckBox) findViewById(R.id.checkBox1);
+					CheckBox cb2 = (CheckBox) findViewById(R.id.checkBox2);
+					CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
+					CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
+					CheckBox cb5 = (CheckBox) findViewById(R.id.checkBox5);
+					CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
+					CheckBox cb7 = (CheckBox) findViewById(R.id.checkBox7);
+					CheckBox cb8 = (CheckBox) findViewById(R.id.checkBox8);
+					CheckBox cb9 = (CheckBox) findViewById(R.id.checkBox9);
+					CheckBox cb10 = (CheckBox) findViewById(R.id.checkBox10);
+					CheckBox cb11 = (CheckBox) findViewById(R.id.checkBox11);
+					CheckBox cb12 = (CheckBox) findViewById(R.id.checkBox12);
+					CheckBox cb13 = (CheckBox) findViewById(R.id.checkBox13);
+					if (cb1.isChecked()) {
+						writeTag(tag, 3, buffer1);
+					}
+					if (cb2.isChecked()) {
+						writeTag(tag, 4, buffer2);
+					}
+					if (cb3.isChecked()) {
+						writeTag(tag, 5, buffer3);
+					}
+					if (cb4.isChecked()) {
+						writeTag(tag, 6, buffer4);
+					}
+					if (cb5.isChecked()) {
+						writeTag(tag, 7, buffer5);
+					}
+					if (cb6.isChecked()) {
+						writeTag(tag, 8, buffer6);
+					}
+					if (cb7.isChecked()) {
+						writeTag(tag, 9, buffer7);
+					}
+					if (cb8.isChecked()) {
+						writeTag(tag, 10, buffer8);
+					}
+					if (cb9.isChecked()) {
+						writeTag(tag, 11, buffer9);
+					}
+					if (cb10.isChecked()) {
+						writeTag(tag, 12, buffer10);
+					}
+					if (cb11.isChecked()) {
+						writeTag(tag, 13, buffer11);
+					}
+					if (cb12.isChecked()) {
+						writeTag(tag, 14, buffer12);
+					}
+					if (cb13.isChecked()) {
+						writeTag(tag, 15, buffer13);
+					}
+				}
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.done), Toast.LENGTH_SHORT).show();
+				Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+				v.vibrate(100);
+
 			} else {
-				byte[] buffer1 = hexStringToByteArray(et1.getText().toString());
-				byte[] buffer2 = hexStringToByteArray(et2.getText().toString());
-				byte[] buffer3 = hexStringToByteArray(et3.getText().toString());
-				byte[] buffer4 = hexStringToByteArray(et4.getText().toString());
-				byte[] buffer5 = hexStringToByteArray(et5.getText().toString());
-				byte[] buffer6 = hexStringToByteArray(et6.getText().toString());
-				byte[] buffer7 = hexStringToByteArray(et7.getText().toString());
-				byte[] buffer8 = hexStringToByteArray(et8.getText().toString());
-				byte[] buffer9 = hexStringToByteArray(et9.getText().toString());
-				byte[] buffer10 = hexStringToByteArray(et10.getText()
-						.toString());
-				byte[] buffer11 = hexStringToByteArray(et11.getText()
-						.toString());
-				byte[] buffer12 = hexStringToByteArray(et12.getText()
-						.toString());
-				byte[] buffer13 = hexStringToByteArray(et13.getText()
-						.toString());
-				CheckBox cb1 = (CheckBox) findViewById(R.id.checkBox1);
-				CheckBox cb2 = (CheckBox) findViewById(R.id.checkBox2);
-				CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
-				CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
-				CheckBox cb5 = (CheckBox) findViewById(R.id.checkBox5);
-				CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
-				CheckBox cb7 = (CheckBox) findViewById(R.id.checkBox7);
-				CheckBox cb8 = (CheckBox) findViewById(R.id.checkBox8);
-				CheckBox cb9 = (CheckBox) findViewById(R.id.checkBox9);
-				CheckBox cb10 = (CheckBox) findViewById(R.id.checkBox10);
-				CheckBox cb11 = (CheckBox) findViewById(R.id.checkBox11);
-				CheckBox cb12 = (CheckBox) findViewById(R.id.checkBox12);
-				CheckBox cb13 = (CheckBox) findViewById(R.id.checkBox13);
-				if (cb1.isChecked()) {
-					writeTag(tag, 3, buffer1);
-				}
-				if (cb2.isChecked()) {
-					writeTag(tag, 4, buffer2);
-				}
-				if (cb3.isChecked()) {
-					writeTag(tag, 5, buffer3);
-				}
-				if (cb4.isChecked()) {
-					writeTag(tag, 6, buffer4);
-				}
-				if (cb5.isChecked()) {
-					writeTag(tag, 7, buffer5);
-				}
-				if (cb6.isChecked()) {
-					writeTag(tag, 8, buffer6);
-				}
-				if (cb7.isChecked()) {
-					writeTag(tag, 9, buffer7);
-				}
-				if (cb8.isChecked()) {
-					writeTag(tag, 10, buffer8);
-				}
-				if (cb9.isChecked()) {
-					writeTag(tag, 11, buffer9);
-				}
-				if (cb10.isChecked()) {
-					writeTag(tag, 12, buffer10);
-				}
-				if (cb11.isChecked()) {
-					writeTag(tag, 13, buffer11);
-				}
-				if (cb12.isChecked()) {
-					writeTag(tag, 14, buffer12);
-				}
-				if (cb13.isChecked()) {
-					writeTag(tag, 15, buffer13);
-				}
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.card_not_supported),
+						Toast.LENGTH_LONG).show();
 			}
-			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			v.vibrate(100);
-			Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT)
-					.show();
 		}
 	}
 
@@ -234,15 +285,18 @@ public class UltralightHEXEDIT extends Activity {
 			byte[] buffer = mifare.readPages(page);
 			byte[] buffer2 = Arrays.copyOf(buffer, 4);
 			return buffer2;
-		} catch (IOException e) {
-			Log.e(TAG, "IOException while reading MifareUltralight message...",
-					e);
+		} catch (Exception e) {
+			Log.e(TAG, "Exception while reading MifareUltralight message...", e);
+			Toast.makeText(getApplicationContext(), "Error:" + e,
+					Toast.LENGTH_SHORT).show();
 		} finally {
 			if (mifare != null) {
 				try {
 					mifare.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					Log.e(TAG, "Error closing tag...", e);
+					Toast.makeText(getApplicationContext(), "Error:" + e,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -253,18 +307,23 @@ public class UltralightHEXEDIT extends Activity {
 	public String readTag(Tag tag) {
 		MifareUltralight mifare = MifareUltralight.get(tag);
 		try {
+
 			mifare.connect();
 			byte[] payload = mifare.readPages(4);
 			return new String(payload, Charset.forName("US-ASCII"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.e(TAG, "IOException while reading MifareUltralight message...",
 					e);
+			Toast.makeText(getApplicationContext(), "Error:" + e,
+					Toast.LENGTH_SHORT).show();
 		} finally {
 			if (mifare != null) {
 				try {
 					mifare.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					Log.e(TAG, "Error closing tag...", e);
+					Toast.makeText(getApplicationContext(), "Error:" + e,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -277,13 +336,17 @@ public class UltralightHEXEDIT extends Activity {
 		try {
 			ultralight.connect();
 			ultralight.writePage(page, data);
-		} catch (IOException e) {
-			Log.e(TAG, "IOException while writing MifareUltralight...", e);
+		} catch (Exception e) {
+			Log.e(TAG, "Exception while writing MifareUltralight...", e);
+			Toast.makeText(getApplicationContext(), "Error:" + e,
+					Toast.LENGTH_SHORT).show();
 		} finally {
 			try {
 				ultralight.close();
-			} catch (IOException e) {
-				Log.e(TAG, "IOException while closing MifareUltralight...", e);
+			} catch (Exception e) {
+				Log.e(TAG, "Exception while closing MifareUltralight...", e);
+				Toast.makeText(getApplicationContext(), "Error:" + e,
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

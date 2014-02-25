@@ -48,4 +48,14 @@
 	<string name="write">Write</string>
 	<string name="read">Read</string>
 	<string name="emptyHEX">00000000</string>
+	<string name="legal">Illicit usage strictly prohibited!</string>
+	<string name="disc">Use write feature at your own risk! You have been warned!</string>
+	<string name="disc00">Please read content from card before you write anything!</string>
+	<string name="disc01">Press READ and place tag against your device to read HEX values</string>
+	<string name="disc02">Press WRITE  and place tag against your device to write HEX values</string>
+	<string name="readHEX">place tag against your device to READ HEX values</string>
+	<string name="writeHEX">place tag against your device to WRITE HEX values</string>
+	<string name="done">Done !</string>
+	<string name="card_type">Card type:</string>
+	<string name="card_not_supported">Card not supported :(</string>
 </resources>
