@@ -1,3 +1,39 @@
+/**
+ * Copyright (C) 2014 Mateusz Szafraniec
+ * This file is part of NFCTagMaker.
+ *
+ * NFCTagMaker is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * NFCTagMaker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with NFCKey; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Ten plik jest częścią NFCTagMaker.
+ *
+ * NFCTagMaker jest wolnym oprogramowaniem; możesz go rozprowadzać dalej
+ * i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU,
+ * wydanej przez Fundację Wolnego Oprogramowania - według wersji 2 tej
+ * Licencji lub (według twojego wyboru) którejś z późniejszych wersji.
+ *
+ * Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on
+ * użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej
+ * gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH
+ * ZASTOSOWAŃ. W celu uzyskania bliższych informacji sięgnij do
+ * Powszechnej Licencji Publicznej GNU.
+ *
+ * Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz
+ * Powszechnej Licencji Publicznej GNU (GNU General Public License);
+ * jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
+ * Place, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package pl.net.szafraniec.NFCTagmaker;
 
 import java.nio.charset.Charset;
@@ -21,7 +57,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class UltralightHEXEDIT extends Activity {
-	private boolean typ;
+	private boolean card_write;
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
@@ -106,7 +142,7 @@ public class UltralightHEXEDIT extends Activity {
 			public void onClick(View self) {
 				Toast.makeText(getApplicationContext(),
 						getString(R.string.readHEX), Toast.LENGTH_LONG).show();
-				typ = false;
+				card_write = false;
 			}
 		});
 		Button write = (Button) findViewById(R.id.write);
@@ -115,7 +151,7 @@ public class UltralightHEXEDIT extends Activity {
 			public void onClick(View self) {
 				Toast.makeText(getApplicationContext(),
 						getString(R.string.writeHEX), Toast.LENGTH_LONG).show();
-				typ = true;
+				card_write = true;
 			}
 		});
 
@@ -132,145 +168,106 @@ public class UltralightHEXEDIT extends Activity {
 					getString(R.string.card_type) + typ_karty,
 					Toast.LENGTH_LONG).show();
 			if ((typ_karty == "Ultralight") || (typ_karty == "Ultralight C")) {
-				EditText et1 = (EditText) findViewById(R.id.editText1);
-				EditText et2 = (EditText) findViewById(R.id.editText2);
-				EditText et3 = (EditText) findViewById(R.id.editText3);
-				EditText et4 = (EditText) findViewById(R.id.editText4);
-				EditText et5 = (EditText) findViewById(R.id.editText5);
-				EditText et6 = (EditText) findViewById(R.id.editText6);
-				EditText et7 = (EditText) findViewById(R.id.editText7);
-				EditText et8 = (EditText) findViewById(R.id.editText8);
-				EditText et9 = (EditText) findViewById(R.id.editText9);
-				EditText et10 = (EditText) findViewById(R.id.editText10);
-				EditText et11 = (EditText) findViewById(R.id.editText11);
-				EditText et12 = (EditText) findViewById(R.id.editText12);
-				EditText et13 = (EditText) findViewById(R.id.editText13);
 				EditText et00 = (EditText) findViewById(R.id.editText00);
 				EditText et01 = (EditText) findViewById(R.id.editText01);
 				EditText et02 = (EditText) findViewById(R.id.editText02);
+				EditText et03 = (EditText) findViewById(R.id.editText03);
+				EditText et04 = (EditText) findViewById(R.id.editText04);
+				EditText et05 = (EditText) findViewById(R.id.editText05);
+				EditText et06 = (EditText) findViewById(R.id.editText06);
+				EditText et07 = (EditText) findViewById(R.id.editText07);
+				EditText et08 = (EditText) findViewById(R.id.editText08);
+				EditText et09 = (EditText) findViewById(R.id.editText09);
+				EditText et0A = (EditText) findViewById(R.id.editText0A);
+				EditText et0B = (EditText) findViewById(R.id.editText0B);
+				EditText et0C = (EditText) findViewById(R.id.editText0C);
+				EditText et0D = (EditText) findViewById(R.id.editText0D);
+				EditText et0E = (EditText) findViewById(R.id.editText0E);
+				EditText et0F = (EditText) findViewById(R.id.editText0F);
 
-				if (!typ) {
+				if (!card_write) {
 					
-					byte[] buffer = readpage(tag, 3);
-					et1.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 4);
-					et2.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 5);
-					et3.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 6);
-					et4.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 7);
-					et5.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 8);
-					et6.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 9);
-					et7.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 10);
-					et8.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 11);
-					et9.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 12);
-					et10.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 13);
-					et11.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 14);
-					et12.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 15);
-					et13.setText(bytesToHex(buffer));
-					buffer = readpage(tag, 0);
+					byte[] buffer = readpage(tag, 0);
 					et00.setText(bytesToHex(buffer));
 					buffer = readpage(tag, 1);
 					et01.setText(bytesToHex(buffer));
 					buffer = readpage(tag, 2);
 					et02.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 3);
+					et03.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 4);
+					et04.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 5);
+					et05.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 6);
+					et06.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 7);
+					et07.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 8);
+					et08.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 9);
+					et09.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 10);
+					et0A.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 11);
+					et0B.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 12);
+					et0C.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 13);
+					et0D.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 14);
+					et0E.setText(bytesToHex(buffer));
+					buffer = readpage(tag, 15);
+					et0F.setText(bytesToHex(buffer));
 				} else {
-					byte[] buffer1 = hexStringToByteArray(et1.getText()
-							.toString());
-					byte[] buffer2 = hexStringToByteArray(et2.getText()
-							.toString());
-					byte[] buffer3 = hexStringToByteArray(et3.getText()
-							.toString());
-					byte[] buffer4 = hexStringToByteArray(et4.getText()
-							.toString());
-					byte[] buffer5 = hexStringToByteArray(et5.getText()
-							.toString());
-					byte[] buffer6 = hexStringToByteArray(et6.getText()
-							.toString());
-					byte[] buffer7 = hexStringToByteArray(et7.getText()
-							.toString());
-					byte[] buffer8 = hexStringToByteArray(et8.getText()
-							.toString());
-					byte[] buffer9 = hexStringToByteArray(et9.getText()
-							.toString());
-					byte[] buffer10 = hexStringToByteArray(et10.getText()
-							.toString());
-					byte[] buffer11 = hexStringToByteArray(et11.getText()
-							.toString());
-					byte[] buffer12 = hexStringToByteArray(et12.getText()
-							.toString());
-					byte[] buffer13 = hexStringToByteArray(et13.getText()
-							.toString());
 					byte[] buffer00 = hexStringToByteArray(et00.getText()
 							.toString());
 					byte[] buffer01 = hexStringToByteArray(et01.getText()
 							.toString());
 					byte[] buffer02 = hexStringToByteArray(et02.getText()
 							.toString());
-					CheckBox cb1 = (CheckBox) findViewById(R.id.checkBox1);
-					CheckBox cb2 = (CheckBox) findViewById(R.id.checkBox2);
-					CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
-					CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
-					CheckBox cb5 = (CheckBox) findViewById(R.id.checkBox5);
-					CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
-					CheckBox cb7 = (CheckBox) findViewById(R.id.checkBox7);
-					CheckBox cb8 = (CheckBox) findViewById(R.id.checkBox8);
-					CheckBox cb9 = (CheckBox) findViewById(R.id.checkBox9);
-					CheckBox cb10 = (CheckBox) findViewById(R.id.checkBox10);
-					CheckBox cb11 = (CheckBox) findViewById(R.id.checkBox11);
-					CheckBox cb12 = (CheckBox) findViewById(R.id.checkBox12);
-					CheckBox cb13 = (CheckBox) findViewById(R.id.checkBox13);
+					byte[] buffer03 = hexStringToByteArray(et03.getText()
+							.toString());
+					byte[] buffer04 = hexStringToByteArray(et04.getText()
+							.toString());
+					byte[] buffer05 = hexStringToByteArray(et05.getText()
+							.toString());
+					byte[] buffer06 = hexStringToByteArray(et06.getText()
+							.toString());
+					byte[] buffer07 = hexStringToByteArray(et07.getText()
+							.toString());
+					byte[] buffer08 = hexStringToByteArray(et08.getText()
+							.toString());
+					byte[] buffer09 = hexStringToByteArray(et09.getText()
+							.toString());
+					byte[] buffer0A = hexStringToByteArray(et0A.getText()
+							.toString());
+					byte[] buffer0B = hexStringToByteArray(et0B.getText()
+							.toString());
+					byte[] buffer0C = hexStringToByteArray(et0C.getText()
+							.toString());
+					byte[] buffer0D = hexStringToByteArray(et0D.getText()
+							.toString());
+					byte[] buffer0E = hexStringToByteArray(et0E.getText()
+							.toString());
+					byte[] buffer0F = hexStringToByteArray(et0F.getText()
+							.toString());
 					CheckBox cb00 = (CheckBox) findViewById(R.id.checkBox00);
 					CheckBox cb01 = (CheckBox) findViewById(R.id.checkBox01);
 					CheckBox cb02 = (CheckBox) findViewById(R.id.checkBox02);
-					if (cb1.isChecked()) {
-						writeTag(tag, 3, buffer1);
-					}
-					if (cb2.isChecked()) {
-						writeTag(tag, 4, buffer2);
-					}
-					if (cb3.isChecked()) {
-						writeTag(tag, 5, buffer3);
-					}
-					if (cb4.isChecked()) {
-						writeTag(tag, 6, buffer4);
-					}
-					if (cb5.isChecked()) {
-						writeTag(tag, 7, buffer5);
-					}
-					if (cb6.isChecked()) {
-						writeTag(tag, 8, buffer6);
-					}
-					if (cb7.isChecked()) {
-						writeTag(tag, 9, buffer7);
-					}
-					if (cb8.isChecked()) {
-						writeTag(tag, 10, buffer8);
-					}
-					if (cb9.isChecked()) {
-						writeTag(tag, 11, buffer9);
-					}
-					if (cb10.isChecked()) {
-						writeTag(tag, 12, buffer10);
-					}
-					if (cb11.isChecked()) {
-						writeTag(tag, 13, buffer11);
-					}
-					if (cb12.isChecked()) {
-						writeTag(tag, 14, buffer12);
-					}
-					if (cb13.isChecked()) {
-						writeTag(tag, 15, buffer13);
-					}
+					CheckBox cb03 = (CheckBox) findViewById(R.id.checkBox03);
+					CheckBox cb04 = (CheckBox) findViewById(R.id.checkBox04);
+					CheckBox cb05 = (CheckBox) findViewById(R.id.checkBox05);
+					CheckBox cb06 = (CheckBox) findViewById(R.id.checkBox06);
+					CheckBox cb07 = (CheckBox) findViewById(R.id.checkBox07);
+					CheckBox cb08 = (CheckBox) findViewById(R.id.checkBox08);
+					CheckBox cb09 = (CheckBox) findViewById(R.id.checkBox09);
+					CheckBox cb0A = (CheckBox) findViewById(R.id.checkBox0A);
+					CheckBox cb0B = (CheckBox) findViewById(R.id.checkBox0B);
+					CheckBox cb0C = (CheckBox) findViewById(R.id.checkBox0C);
+					CheckBox cb0D = (CheckBox) findViewById(R.id.checkBox0D);
+					CheckBox cb0E = (CheckBox) findViewById(R.id.checkBox0E);
+					CheckBox cb0F = (CheckBox) findViewById(R.id.checkBox0F);
 					if (cb00.isChecked()) {
 						writeTag(tag, 0, buffer00);
 					}
@@ -279,6 +276,45 @@ public class UltralightHEXEDIT extends Activity {
 					}
 					if (cb02.isChecked()) {
 						writeTag(tag, 2, buffer02);
+					}
+					if (cb03.isChecked()) {
+						writeTag(tag, 3, buffer03);
+					}
+					if (cb04.isChecked()) {
+						writeTag(tag, 4, buffer04);
+					}
+					if (cb05.isChecked()) {
+						writeTag(tag, 5, buffer05);
+					}
+					if (cb06.isChecked()) {
+						writeTag(tag, 6, buffer06);
+					}
+					if (cb07.isChecked()) {
+						writeTag(tag, 7, buffer07);
+					}
+					if (cb08.isChecked()) {
+						writeTag(tag, 8, buffer08);
+					}
+					if (cb09.isChecked()) {
+						writeTag(tag, 9, buffer09);
+					}
+					if (cb0A.isChecked()) {
+						writeTag(tag, 10, buffer0A);
+					}
+					if (cb0B.isChecked()) {
+						writeTag(tag, 11, buffer0B);
+					}
+					if (cb0C.isChecked()) {
+						writeTag(tag, 12, buffer0C);
+					}
+					if (cb0D.isChecked()) {
+						writeTag(tag, 13, buffer0D);
+					}
+					if (cb0E.isChecked()) {
+						writeTag(tag, 14, buffer0E);
+					}
+					if (cb0F.isChecked()) {
+						writeTag(tag, 15, buffer0F);
 					}
 				}
 				Toast.makeText(getApplicationContext(),

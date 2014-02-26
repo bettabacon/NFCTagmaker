@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">NFC Tag maker</string>
-    <string name="action_settings">Settings</string>
-    <string name="WriteNFCButton">Write NFC tag</string>
-	<string name="Success">Tag written successfully!</string>
-	<string name="ErrorDatabaseWriting">Error writing to application database!</string>
+    <string name="Success">Tag written successfully!</string>
 	<string name="Failed">Couldn\'t write tag :(</string>
 	<string name="PlaceTag">Place a tag against your device.</string>
 	<string name="PlaceSourceTag">Place a SOURCE tag against your device to read from it.</string>
 	<string name="PlaceCloneTag">Place a NEW tag against your device to clone to it.</string>
 	<string name="Exit">Exit</string>
-	<string name="missing">[MISSING]</string>
 	<string name="About">About</string>
 	<string name="Donate">Donate</string>
 	<string name="donateBitcoin_uri" tools:ignore="MissingTranslation">bitcoin:17E32x5ygXkqf5EWJkryZuarUDUFrb8UqQ?label=NFC%20Key</string>
@@ -18,15 +14,10 @@
 	<string name="DonateViaPayPal">Donate via PayPal:</string>	
 	<string name="SendABitcoin">Send a Bitcoin:</string>
 	<string name="IfYouLike">If this app is useful for you, please consider making a donation.</string>
-	<string name="ReadNFCTag">Read NFC tag</string>
 	<string name="CloneNFCTag">Clone NFC tag</string>
-	<string name="Autorun">Autorun</string>
-	<string name="AutorunDisabled">Autorun for NFC tag is disabled</string>
-	<string name="DatabaseMissing">Internal database file is missing. Please write NFC tag again.</string>
 	<string name="CantFindNFCAdapter">Can\'t find any NFC adapter. Probably your device doesn\'t have it at all&#8230;</string>
 	<string name="EnabeNFCFirst">NFC adapter is disabled. Please enable it first</string>
 	<string name="Settings">Settings</string>
-	<string name="Autodetect">Autodetect</string>
 	<string name="defaultUri"></string>
 	<string name="defaultName"></string>
 	<string name="defaultPhone"></string>

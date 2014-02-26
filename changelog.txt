@@ -1,5 +1,8 @@
 Changelog of NFCTagMaker:
 
+Version 0.08:
+updated HEXEDIT 
+
 Version 0.04:
 Mifare Ultralight HEXEDIT
 
