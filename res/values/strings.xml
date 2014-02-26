@@ -49,4 +49,7 @@
 	<string name="done">Done !</string>
 	<string name="card_type">Card type:</string>
 	<string name="card_not_supported">Card not supported :(</string>
+	<string name="exReadingPage">Exception while reading MifareUltralight page:</string>
+	<string name="exWritingPage">Exception while writing MifareUltralight page:</string>
+	<string name="exClosingTag">Error while closing tag</string>
 </resources>

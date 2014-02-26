@@ -39,11 +39,14 @@
 	<string name="legal">Użytkowanie w nielegalnym celu ZABRONIONE!</string>
 	<string name="disc">Opcji Zapis używasz na własne ryzyko. Zostałeś ostrzeżony!</string>
 	<string name="disc00">Najpierw odzczytaj zawartość z karty zanim coś na niej zapiszesz!</string>
-	<string name="disc01">Naćiśnij Odczyt w celu odczytania zawartości karty</string>
-	<string name="disc02">Naćiśnij Zapis w celu zapisania danych do karty</string>
+	<string name="disc01">Naciśnij Odczyt w celu odczytania zawartości karty</string>
+	<string name="disc02">Naciśnij Zapis w celu zapisania danych do karty</string>
 	<string name="readHEX">Umieść kartę pod telefonem w celu odczytania zawartości</string>
 	<string name="writeHEX">Umieść kartę pod telefonem w celu zapisu danych</string>
 	<string name="done">Gotowe !</string>
 	<string name="card_type">Typ karty:</string>
 	<string name="card_not_supported">Karta niewspierana :(</string>
+	<string name="exReadingPage">Błąd podczas odczytu MifareUltralight, strona:</string>
+	<string name="exWritingPage">Błąd podczas zapisu MifareUltralight, strona:</string>
+	<string name="exClosingTag">Błąd podczas zamykania tagu</string>
 </resources>

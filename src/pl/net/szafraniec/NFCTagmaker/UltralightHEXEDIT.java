@@ -36,7 +36,6 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import android.app.Activity;
@@ -58,6 +57,7 @@ import android.widget.Toast;
 
 public class UltralightHEXEDIT extends Activity {
 	private boolean card_write;
+	private static String errortext;
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
@@ -65,6 +65,7 @@ public class UltralightHEXEDIT extends Activity {
 			.getSimpleName();
 
 	public static String bytesToHex(byte[] bytes) {
+		if (bytes != null) { 
 		char[] hexChars = new char[bytes.length * 2];
 		for (int j = 0; j < bytes.length; j++) {
 			int v = bytes[j] & 0xFF;
@@ -72,9 +73,14 @@ public class UltralightHEXEDIT extends Activity {
 			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
 		}
 		return new String(hexChars);
+		} else 
+		{
+			return null;
+		}
 	}
 
 	public static byte[] hexStringToByteArray(String s) {
+		if (s != null) {
 		int len = s.length();
 		byte[] data = new byte[len / 2];
 		for (int i = 0; i < len; i += 2) {
@@ -82,6 +88,9 @@ public class UltralightHEXEDIT extends Activity {
 					.digit(s.charAt(i + 1), 16));
 		}
 		return data;
+		} else {
+			return null;
+		}
 	}
 
 	private String getMifareType(Tag tag) {
@@ -184,7 +193,7 @@ public class UltralightHEXEDIT extends Activity {
 				EditText et0D = (EditText) findViewById(R.id.editText0D);
 				EditText et0E = (EditText) findViewById(R.id.editText0E);
 				EditText et0F = (EditText) findViewById(R.id.editText0F);
-
+								
 				if (!card_write) {
 					
 					byte[] buffer = readpage(tag, 0);
@@ -350,49 +359,23 @@ public class UltralightHEXEDIT extends Activity {
 			byte[] buffer2 = Arrays.copyOf(buffer, 4);
 			return buffer2;
 		} catch (Exception e) {
-			Log.e(TAG, "Exception while reading MifareUltralight message...", e);
-			Toast.makeText(getApplicationContext(), "Error:" + e,
+			errortext = getString(R.string.exReadingPage)+page+" "+e;
+			Log.e(TAG, errortext);
+			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
 			if (mifare != null) {
 				try {
 					mifare.close();
 				} catch (Exception e) {
-					Log.e(TAG, "Error closing tag...", e);
-					Toast.makeText(getApplicationContext(), "Error:" + e,
+					errortext = getString(R.string.exClosingTag)+" "+e;
+					Log.e(TAG, errortext);
+					Toast.makeText(getApplicationContext(), errortext,
 							Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
 		return null;
-
-	}
-
-	public String readTag(Tag tag) {
-		MifareUltralight mifare = MifareUltralight.get(tag);
-		try {
-
-			mifare.connect();
-			byte[] payload = mifare.readPages(4);
-			return new String(payload, Charset.forName("US-ASCII"));
-		} catch (Exception e) {
-			Log.e(TAG, "IOException while reading MifareUltralight message...",
-					e);
-			Toast.makeText(getApplicationContext(), "Error:" + e,
-					Toast.LENGTH_SHORT).show();
-		} finally {
-			if (mifare != null) {
-				try {
-					mifare.close();
-				} catch (Exception e) {
-					Log.e(TAG, "Error closing tag...", e);
-					Toast.makeText(getApplicationContext(), "Error:" + e,
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		}
-		return null;
-
 	}
 
 	public void writeTag(Tag tag, int page, byte[] data) {
@@ -401,15 +384,17 @@ public class UltralightHEXEDIT extends Activity {
 			ultralight.connect();
 			ultralight.writePage(page, data);
 		} catch (Exception e) {
-			Log.e(TAG, "Exception while writing MifareUltralight...", e);
-			Toast.makeText(getApplicationContext(), "Error:" + e,
+			errortext = getString(R.string.exWritingPage)+page+" "+e;
+			Log.e(TAG, errortext);
+			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
 			try {
 				ultralight.close();
 			} catch (Exception e) {
-				Log.e(TAG, "Exception while closing MifareUltralight...", e);
-				Toast.makeText(getApplicationContext(), "Error:" + e,
+				errortext = getString(R.string.exClosingTag)+" "+e;
+				Log.e(TAG, errortext);
+				Toast.makeText(getApplicationContext(), errortext,
 						Toast.LENGTH_SHORT).show();
 			}
 		}
