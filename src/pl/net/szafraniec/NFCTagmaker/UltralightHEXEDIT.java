@@ -65,29 +65,28 @@ public class UltralightHEXEDIT extends Activity {
 			.getSimpleName();
 
 	public static String bytesToHex(byte[] bytes) {
-		if (bytes != null) { 
-		char[] hexChars = new char[bytes.length * 2];
-		for (int j = 0; j < bytes.length; j++) {
-			int v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-		}
-		return new String(hexChars);
-		} else 
-		{
+		if (bytes != null) {
+			char[] hexChars = new char[bytes.length * 2];
+			for (int j = 0; j < bytes.length; j++) {
+				int v = bytes[j] & 0xFF;
+				hexChars[j * 2] = hexArray[v >>> 4];
+				hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+			}
+			return new String(hexChars);
+		} else {
 			return null;
 		}
 	}
 
 	public static byte[] hexStringToByteArray(String s) {
 		if (s != null) {
-		int len = s.length();
-		byte[] data = new byte[len / 2];
-		for (int i = 0; i < len; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
-					.digit(s.charAt(i + 1), 16));
-		}
-		return data;
+			int len = s.length();
+			byte[] data = new byte[len / 2];
+			for (int i = 0; i < len; i += 2) {
+				data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
+						.digit(s.charAt(i + 1), 16));
+			}
+			return data;
 		} else {
 			return null;
 		}
@@ -193,9 +192,9 @@ public class UltralightHEXEDIT extends Activity {
 				EditText et0D = (EditText) findViewById(R.id.editText0D);
 				EditText et0E = (EditText) findViewById(R.id.editText0E);
 				EditText et0F = (EditText) findViewById(R.id.editText0F);
-								
+
 				if (!card_write) {
-					
+
 					byte[] buffer = readpage(tag, 0);
 					et00.setText(bytesToHex(buffer));
 					buffer = readpage(tag, 1);
@@ -359,7 +358,7 @@ public class UltralightHEXEDIT extends Activity {
 			byte[] buffer2 = Arrays.copyOf(buffer, 4);
 			return buffer2;
 		} catch (Exception e) {
-			errortext = getString(R.string.exReadingPage)+page+" "+e;
+			errortext = getString(R.string.exReadingPage) + page + " " + e;
 			Log.e(TAG, errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
@@ -368,7 +367,7 @@ public class UltralightHEXEDIT extends Activity {
 				try {
 					mifare.close();
 				} catch (Exception e) {
-					errortext = getString(R.string.exClosingTag)+" "+e;
+					errortext = getString(R.string.exClosingTag) + " " + e;
 					Log.e(TAG, errortext);
 					Toast.makeText(getApplicationContext(), errortext,
 							Toast.LENGTH_SHORT).show();
@@ -384,7 +383,7 @@ public class UltralightHEXEDIT extends Activity {
 			ultralight.connect();
 			ultralight.writePage(page, data);
 		} catch (Exception e) {
-			errortext = getString(R.string.exWritingPage)+page+" "+e;
+			errortext = getString(R.string.exWritingPage) + page + " " + e;
 			Log.e(TAG, errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
@@ -392,7 +391,7 @@ public class UltralightHEXEDIT extends Activity {
 			try {
 				ultralight.close();
 			} catch (Exception e) {
-				errortext = getString(R.string.exClosingTag)+" "+e;
+				errortext = getString(R.string.exClosingTag) + " " + e;
 				Log.e(TAG, errortext);
 				Toast.makeText(getApplicationContext(), errortext,
 						Toast.LENGTH_SHORT).show();
