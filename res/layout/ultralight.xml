@@ -586,6 +586,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/write" />
+
+            <Button
+                android:id="@+id/import_button"
+                style="android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Load" />
+
+            <Button
+                android:id="@+id/export_button"
+                style="android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Save" />
+
         </LinearLayout>
     </LinearLayout>
 

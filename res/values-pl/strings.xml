@@ -49,4 +49,8 @@
 	<string name="exReadingPage">Błąd podczas odczytu MifareUltralight, strona:</string>
 	<string name="exWritingPage">Błąd podczas zapisu MifareUltralight, strona:</string>
 	<string name="exClosingTag">Błąd podczas zamykania tagu</string>
+	<string name="Save">Eksport</string>
+	<string name="Load">Import</string>
+	<string name="FileNotFound">Brak pliku!</string>
+	<string name="SavingTo">Zapisuję do:</string>
 </resources>

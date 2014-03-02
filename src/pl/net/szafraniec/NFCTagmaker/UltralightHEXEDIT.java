@@ -36,6 +36,11 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import android.app.Activity;
@@ -47,6 +52,7 @@ import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -92,6 +98,96 @@ public class UltralightHEXEDIT extends Activity {
 		}
 	}
 
+	public void exportTag() throws IOException {
+		/*
+		 * Encrypt the data and store it on the Android device.
+		 * 
+		 * The encryption key is stored on the NFC tag.
+		 */
+		EditText et00 = (EditText) findViewById(R.id.editText00);
+		EditText et01 = (EditText) findViewById(R.id.editText01);
+		EditText et02 = (EditText) findViewById(R.id.editText02);
+		EditText et03 = (EditText) findViewById(R.id.editText03);
+		EditText et04 = (EditText) findViewById(R.id.editText04);
+		EditText et05 = (EditText) findViewById(R.id.editText05);
+		EditText et06 = (EditText) findViewById(R.id.editText06);
+		EditText et07 = (EditText) findViewById(R.id.editText07);
+		EditText et08 = (EditText) findViewById(R.id.editText08);
+		EditText et09 = (EditText) findViewById(R.id.editText09);
+		EditText et0A = (EditText) findViewById(R.id.editText0A);
+		EditText et0B = (EditText) findViewById(R.id.editText0B);
+		EditText et0C = (EditText) findViewById(R.id.editText0C);
+		EditText et0D = (EditText) findViewById(R.id.editText0D);
+		EditText et0E = (EditText) findViewById(R.id.editText0E);
+		EditText et0F = (EditText) findViewById(R.id.editText0F);
+		byte[] buffer00 = hexStringToByteArray(et00.getText().toString());
+		byte[] buffer01 = hexStringToByteArray(et01.getText().toString());
+		byte[] buffer02 = hexStringToByteArray(et02.getText().toString());
+		byte[] buffer03 = hexStringToByteArray(et03.getText().toString());
+		byte[] buffer04 = hexStringToByteArray(et04.getText().toString());
+		byte[] buffer05 = hexStringToByteArray(et05.getText().toString());
+		byte[] buffer06 = hexStringToByteArray(et06.getText().toString());
+		byte[] buffer07 = hexStringToByteArray(et07.getText().toString());
+		byte[] buffer08 = hexStringToByteArray(et08.getText().toString());
+		byte[] buffer09 = hexStringToByteArray(et09.getText().toString());
+		byte[] buffer0A = hexStringToByteArray(et0A.getText().toString());
+		byte[] buffer0B = hexStringToByteArray(et0B.getText().toString());
+		byte[] buffer0C = hexStringToByteArray(et0C.getText().toString());
+		byte[] buffer0D = hexStringToByteArray(et0D.getText().toString());
+		byte[] buffer0E = hexStringToByteArray(et0E.getText().toString());
+		byte[] buffer0F = hexStringToByteArray(et0F.getText().toString());
+		FileOutputStream fos;
+		File myFile = null;
+		try {
+			String filename = "nfctag.bin";
+			myFile = new File(Environment.getExternalStorageDirectory(),
+					filename);
+			if (!myFile.exists())
+				myFile.createNewFile();
+
+		} catch (FileNotFoundException e) {
+			Log.w(TAG, "FileNotFound");
+			e.printStackTrace();
+			// return false;
+		}
+		Toast.makeText(getApplicationContext(),
+				getString(R.string.SavingTo) + myFile.toString(),
+				Toast.LENGTH_LONG).show();
+		try {
+			fos = new FileOutputStream(myFile);
+			fos.write(buffer00);
+			fos.write(buffer01);
+			fos.write(buffer02);
+			fos.write(buffer03);
+			fos.write(buffer04);
+			fos.write(buffer05);
+			fos.write(buffer06);
+			fos.write(buffer07);
+			fos.write(buffer08);
+			fos.write(buffer09);
+			fos.write(buffer0A);
+			fos.write(buffer0B);
+			fos.write(buffer0C);
+			fos.write(buffer0D);
+			fos.write(buffer0E);
+			fos.write(buffer0F);
+			fos.flush();
+			fos.close();
+			Toast.makeText(getApplicationContext(), getString(R.string.done),
+					Toast.LENGTH_SHORT).show();
+
+		} catch (IOException e) {
+			Log.w(TAG, "IOException while writing file");
+			e.printStackTrace();
+			Toast.makeText(getApplicationContext(),
+					"IOException while writing file" + e, Toast.LENGTH_SHORT)
+					.show();
+			// return false;
+		}
+
+		// return true;
+	}
+
 	private String getMifareType(Tag tag) {
 		String type = "Unknown";
 		for (String tech : tag.getTechList()) {
@@ -123,6 +219,79 @@ public class UltralightHEXEDIT extends Activity {
 			}
 		}
 		return type;
+	}
+
+	public void importTag() throws IOException {
+		EditText et00 = (EditText) findViewById(R.id.editText00);
+		EditText et01 = (EditText) findViewById(R.id.editText01);
+		EditText et02 = (EditText) findViewById(R.id.editText02);
+		EditText et03 = (EditText) findViewById(R.id.editText03);
+		EditText et04 = (EditText) findViewById(R.id.editText04);
+		EditText et05 = (EditText) findViewById(R.id.editText05);
+		EditText et06 = (EditText) findViewById(R.id.editText06);
+		EditText et07 = (EditText) findViewById(R.id.editText07);
+		EditText et08 = (EditText) findViewById(R.id.editText08);
+		EditText et09 = (EditText) findViewById(R.id.editText09);
+		EditText et0A = (EditText) findViewById(R.id.editText0A);
+		EditText et0B = (EditText) findViewById(R.id.editText0B);
+		EditText et0C = (EditText) findViewById(R.id.editText0C);
+		EditText et0D = (EditText) findViewById(R.id.editText0D);
+		EditText et0E = (EditText) findViewById(R.id.editText0E);
+		EditText et0F = (EditText) findViewById(R.id.editText0F);
+		FileInputStream fis;
+		File myFile = null;
+		String filename = "nfctag.bin";
+		myFile = new File(Environment.getExternalStorageDirectory(), filename);
+
+		try {
+			fis = new FileInputStream(myFile);
+
+			byte[] buffer = new byte[64];
+			byte[] buffer2 = new byte[4];
+			fis.read(buffer, 0, 64);
+			fis.close();
+			buffer2 = Arrays.copyOfRange(buffer, 0, 4);
+			et00.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 4, 8);
+			et01.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 8, 12);
+			et02.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 12, 16);
+			et03.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 16, 20);
+			et04.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 20, 24);
+			et05.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 24, 28);
+			et06.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 28, 32);
+			et07.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 32, 36);
+			et08.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 36, 40);
+			et09.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 40, 44);
+			et0A.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 44, 48);
+			et0B.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 48, 52);
+			et0C.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 52, 56);
+			et0D.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 56, 60);
+			et0E.setText(bytesToHex(buffer2));
+			buffer2 = Arrays.copyOfRange(buffer, 60, 64);
+			et0F.setText(bytesToHex(buffer2));
+			Toast.makeText(getApplicationContext(), getString(R.string.done),
+					Toast.LENGTH_SHORT).show();
+		} catch (FileNotFoundException e) {
+			Log.w(TAG, "FileNotFound");
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.FileNotFound) + myFile.toString(),
+					Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+			// return false;
+		}
 	}
 
 	private void nfc_disable() {
@@ -160,6 +329,32 @@ public class UltralightHEXEDIT extends Activity {
 				Toast.makeText(getApplicationContext(),
 						getString(R.string.writeHEX), Toast.LENGTH_LONG).show();
 				card_write = true;
+			}
+		});
+
+		Button export = (Button) findViewById(R.id.export_button);
+		export.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				try {
+					exportTag();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		Button import_button = (Button) findViewById(R.id.import_button);
+		import_button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View self) {
+				try {
+					importTag();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
