@@ -53,4 +53,5 @@
 	<string name="Load">Import</string>
 	<string name="FileNotFound">Brak pliku!</string>
 	<string name="SavingTo">Zapisuję do:</string>
+	<string name="OIFile">Brak programu OI Menadżer plików!\r\nProszę zainstalować go.</string>
 </resources>
