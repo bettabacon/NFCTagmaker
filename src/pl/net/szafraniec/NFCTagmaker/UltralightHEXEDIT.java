@@ -64,6 +64,10 @@ import android.widget.Toast;
 public class UltralightHEXEDIT extends Activity {
 	private boolean card_write;
 	private static String errortext;
+	private static final int PICK_FILE = 1;
+	private static final int SAVE_NEW_FILE = 2;
+	private static File defaultFile = new File(
+			Environment.getExternalStorageDirectory(), "nfctag.bin");
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
@@ -98,12 +102,8 @@ public class UltralightHEXEDIT extends Activity {
 		}
 	}
 
-	public void exportTag() throws IOException {
-		/*
-		 * Encrypt the data and store it on the Android device.
-		 * 
-		 * The encryption key is stored on the NFC tag.
-		 */
+	public void exportTag(File file) throws IOException {
+
 		EditText et00 = (EditText) findViewById(R.id.editText00);
 		EditText et01 = (EditText) findViewById(R.id.editText01);
 		EditText et02 = (EditText) findViewById(R.id.editText02);
@@ -137,24 +137,10 @@ public class UltralightHEXEDIT extends Activity {
 		byte[] buffer0E = hexStringToByteArray(et0E.getText().toString());
 		byte[] buffer0F = hexStringToByteArray(et0F.getText().toString());
 		FileOutputStream fos;
-		File myFile = null;
 		try {
-			String filename = "nfctag.bin";
-			myFile = new File(Environment.getExternalStorageDirectory(),
-					filename);
-			if (!myFile.exists())
-				myFile.createNewFile();
-
-		} catch (FileNotFoundException e) {
-			Log.w(TAG, "FileNotFound");
-			e.printStackTrace();
-			// return false;
-		}
-		Toast.makeText(getApplicationContext(),
-				getString(R.string.SavingTo) + myFile.toString(),
-				Toast.LENGTH_LONG).show();
-		try {
-			fos = new FileOutputStream(myFile);
+			if (!file.exists())
+				file.createNewFile();
+			fos = new FileOutputStream(file);
 			fos.write(buffer00);
 			fos.write(buffer01);
 			fos.write(buffer02);
@@ -221,7 +207,7 @@ public class UltralightHEXEDIT extends Activity {
 		return type;
 	}
 
-	public void importTag() throws IOException {
+	public void importTag(File file) throws IOException {
 		EditText et00 = (EditText) findViewById(R.id.editText00);
 		EditText et01 = (EditText) findViewById(R.id.editText01);
 		EditText et02 = (EditText) findViewById(R.id.editText02);
@@ -239,12 +225,9 @@ public class UltralightHEXEDIT extends Activity {
 		EditText et0E = (EditText) findViewById(R.id.editText0E);
 		EditText et0F = (EditText) findViewById(R.id.editText0F);
 		FileInputStream fis;
-		File myFile = null;
-		String filename = "nfctag.bin";
-		myFile = new File(Environment.getExternalStorageDirectory(), filename);
 
 		try {
-			fis = new FileInputStream(myFile);
+			fis = new FileInputStream(file);
 
 			byte[] buffer = new byte[64];
 			byte[] buffer2 = new byte[4];
@@ -287,10 +270,16 @@ public class UltralightHEXEDIT extends Activity {
 		} catch (FileNotFoundException e) {
 			Log.w(TAG, "FileNotFound");
 			Toast.makeText(getApplicationContext(),
-					getString(R.string.FileNotFound) + myFile.toString(),
+					getString(R.string.FileNotFound) + file.toString(),
 					Toast.LENGTH_LONG).show();
 			e.printStackTrace();
-			// return false;
+		}
+		catch (IOException ee) {
+			Log.e(TAG, "IOException"+ee);
+			Toast.makeText(getApplicationContext(),
+					"IOException"+ee +" "+ file.toString(),
+					Toast.LENGTH_LONG).show();
+			ee.printStackTrace();
 		}
 	}
 
@@ -307,6 +296,40 @@ public class UltralightHEXEDIT extends Activity {
 				new Intent(this, getClass())
 						.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 		adapter.enableForegroundDispatch(this, pending_intent, null, null);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case PICK_FILE: {
+			if (resultCode == RESULT_OK && data != null
+					&& data.getData() != null) {
+				String theFilePath = data.getData().getPath();
+				File file = new File(theFilePath);
+				try {
+					importTag(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+			break;
+		case SAVE_NEW_FILE: {
+			if (resultCode == RESULT_OK && data != null
+					&& data.getData() != null) {
+				String theFilePath = data.getData().getPath();
+				File file = new File(theFilePath);
+				try {
+					exportTag(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+			break;
+		}
 	}
 
 	@Override
@@ -336,11 +359,21 @@ public class UltralightHEXEDIT extends Activity {
 		export.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
+				Intent intent = new Intent("org.openintents.action.PICK_FILE");
+				intent.putExtra(Intent.EXTRA_TITLE, "A Custom Title"); // optional
 				try {
-					exportTag();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					startActivityForResult(intent, SAVE_NEW_FILE);
+				} catch (RuntimeException rr) {
+					Toast.makeText(getApplicationContext(),
+							getString(R.string.OIFile), Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							getString(R.string.SavingTo)+defaultFile.toString(), Toast.LENGTH_LONG).show();
+					try {
+						exportTag(defaultFile);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -350,10 +383,19 @@ public class UltralightHEXEDIT extends Activity {
 			@Override
 			public void onClick(View self) {
 				try {
-					importTag();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Intent intent = new Intent(
+							"org.openintents.action.PICK_FILE");
+					startActivityForResult(intent, PICK_FILE);
+				} catch (RuntimeException rr) {
+					Toast.makeText(getApplicationContext(),
+							getString(R.string.OIFile), Toast.LENGTH_LONG).show();
+
+					try {
+						importTag(defaultFile);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
