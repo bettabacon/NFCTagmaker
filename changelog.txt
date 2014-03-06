@@ -1,5 +1,17 @@
 Changelog of NFCTagMaker:
 
+Version 0.14:
+Improved layout for tablets
+
+Version 0.12:
+Integration with OI File manager
+
+Version 0.11:
+Import/export in HEXEDIT
+
+Version 0.10:
+New layout
+
 Version 0.08:
 updated HEXEDIT 
 
