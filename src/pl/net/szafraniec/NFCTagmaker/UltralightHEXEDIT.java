@@ -54,7 +54,6 @@ import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,9 +69,6 @@ public class UltralightHEXEDIT extends Activity {
 			Environment.getExternalStorageDirectory(), "nfctag.bin");
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-	private static final String TAG = pl.net.szafraniec.NFCTagmaker.UltralightHEXEDIT.class
-			.getSimpleName();
 
 	public static String bytesToHex(byte[] bytes) {
 		if (bytes != null) {
@@ -163,7 +159,7 @@ public class UltralightHEXEDIT extends Activity {
 					Toast.LENGTH_SHORT).show();
 
 		} catch (IOException e) {
-			Log.w(TAG, "IOException while writing file");
+			log.W("IOException while writing file");
 			e.printStackTrace();
 			Toast.makeText(getApplicationContext(),
 					"IOException while writing file" + e, Toast.LENGTH_SHORT)
@@ -268,16 +264,15 @@ public class UltralightHEXEDIT extends Activity {
 			Toast.makeText(getApplicationContext(), getString(R.string.done),
 					Toast.LENGTH_SHORT).show();
 		} catch (FileNotFoundException e) {
-			Log.w(TAG, "FileNotFound");
+			log.W("FileNotFound");
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.FileNotFound) + file.toString(),
 					Toast.LENGTH_LONG).show();
 			e.printStackTrace();
-		}
-		catch (IOException ee) {
-			Log.e(TAG, "IOException"+ee);
+		} catch (IOException ee) {
+			log.E("IOException" + ee);
 			Toast.makeText(getApplicationContext(),
-					"IOException"+ee +" "+ file.toString(),
+					"IOException" + ee + " " + file.toString(),
 					Toast.LENGTH_LONG).show();
 			ee.printStackTrace();
 		}
@@ -365,9 +360,13 @@ public class UltralightHEXEDIT extends Activity {
 					startActivityForResult(intent, SAVE_NEW_FILE);
 				} catch (RuntimeException rr) {
 					Toast.makeText(getApplicationContext(),
-							getString(R.string.OIFile), Toast.LENGTH_LONG).show();
-					Toast.makeText(getApplicationContext(),
-							getString(R.string.SavingTo)+defaultFile.toString(), Toast.LENGTH_LONG).show();
+							getString(R.string.OIFile), Toast.LENGTH_LONG)
+							.show();
+					Toast.makeText(
+							getApplicationContext(),
+							getString(R.string.SavingTo)
+									+ defaultFile.toString(), Toast.LENGTH_LONG)
+							.show();
 					try {
 						exportTag(defaultFile);
 					} catch (IOException e) {
@@ -388,7 +387,8 @@ public class UltralightHEXEDIT extends Activity {
 					startActivityForResult(intent, PICK_FILE);
 				} catch (RuntimeException rr) {
 					Toast.makeText(getApplicationContext(),
-							getString(R.string.OIFile), Toast.LENGTH_LONG).show();
+							getString(R.string.OIFile), Toast.LENGTH_LONG)
+							.show();
 
 					try {
 						importTag(defaultFile);
@@ -596,7 +596,7 @@ public class UltralightHEXEDIT extends Activity {
 			return buffer2;
 		} catch (Exception e) {
 			errortext = getString(R.string.exReadingPage) + page + " " + e;
-			Log.e(TAG, errortext);
+			log.E(errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
@@ -605,7 +605,7 @@ public class UltralightHEXEDIT extends Activity {
 					mifare.close();
 				} catch (Exception e) {
 					errortext = getString(R.string.exClosingTag) + " " + e;
-					Log.e(TAG, errortext);
+					log.E(errortext);
 					Toast.makeText(getApplicationContext(), errortext,
 							Toast.LENGTH_SHORT).show();
 				}
@@ -621,7 +621,7 @@ public class UltralightHEXEDIT extends Activity {
 			ultralight.writePage(page, data);
 		} catch (Exception e) {
 			errortext = getString(R.string.exWritingPage) + page + " " + e;
-			Log.e(TAG, errortext);
+			log.E(errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
@@ -629,7 +629,7 @@ public class UltralightHEXEDIT extends Activity {
 				ultralight.close();
 			} catch (Exception e) {
 				errortext = getString(R.string.exClosingTag) + " " + e;
-				Log.e(TAG, errortext);
+				log.E(errortext);
 				Toast.makeText(getApplicationContext(), errortext,
 						Toast.LENGTH_SHORT).show();
 			}

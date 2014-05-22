@@ -55,7 +55,6 @@ import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,7 +110,7 @@ public class MainActivity extends Activity {
 		try {
 			langBytes = lang.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			Log.e(MainActivity.class.getSimpleName(), e.getLocalizedMessage());
+			log.E(e.getLocalizedMessage());
 		}
 		int langLength = langBytes.length;
 		int textLength = textBytes.length;
