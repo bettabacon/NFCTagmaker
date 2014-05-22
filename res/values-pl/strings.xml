@@ -7,11 +7,6 @@
 	<string name="PlaceCloneTag">Umieść nowy tag, na który chcesz sklonować klucz.</string>
 	<string name="Exit">Zakończ</string>
 	<string name="About">O programie</string>
-	<string name="Donate">Wspomóż</string>
-	<string name="donatePayPal_uri">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=CCZCW8NBGLGFJ</string>
-	<string name="DonateViaPayPal">Wspomóż przez PayPal:</string>	
-	<string name="SendABitcoin">Wyślij Bitcoin:</string>
-	<string name="IfYouLike">Jeśli ta aplikacja jest Ci pomocna, wesprzyj twórcę.</string>
 	<string name="CloneNFCTag">Sklonuj tag NFC</string>
 	<string name="CantFindNFCAdapter">Brak adaptera NFC. Najprawdopodobniej Twój telefon go nie posiada&#8230;</string>
 	<string name="EnabeNFCFirst">Adapter NFC jest wyłączony. Proszę go włączyć.</string>
@@ -45,4 +40,8 @@
 	<string name="FileNotFound">Brak pliku!</string>
 	<string name="SavingTo">Zapisuję do:</string>
 	<string name="OIFile">Brak programu OI Menadżer plików!\r\nProszę zainstalować go.</string>
+	<string name="menu_item_rate">Oceń aplikację</string>
+    <string name="rate_text">Czy chciałbyś ocenić moją aplikację?</string>
+    <string name="menu_item_donate">Kup piwo</string>
+    <string name="donate_text">Czy chcesz postawić mi piwo?</string>
 </resources>

@@ -8,12 +8,6 @@
 	<string name="PlaceCloneTag">Place a NEW tag against your device to clone to it.</string>
 	<string name="Exit">Exit</string>
 	<string name="About">About</string>
-	<string name="Donate">Donate</string>
-	<string name="donateBitcoin_uri" tools:ignore="MissingTranslation">bitcoin:17E32x5ygXkqf5EWJkryZuarUDUFrb8UqQ?label=NFC%20Key</string>
-    <string name="donatePayPal_uri">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=XBHND7WJ8A46Y</string>
-	<string name="DonateViaPayPal">Donate via PayPal:</string>	
-	<string name="SendABitcoin">Send a Bitcoin:</string>
-	<string name="IfYouLike">If this app is useful for you, please consider making a donation.</string>
 	<string name="CloneNFCTag">Clone NFC tag</string>
 	<string name="CantFindNFCAdapter">Can\'t find any NFC adapter. Probably your device doesn\'t have it at all&#8230;</string>
 	<string name="EnabeNFCFirst">NFC adapter is disabled. Please enable it first</string>
@@ -57,4 +51,8 @@
 	<string name="FileNotFound">File not found!</string>
 	<string name="SavingTo">Saving to:</string>
 	<string name="OIFile">OI Filemanager is missing!\r\nPlease install it.</string>
+	<string name="menu_item_rate">Rate app</string>
+    <string name="rate_text">Would you like to rate my app?</string>
+    <string name="menu_item_donate">Buy beer</string>
+    <string name="donate_text">Would you like to buy me a beer?</string>
 </resources>
