@@ -95,14 +95,14 @@ public class WriteNFCActivity extends Activity {
 			int success = 0;
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			Ndef ndef = Ndef.get(tag);
-			int payload_length = NFCTagmakerSettings.nfc_payload
+			int payload_length = Config.nfc_payload
 					.getByteArrayLength();
 			if (ndef != null) {
 				try {
 					int tag_size = ndef.getMaxSize();
 					if (tag_size >= payload_length) {
 						ndef.connect();
-						ndef.writeNdefMessage(NFCTagmakerSettings.nfc_payload);
+						ndef.writeNdefMessage(Config.nfc_payload);
 						ndef.close();
 						success = 1;
 					} else {
@@ -114,19 +114,19 @@ public class WriteNFCActivity extends Activity {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					log.E("IOExceptionWrite");
+					log.e("IOExceptionWrite");
 					Toast.makeText(getApplicationContext(), "IOExceptionWrite",
 							Toast.LENGTH_SHORT).show();
 
 				} catch (NullPointerException e) {
 					e.printStackTrace();
-					log.E("NullPointerWrite");
+					log.e("NullPointerWrite");
 					Toast.makeText(getApplicationContext(), "NullPointerWrite",
 							Toast.LENGTH_SHORT).show();
 
 				} catch (FormatException e) {
 					e.printStackTrace();
-					log.E("FormatExceptionWrite");
+					log.e("FormatExceptionWrite");
 					Toast.makeText(getApplicationContext(),
 							"FormatExceptionWrite", Toast.LENGTH_SHORT).show();
 				}
@@ -141,24 +141,24 @@ public class WriteNFCActivity extends Activity {
 								"Format: " + tag_size, Toast.LENGTH_SHORT)
 								.show();
 						format.connect();
-						format.format(NFCTagmakerSettings.nfc_payload);
+						format.format(Config.nfc_payload);
 						format.close();
 						success = 1;
 					} catch (IOException e) {
 						e.printStackTrace();
-						log.E("IOExceptionFormat");
+						log.e("IOExceptionFormat");
 						Toast.makeText(getApplicationContext(),
 								"IOExceptionFormat", Toast.LENGTH_SHORT).show();
 
 					} catch (NullPointerException e) {
 						e.printStackTrace();
-						log.E("NullPointerFormat");
+						log.e("NullPointerFormat");
 						Toast.makeText(getApplicationContext(),
 								"NullPointerFormat", Toast.LENGTH_SHORT).show();
 
 					} catch (FormatException e) {
 						e.printStackTrace();
-						log.E("FormatExceptionFormat");
+						log.e("FormatExceptionFormat");
 						Toast.makeText(getApplicationContext(),
 								"FormatExceptionFormat", Toast.LENGTH_SHORT)
 								.show();

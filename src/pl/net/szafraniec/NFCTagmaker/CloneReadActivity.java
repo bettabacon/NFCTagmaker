@@ -64,7 +64,6 @@ public class CloneReadActivity extends Activity {
 
 	private void nfc_enable() {
 		// Register for any NFC event (only while we're in the foreground)
-
 		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
 		PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
 				new Intent(this, getClass())
@@ -124,29 +123,31 @@ public class CloneReadActivity extends Activity {
 			Ndef ndef = Ndef.get(tag);
 			try {
 				ndef.connect();
-				NFCTagmakerSettings.nfc_payload = ndef.getNdefMessage();
+				Config.nfc_payload = ndef.getNdefMessage();
 				ndef.close();
+				byte[] bytes = Config.nfc_payload.toByteArray(); //TODO Temporary test
+				String s = UltralightHEXEDIT.bytesToHex(bytes); //
+				Toast.makeText(getApplicationContext(), s, // 
+						Toast.LENGTH_LONG).show(); //
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				log.E("IOExceptionCloneRead");
+				log.e("IOExceptionCloneRead");
 				Toast.makeText(getApplicationContext(), "IOExceptionCloneRead",
 						Toast.LENGTH_SHORT).show();
 
 			} catch (NullPointerException e) {
 				e.printStackTrace();
-				log.E("NullPointerCloneRead");
+				log.e("NullPointerCloneRead");
 				Toast.makeText(getApplicationContext(), "NullPointerCloneRead",
 						Toast.LENGTH_SHORT).show();
 
 			} catch (FormatException e) {
 				e.printStackTrace();
-				log.E("FormatExceptionCloneRead");
+				log.e("FormatExceptionCloneRead");
 				Toast.makeText(getApplicationContext(),
 						"FormatExceptionCloneRead", Toast.LENGTH_SHORT).show();
 			}
-			// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-			// pb1.setVisibility(View.INVISIBLE);
 			Intent intent2 = new Intent(getApplicationContext(),
 					CloneWriteNFCActivity.class);
 			startActivity(intent2);

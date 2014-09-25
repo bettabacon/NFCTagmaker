@@ -50,15 +50,15 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		EditText uri = (EditText) findViewById(R.id.uri);
-		uri.setText(NFCTagmakerSettings.uri);
+		uri.setText(Config.uri);
 		EditText name = (EditText) findViewById(R.id.name);
-		name.setText(NFCTagmakerSettings.name);
+		name.setText(Config.name);
 		EditText phone = (EditText) findViewById(R.id.phone);
-		phone.setText(NFCTagmakerSettings.phone);
+		phone.setText(Config.phone);
 		EditText email = (EditText) findViewById(R.id.email);
-		email.setText(NFCTagmakerSettings.email);
+		email.setText(Config.email);
 		EditText web = (EditText) findViewById(R.id.web);
-		web.setText(NFCTagmakerSettings.web);
+		web.setText(Config.web);
 
 		Button x = (Button) findViewById(R.id.ok);
 		x.setOnClickListener(new View.OnClickListener() {
@@ -74,23 +74,23 @@ public class SettingsActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		EditText uri = (EditText) findViewById(R.id.uri);
-		NFCTagmakerSettings.uri = uri.getText().toString();
+		Config.uri = uri.getText().toString();
 		EditText name = (EditText) findViewById(R.id.name);
-		NFCTagmakerSettings.name = name.getText().toString();
+		Config.name = name.getText().toString();
 		EditText phone = (EditText) findViewById(R.id.phone);
-		NFCTagmakerSettings.phone = phone.getText().toString();
+		Config.phone = phone.getText().toString();
 		EditText email = (EditText) findViewById(R.id.email);
-		NFCTagmakerSettings.email = email.getText().toString();
+		Config.email = email.getText().toString();
 		EditText web = (EditText) findViewById(R.id.web);
-		NFCTagmakerSettings.web = web.getText().toString();
+		Config.web = web.getText().toString();
 		SharedPreferences settings = getSharedPreferences(
-				NFCTagmakerSettings.PREFS_NAME, 0);
+				Config.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("uri", NFCTagmakerSettings.uri);
-		editor.putString("name", NFCTagmakerSettings.name);
-		editor.putString("phone", NFCTagmakerSettings.phone);
-		editor.putString("web", NFCTagmakerSettings.web);
-		editor.putString("email", NFCTagmakerSettings.email);
+		editor.putString("uri", Config.uri);
+		editor.putString("name", Config.name);
+		editor.putString("phone", Config.phone);
+		editor.putString("web", Config.web);
+		editor.putString("email", Config.email);
 		editor.commit();
 	}
 

@@ -159,7 +159,7 @@ public class UltralightHEXEDIT extends Activity {
 					Toast.LENGTH_SHORT).show();
 
 		} catch (IOException e) {
-			log.W("IOException while writing file");
+			log.w("IOException while writing file");
 			e.printStackTrace();
 			Toast.makeText(getApplicationContext(),
 					"IOException while writing file" + e, Toast.LENGTH_SHORT)
@@ -264,13 +264,13 @@ public class UltralightHEXEDIT extends Activity {
 			Toast.makeText(getApplicationContext(), getString(R.string.done),
 					Toast.LENGTH_SHORT).show();
 		} catch (FileNotFoundException e) {
-			log.W("FileNotFound");
+			log.w("FileNotFound");
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.FileNotFound) + file.toString(),
 					Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		} catch (IOException ee) {
-			log.E("IOException" + ee);
+			log.w("IOException" + ee);
 			Toast.makeText(getApplicationContext(),
 					"IOException" + ee + " " + file.toString(),
 					Toast.LENGTH_LONG).show();
@@ -304,7 +304,6 @@ public class UltralightHEXEDIT extends Activity {
 				try {
 					importTag(file);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -318,7 +317,6 @@ public class UltralightHEXEDIT extends Activity {
 				try {
 					exportTag(file);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -596,7 +594,7 @@ public class UltralightHEXEDIT extends Activity {
 			return buffer2;
 		} catch (Exception e) {
 			errortext = getString(R.string.exReadingPage) + page + " " + e;
-			log.E(errortext);
+			log.e(errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
@@ -605,7 +603,7 @@ public class UltralightHEXEDIT extends Activity {
 					mifare.close();
 				} catch (Exception e) {
 					errortext = getString(R.string.exClosingTag) + " " + e;
-					log.E(errortext);
+					log.e(errortext);
 					Toast.makeText(getApplicationContext(), errortext,
 							Toast.LENGTH_SHORT).show();
 				}
@@ -621,7 +619,7 @@ public class UltralightHEXEDIT extends Activity {
 			ultralight.writePage(page, data);
 		} catch (Exception e) {
 			errortext = getString(R.string.exWritingPage) + page + " " + e;
-			log.E(errortext);
+			log.e(errortext);
 			Toast.makeText(getApplicationContext(), errortext,
 					Toast.LENGTH_SHORT).show();
 		} finally {
@@ -629,7 +627,7 @@ public class UltralightHEXEDIT extends Activity {
 				ultralight.close();
 			} catch (Exception e) {
 				errortext = getString(R.string.exClosingTag) + " " + e;
-				log.E(errortext);
+				log.e(errortext);
 				Toast.makeText(getApplicationContext(), errortext,
 						Toast.LENGTH_SHORT).show();
 			}

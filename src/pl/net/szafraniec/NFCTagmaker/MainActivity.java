@@ -36,8 +36,14 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
+import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.security.auth.x500.X500Principal;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,8 +53,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -66,24 +74,46 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	public static final String PREF_RUNCOUNT = "run_count";
-	private static final String APP_LINK = "https://play.google.com/store/apps/details?id="
-			+ R.class.getPackage().getName();
-	public static final Uri URI_APP_LINK = Uri.parse(APP_LINK);
-	private static final String DONATE_APP_LINK = "https://play.google.com/store/apps/details?id=pl.net.szafraniec.kontakty";
+	private static final X500Principal DEBUG_DN = new X500Principal(
+			"CN=Android Debug,O=Android,C=US"); //$NON-NLS-1$
+	
+	private boolean CheckDebuggable(Context ctx) {
+		boolean debuggable = false;
 
-	public static final Uri URI_DONATE_APP_LINK = Uri.parse(DONATE_APP_LINK);
+		try {
+			PackageInfo pinfo = ctx.getPackageManager().getPackageInfo(
+					ctx.getPackageName(), PackageManager.GET_SIGNATURES);
+			Signature signatures[] = pinfo.signatures;
 
+			CertificateFactory cf = CertificateFactory.getInstance("X.509"); //$NON-NLS-1$
+
+			for (int i = 0; i < signatures.length; i++) {
+				ByteArrayInputStream stream = new ByteArrayInputStream(
+						signatures[i].toByteArray());
+				X509Certificate cert = (X509Certificate) cf
+						.generateCertificate(stream);
+				debuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
+				if (debuggable)
+					break;
+			}
+		} catch (NameNotFoundException e) {
+			// debuggable variable will remain false
+		} catch (CertificateException e) {
+			// debuggable variable will remain false
+		}
+		return debuggable;
+	}
+	
 	public static int getRunCount(Context context) {
 		SharedPreferences prefs = context
-				.getSharedPreferences(PREF_RUNCOUNT, 0);
-		return prefs.getInt(PREF_RUNCOUNT, 0);
+				.getSharedPreferences(Config.PREF_RUNCOUNT, 0);
+		return prefs.getInt(Config.PREF_RUNCOUNT, 0);
 	}
 
 	public static void setRunCount(Context context, int RunCount) {
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
-				PREF_RUNCOUNT, 0).edit();
-		prefs.putInt(PREF_RUNCOUNT, RunCount);
+				Config.PREF_RUNCOUNT, 0).edit();
+		prefs.putInt(Config.PREF_RUNCOUNT, RunCount);
 		prefs.commit();
 	}
 
@@ -134,7 +164,7 @@ public class MainActivity extends Activity {
 		try {
 			langBytes = lang.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			log.E(e.getLocalizedMessage());
+			log.e(e.getLocalizedMessage());
 		}
 		int langLength = langBytes.length;
 		int textLength = textBytes.length;
@@ -212,10 +242,12 @@ public class MainActivity extends Activity {
 		adapter.enableForegroundDispatch(this, pending_intent, null, null);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		log.appDebug = CheckDebuggable(this);
 		try {
 			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
@@ -244,16 +276,16 @@ public class MainActivity extends Activity {
 			setRunCount(this, RunCount);
 		}
 		SharedPreferences settings = getSharedPreferences(
-				NFCTagmakerSettings.PREFS_NAME, 0);
-		NFCTagmakerSettings.uri = settings.getString("uri",
+				Config.PREFS_NAME, 0);
+		Config.uri = settings.getString("uri",
 				getString(R.string.defaultUri));
-		NFCTagmakerSettings.phone = settings.getString("phone",
+		Config.phone = settings.getString("phone",
 				getString(R.string.defaultPhone));
-		NFCTagmakerSettings.name = settings.getString("name",
+		Config.name = settings.getString("name",
 				getString(R.string.defaultName));
-		NFCTagmakerSettings.email = settings.getString("email",
+		Config.email = settings.getString("email",
 				getString(R.string.defaultEmail));
-		NFCTagmakerSettings.web = settings.getString("web",
+		Config.web = settings.getString("web",
 				getString(R.string.defaultWeb));
 
 		Intent intent = getIntent();
@@ -261,9 +293,9 @@ public class MainActivity extends Activity {
 		if (action.equalsIgnoreCase(Intent.ACTION_SEND)
 				&& intent.hasExtra(Intent.EXTRA_TEXT)) {
 			String s = intent.getStringExtra(Intent.EXTRA_TEXT);
-			NFCTagmakerSettings.uri = s;
+			Config.uri = s;
 			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("uri", NFCTagmakerSettings.uri);
+			editor.putString("uri", Config.uri);
 			editor.commit();
 		}
 		Button x = (Button) findViewById(R.id.quit);
@@ -288,10 +320,10 @@ public class MainActivity extends Activity {
 		wu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-				if (NFCTagmakerSettings.uri.length() != 0) {
+				if (Config.uri.length() != 0) {
 					NdefRecord ndef_records = NdefRecord
-							.createUri(NFCTagmakerSettings.uri);
-					NFCTagmakerSettings.nfc_payload = new NdefMessage(
+							.createUri(Config.uri);
+					Config.nfc_payload = new NdefMessage(
 							ndef_records);
 					Intent intent = new Intent(getApplicationContext(),
 							WriteNFCActivity.class);
@@ -308,13 +340,13 @@ public class MainActivity extends Activity {
 		wp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View self) {
-				if ((NFCTagmakerSettings.phone.length() != 0)
-						&& (NFCTagmakerSettings.name.length() != 0)) {
+				if ((Config.phone.length() != 0)
+						&& (Config.name.length() != 0)) {
 					NdefRecord[] ndef_name = new NdefRecord[1];
-					String[] uri = new String[] { NFCTagmakerSettings.phone };
+					String[] uri = new String[] { Config.phone };
 					ndef_name[0] = createNdefSmartPosterRecord(
-							NFCTagmakerSettings.name, uri);
-					NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
+							Config.name, uri);
+					Config.nfc_payload = new NdefMessage(ndef_name);
 					Intent intent = new Intent(getApplicationContext(),
 							WriteNFCActivity.class);
 					startActivity(intent);
@@ -334,49 +366,49 @@ public class MainActivity extends Activity {
 				int ile = 0;
 				int gdzie = 0;
 
-				if (NFCTagmakerSettings.phone.length() > 3) {
+				if (Config.phone.length() > 3) {
 					ile = ile + 1;
 				}
 
-				if (NFCTagmakerSettings.uri.length() > 3) {
+				if (Config.uri.length() > 3) {
 					ile = ile + 1;
 				}
 
-				if (NFCTagmakerSettings.email.length() > 6) {
+				if (Config.email.length() > 6) {
 					ile = ile + 1;
 				}
-				if (NFCTagmakerSettings.web.length() > 6) {
+				if (Config.web.length() > 6) {
 					ile = ile + 1;
 				}
 
 				String[] uri = new String[ile];
 				byte[] type = new byte[ile];
 
-				if (NFCTagmakerSettings.phone.length() > 3) {
-					uri[gdzie] = NFCTagmakerSettings.phone;
+				if (Config.phone.length() > 3) {
+					uri[gdzie] = Config.phone;
 					type[gdzie] = 0x05;
 					gdzie = gdzie + 1;
 				}
 
-				if (NFCTagmakerSettings.uri.length() > 3) {
-					uri[gdzie] = NFCTagmakerSettings.uri;
+				if (Config.uri.length() > 3) {
+					uri[gdzie] = Config.uri;
 					type[gdzie] = 0x00;
 					gdzie = gdzie + 1;
 				}
 
-				if (NFCTagmakerSettings.email.length() > 6) {
-					uri[gdzie] = NFCTagmakerSettings.email;
+				if (Config.email.length() > 6) {
+					uri[gdzie] = Config.email;
 					type[gdzie] = 0x06;
 					gdzie = gdzie + 1;
 				}
-				if (NFCTagmakerSettings.web.length() > 6) {
-					uri[gdzie] = NFCTagmakerSettings.web;
+				if (Config.web.length() > 6) {
+					uri[gdzie] = Config.web;
 					type[gdzie] = 0x00;
 					gdzie = gdzie + 1;
 				}
 				ndef_name[0] = createNdefMySmartPosterRecord(
-						NFCTagmakerSettings.name, uri, type);
-				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_name);
+						Config.name, uri, type);
+				Config.nfc_payload = new NdefMessage(ndef_name);
 				Intent intent = new Intent(getApplicationContext(),
 						WriteNFCActivity.class);
 				startActivity(intent);
@@ -388,27 +420,27 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View self) {
 				String vcardcontent = "BEGIN:VCARD\r\nVERSION:2.1\r\nN:"
-						+ NFCTagmakerSettings.name + "\r\n";
+						+ Config.name + "\r\n";
 
-				if (NFCTagmakerSettings.phone.length() > 3) {
+				if (Config.phone.length() > 3) {
 					vcardcontent = vcardcontent + "TEL;CELL:"
-							+ NFCTagmakerSettings.phone + "\r\n";
+							+ Config.phone + "\r\n";
 				}
 
-				if (NFCTagmakerSettings.email.length() > 6) {
+				if (Config.email.length() > 6) {
 					vcardcontent = vcardcontent + "EMAIL;INTERNET:"
-							+ NFCTagmakerSettings.email + "\r\n";
+							+ Config.email + "\r\n";
 				}
 
-				if (NFCTagmakerSettings.web.length() > 6) {
+				if (Config.web.length() > 6) {
 					vcardcontent = vcardcontent + "URL:"
-							+ NFCTagmakerSettings.web + "\r\n";
+							+ Config.web + "\r\n";
 				}
 
 				vcardcontent = vcardcontent + "END:VCARD\r\n";
 				NdefRecord ndef_records = NdefRecord.createMime("text/x-vCard",
 						vcardcontent.getBytes());
-				NFCTagmakerSettings.nfc_payload = new NdefMessage(ndef_records);
+				Config.nfc_payload = new NdefMessage(ndef_records);
 				Intent intent = new Intent(getApplicationContext(),
 						WriteNFCActivity.class);
 				startActivity(intent);
@@ -436,51 +468,7 @@ public class MainActivity extends Activity {
 									// Do something here
 									Intent GooglePlayIntent = new Intent(
 											Intent.ACTION_VIEW,
-											MainActivity.URI_APP_LINK);
-									startActivity(GooglePlayIntent);
-								}
-							})
-					.setNegativeButton(
-							getResources().getString(android.R.string.cancel),
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int id) {
-									// Do something here
-								}
-							})
-					.setNeutralButton(
-							getResources().getString(R.string.menu_item_donate),
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int id) {
-									// Do something here
-									Intent GooglePlayIntent = new Intent(
-											Intent.ACTION_VIEW,
-											MainActivity.URI_DONATE_APP_LINK);
-									startActivity(GooglePlayIntent);
-								}
-							});
-
-			dialog = builder.create();
-			break;
-		case 2:
-			builder = new AlertDialog.Builder(this);
-			builder.setMessage(getResources().getString(R.string.donate_text))
-					.setTitle(
-							getResources().getString(R.string.menu_item_donate))
-					.setCancelable(false)
-					.setPositiveButton(
-							getResources().getString(R.string.menu_item_donate),
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int id) {
-									// Do something here
-									Intent GooglePlayIntent = new Intent(
-											Intent.ACTION_VIEW,
-											MainActivity.URI_DONATE_APP_LINK);
+											Config.URI_APP_LINK);
 									startActivity(GooglePlayIntent);
 								}
 							})
@@ -533,6 +521,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -544,15 +533,6 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.menu_item_rate:
 			showDialog(1);
-			// Intent marketIntent = new Intent(
-			// Intent.ACTION_VIEW, URI_APP_LINK);
-			// activity.startActivity(marketIntent);
-			return true;
-		case R.id.menu_item_donate:
-			showDialog(2);
-			// Intent marketIntent = new Intent(
-			// Intent.ACTION_VIEW, URI_APP_LINK);
-			// activity.startActivity(marketIntent);
 			return true;
 		case R.id.settings:
 			Intent settings = new Intent(getApplicationContext(),

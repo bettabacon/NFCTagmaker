@@ -76,8 +76,6 @@ public class CloneWriteNFCActivity extends Activity {
 		setContentView(R.layout.activity_write_nfc);
 		TextView tv1 = (TextView) findViewById(R.id.textView);
 		tv1.setText(getString(R.string.PlaceCloneTag));
-		// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
-		// pb1.setVisibility(View.INVISIBLE);
 		setResult(0);
 		Button b = (Button) findViewById(R.id.cancel_nfc_write_button);
 		b.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +89,7 @@ public class CloneWriteNFCActivity extends Activity {
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		// ProgressBar pb1 = (ProgressBar) findViewById(R.id.progressBar1);
 		String action = intent.getAction();
-		// pb1.setVisibility(View.VISIBLE);
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
 			int success = 0;
@@ -102,25 +98,25 @@ public class CloneWriteNFCActivity extends Activity {
 			if (ndef != null) {
 				try {
 					ndef.connect();
-					ndef.writeNdefMessage(NFCTagmakerSettings.nfc_payload);
+					ndef.writeNdefMessage(Config.nfc_payload);
 					ndef.close();
 					success = 1;
 				} catch (IOException e) {
 					e.printStackTrace();
-					log.E("IOExceptionClonenWrite");
+					log.e("IOExceptionClonenWrite");
 					Toast.makeText(getApplicationContext(),
 							"IOExceptionClonenWrite", Toast.LENGTH_SHORT)
 							.show();
 
 				} catch (NullPointerException e) {
 					e.printStackTrace();
-					log.E("NullPointerCloneWrite");
+					log.e("NullPointerCloneWrite");
 					Toast.makeText(getApplicationContext(),
 							"NullPointerCloneWrite", Toast.LENGTH_SHORT).show();
 
 				} catch (FormatException e) {
 					e.printStackTrace();
-					log.E("FormatExceptionCloneWrite");
+					log.e("FormatExceptionCloneWrite");
 					Toast.makeText(getApplicationContext(),
 							"FormatExceptionCloneWrite", Toast.LENGTH_SHORT)
 							.show();
@@ -131,24 +127,24 @@ public class CloneWriteNFCActivity extends Activity {
 				if (format != null) {
 					try {
 						format.connect();
-						format.format(NFCTagmakerSettings.nfc_payload);
+						format.format(Config.nfc_payload);
 						format.close();
 						success = 1;
 					} catch (IOException e) {
 						e.printStackTrace();
-						log.E("IOExceptionFormat");
+						log.e("IOExceptionFormat");
 						Toast.makeText(getApplicationContext(),
 								"IOExceptionFormat", Toast.LENGTH_SHORT).show();
 
 					} catch (NullPointerException e) {
 						e.printStackTrace();
-						log.E("NullPointerFormat");
+						log.e("NullPointerFormat");
 						Toast.makeText(getApplicationContext(),
 								"NullPointerFormat", Toast.LENGTH_SHORT).show();
 
 					} catch (FormatException e) {
 						e.printStackTrace();
-						log.E("FormatExceptionFormat");
+						log.e("FormatExceptionFormat");
 						Toast.makeText(getApplicationContext(),
 								"FormatExceptionFormat", Toast.LENGTH_SHORT)
 								.show();
