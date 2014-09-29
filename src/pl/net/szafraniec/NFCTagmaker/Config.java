@@ -40,17 +40,17 @@ import android.net.Uri;
 import android.nfc.NdefMessage;
 
 public class Config {
-	public static final String PREFS_NAME = "NFCTagmaker";
-	public static final String LOG_TAG = "NFCTagmaker";
-	public static NdefMessage nfc_payload;
-	public static String uri;
-	public static String phone;
-	public static String name;
-	public static String email;
-	public static String web;
-	public static final String PREF_RUNCOUNT = "run_count";
-	private static final String APP_LINK = "https://play.google.com/store/apps/details?id="
-			+ R.class.getPackage().getName();
-	public static final Uri URI_APP_LINK = Uri.parse(APP_LINK);
+    public static final String PREFS_NAME = "NFCTagmaker";
+    public static final String LOG_TAG = "NFCTagmaker";
+    public static NdefMessage nfc_payload;
+    public static String uri;
+    public static String phone;
+    public static String name;
+    public static String email;
+    public static String web;
+    public static final String PREF_RUNCOUNT = "run_count";
+    private static final String APP_LINK = "https://play.google.com/store/apps/details?id="
+            + R.class.getPackage().getName();
+    public static final Uri URI_APP_LINK = Uri.parse(APP_LINK);
 
 }

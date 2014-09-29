@@ -45,53 +45,53 @@ import android.widget.EditText;
 
 public class SettingsActivity extends Activity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_settings);
-		EditText uri = (EditText) findViewById(R.id.uri);
-		uri.setText(Config.uri);
-		EditText name = (EditText) findViewById(R.id.name);
-		name.setText(Config.name);
-		EditText phone = (EditText) findViewById(R.id.phone);
-		phone.setText(Config.phone);
-		EditText email = (EditText) findViewById(R.id.email);
-		email.setText(Config.email);
-		EditText web = (EditText) findViewById(R.id.web);
-		web.setText(Config.web);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        final EditText uri = (EditText) findViewById(R.id.uri);
+        uri.setText(Config.uri);
+        final EditText name = (EditText) findViewById(R.id.name);
+        name.setText(Config.name);
+        final EditText phone = (EditText) findViewById(R.id.phone);
+        phone.setText(Config.phone);
+        final EditText email = (EditText) findViewById(R.id.email);
+        email.setText(Config.email);
+        final EditText web = (EditText) findViewById(R.id.web);
+        web.setText(Config.web);
 
-		Button x = (Button) findViewById(R.id.ok);
-		x.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View self) {
-				finish();
-			}
-		});
+        final Button x = (Button) findViewById(R.id.ok);
+        x.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View self) {
+                finish();
+            }
+        });
 
-	}
+    }
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EditText uri = (EditText) findViewById(R.id.uri);
-		Config.uri = uri.getText().toString();
-		EditText name = (EditText) findViewById(R.id.name);
-		Config.name = name.getText().toString();
-		EditText phone = (EditText) findViewById(R.id.phone);
-		Config.phone = phone.getText().toString();
-		EditText email = (EditText) findViewById(R.id.email);
-		Config.email = email.getText().toString();
-		EditText web = (EditText) findViewById(R.id.web);
-		Config.web = web.getText().toString();
-		SharedPreferences settings = getSharedPreferences(
-				Config.PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("uri", Config.uri);
-		editor.putString("name", Config.name);
-		editor.putString("phone", Config.phone);
-		editor.putString("web", Config.web);
-		editor.putString("email", Config.email);
-		editor.commit();
-	}
+    @Override
+    protected void onStop() {
+        super.onStop();
+        final EditText uri = (EditText) findViewById(R.id.uri);
+        Config.uri = uri.getText().toString();
+        final EditText name = (EditText) findViewById(R.id.name);
+        Config.name = name.getText().toString();
+        final EditText phone = (EditText) findViewById(R.id.phone);
+        Config.phone = phone.getText().toString();
+        final EditText email = (EditText) findViewById(R.id.email);
+        Config.email = email.getText().toString();
+        final EditText web = (EditText) findViewById(R.id.web);
+        Config.web = web.getText().toString();
+        final SharedPreferences settings = getSharedPreferences(
+                Config.PREFS_NAME, 0);
+        final SharedPreferences.Editor editor = settings.edit();
+        editor.putString("uri", Config.uri);
+        editor.putString("name", Config.name);
+        editor.putString("phone", Config.phone);
+        editor.putString("web", Config.web);
+        editor.putString("email", Config.email);
+        editor.commit();
+    }
 
 }

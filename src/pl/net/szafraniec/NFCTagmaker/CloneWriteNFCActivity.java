@@ -56,125 +56,133 @@ import android.widget.Toast;
 
 public class CloneWriteNFCActivity extends Activity {
 
-	private void nfc_disable() {
-		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-		adapter.disableForegroundDispatch(this);
-	}
+    private void nfc_disable() {
+        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
+        adapter.disableForegroundDispatch(this);
+    }
 
-	private void nfc_enable() {
-		// Register for any NFC event (only while we're in the foreground)
-		NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-		PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
-				new Intent(this, getClass())
-						.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		adapter.enableForegroundDispatch(this, pending_intent, null, null);
-	}
+    private void nfc_enable() {
+        // Register for any NFC event (only while we're in the foreground)
+        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
+        final PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass())
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        adapter.enableForegroundDispatch(this, pending_intent, null, null);
+    }
 
-	@Override
-	protected void onCreate(Bundle sis) {
-		super.onCreate(sis);
-		setContentView(R.layout.activity_write_nfc);
-		TextView tv1 = (TextView) findViewById(R.id.textView);
-		tv1.setText(getString(R.string.PlaceCloneTag));
-		setResult(0);
-		Button b = (Button) findViewById(R.id.cancel_nfc_write_button);
-		b.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View self) {
-				nfc_disable();
-				finish();
-			}
-		});
-	}
+    @Override
+    protected void onCreate(Bundle sis) {
+        super.onCreate(sis);
+        setContentView(R.layout.activity_write_nfc);
+        final TextView tv1 = (TextView) findViewById(R.id.textView);
+        tv1.setText(getString(R.string.PlaceCloneTag));
+        setResult(0);
+        final Button b = (Button) findViewById(R.id.cancel_nfc_write_button);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View self) {
+                nfc_disable();
+                finish();
+            }
+        });
+    }
 
-	@Override
-	public void onNewIntent(Intent intent) {
-		String action = intent.getAction();
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
-				|| NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
-			int success = 0;
-			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			Ndef ndef = Ndef.get(tag);
-			if (ndef != null) {
-				try {
-					ndef.connect();
-					ndef.writeNdefMessage(Config.nfc_payload);
-					ndef.close();
-					success = 1;
-				} catch (IOException e) {
-					e.printStackTrace();
-					log.e("IOExceptionClonenWrite");
-					Toast.makeText(getApplicationContext(),
-							"IOExceptionClonenWrite", Toast.LENGTH_SHORT)
-							.show();
+    @Override
+    public void onNewIntent(Intent intent) {
+        final String action = intent.getAction();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+            int success = 0;
+            final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            final Ndef ndef = Ndef.get(tag);
+            if (ndef != null) {
+                try {
+                    ndef.connect();
+                    ndef.writeNdefMessage(Config.nfc_payload);
+                    ndef.close();
+                    success = 1;
+                }
+                catch (final IOException e) {
+                    e.printStackTrace();
+                    log.e("IOExceptionClonenWrite");
+                    Toast.makeText(getApplicationContext(),
+                            "IOExceptionClonenWrite", Toast.LENGTH_SHORT)
+                            .show();
 
-				} catch (NullPointerException e) {
-					e.printStackTrace();
-					log.e("NullPointerCloneWrite");
-					Toast.makeText(getApplicationContext(),
-							"NullPointerCloneWrite", Toast.LENGTH_SHORT).show();
+                }
+                catch (final NullPointerException e) {
+                    e.printStackTrace();
+                    log.e("NullPointerCloneWrite");
+                    Toast.makeText(getApplicationContext(),
+                            "NullPointerCloneWrite", Toast.LENGTH_SHORT).show();
 
-				} catch (FormatException e) {
-					e.printStackTrace();
-					log.e("FormatExceptionCloneWrite");
-					Toast.makeText(getApplicationContext(),
-							"FormatExceptionCloneWrite", Toast.LENGTH_SHORT)
-							.show();
-				}
+                }
+                catch (final FormatException e) {
+                    e.printStackTrace();
+                    log.e("FormatExceptionCloneWrite");
+                    Toast.makeText(getApplicationContext(),
+                            "FormatExceptionCloneWrite", Toast.LENGTH_SHORT)
+                            .show();
+                }
 
-			} else {
-				NdefFormatable format = NdefFormatable.get(tag);
-				if (format != null) {
-					try {
-						format.connect();
-						format.format(Config.nfc_payload);
-						format.close();
-						success = 1;
-					} catch (IOException e) {
-						e.printStackTrace();
-						log.e("IOExceptionFormat");
-						Toast.makeText(getApplicationContext(),
-								"IOExceptionFormat", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                final NdefFormatable format = NdefFormatable.get(tag);
+                if (format != null) {
+                    try {
+                        format.connect();
+                        format.format(Config.nfc_payload);
+                        format.close();
+                        success = 1;
+                    }
+                    catch (final IOException e) {
+                        e.printStackTrace();
+                        log.e("IOExceptionFormat");
+                        Toast.makeText(getApplicationContext(),
+                                "IOExceptionFormat", Toast.LENGTH_SHORT).show();
 
-					} catch (NullPointerException e) {
-						e.printStackTrace();
-						log.e("NullPointerFormat");
-						Toast.makeText(getApplicationContext(),
-								"NullPointerFormat", Toast.LENGTH_SHORT).show();
+                    }
+                    catch (final NullPointerException e) {
+                        e.printStackTrace();
+                        log.e("NullPointerFormat");
+                        Toast.makeText(getApplicationContext(),
+                                "NullPointerFormat", Toast.LENGTH_SHORT).show();
 
-					} catch (FormatException e) {
-						e.printStackTrace();
-						log.e("FormatExceptionFormat");
-						Toast.makeText(getApplicationContext(),
-								"FormatExceptionFormat", Toast.LENGTH_SHORT)
-								.show();
-					}
-				}
+                    }
+                    catch (final FormatException e) {
+                        e.printStackTrace();
+                        log.e("FormatExceptionFormat");
+                        Toast.makeText(getApplicationContext(),
+                                "FormatExceptionFormat", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
 
-			}
+            }
 
-			if (success == 1) {
-				Toast.makeText(getApplicationContext(),
-						getString(R.string.Success), Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(getApplicationContext(),
-						getString(R.string.Failed), Toast.LENGTH_SHORT).show();
-			}
-			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			v.vibrate(100);
-		}
+            if (success == 1) {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.Success), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.Failed), Toast.LENGTH_SHORT).show();
+            }
+            final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(100);
+        }
 
-	}
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		nfc_disable();
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nfc_disable();
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		nfc_enable();
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        nfc_enable();
+    }
 }

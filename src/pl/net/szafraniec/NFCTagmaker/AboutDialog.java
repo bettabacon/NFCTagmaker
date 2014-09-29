@@ -52,45 +52,48 @@ import android.widget.TextView;
 
 public class AboutDialog extends Dialog {
 
-	private static Context mContext = null;
+    private static Context mContext = null;
 
-	public static String readRawTextFile(int id) {
-		InputStream inputStream = mContext.getResources().openRawResource(id);
-		InputStreamReader in = new InputStreamReader(inputStream);
-		BufferedReader buf = new BufferedReader(in);
-		String line;
-		StringBuilder text = new StringBuilder();
-		try {
-			while ((line = buf.readLine()) != null)
-				text.append(line);
-		} catch (IOException e) {
-			return null;
-		}
-		return text.toString();
-	}
+    public static String readRawTextFile(int id) {
+        final InputStream inputStream = mContext.getResources()
+                .openRawResource(id);
+        final InputStreamReader in = new InputStreamReader(inputStream);
+        final BufferedReader buf = new BufferedReader(in);
+        String line;
+        final StringBuilder text = new StringBuilder();
+        try {
+            while ((line = buf.readLine()) != null) {
+                text.append(line);
+            }
+        }
+        catch (final IOException e) {
+            return null;
+        }
+        return text.toString();
+    }
 
-	public AboutDialog(Context context) {
-		super(context);
-		mContext = context;
-	}
+    public AboutDialog(Context context) {
+        super(context);
+        mContext = context;
+    }
 
-	/**
-	 * This is the standard Android on create method that gets called when the
-	 * activity initialized.
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.about);
-		TextView tv = (TextView) findViewById(R.id.legal_text);
-		// tv.setText(readRawTextFile(R.raw.legal));
-		tv.setText(Html.fromHtml(readRawTextFile(R.raw.legal)));
-		Linkify.addLinks(tv, Linkify.ALL);
-		tv = (TextView) findViewById(R.id.info_text);
-		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)
-				+ MainActivity.version));
-		tv.setLinkTextColor(Color.WHITE);
-		Linkify.addLinks(tv, Linkify.ALL);
+    /**
+     * This is the standard Android on create method that gets called when the
+     * activity initialized.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.about);
+        TextView tv = (TextView) findViewById(R.id.legal_text);
+        // tv.setText(readRawTextFile(R.raw.legal));
+        tv.setText(Html.fromHtml(readRawTextFile(R.raw.legal)));
+        Linkify.addLinks(tv, Linkify.ALL);
+        tv = (TextView) findViewById(R.id.info_text);
+        tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)
+                + MainActivity.version));
+        tv.setLinkTextColor(Color.WHITE);
+        Linkify.addLinks(tv, Linkify.ALL);
 
-	}
+    }
 
 }
