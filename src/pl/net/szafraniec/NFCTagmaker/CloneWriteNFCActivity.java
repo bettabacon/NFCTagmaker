@@ -36,13 +36,11 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.IOException;
-
+import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
@@ -102,29 +100,12 @@ public class CloneWriteNFCActivity extends Activity {
                     ndef.close();
                     success = 1;
                 }
-                catch (final IOException e) {
+                catch (final Exception e) {
                     e.printStackTrace();
-                    log.e("IOExceptionClonenWrite");
-                    Toast.makeText(getApplicationContext(),
-                            "IOExceptionClonenWrite", Toast.LENGTH_SHORT)
-                            .show();
-
+                    log.e("Exception: CloneWrite"+e.toString());
+                    Toast.makeText(getApplicationContext(), "Exception: CloneWrite"+e.toString(),
+                            Toast.LENGTH_SHORT).show();
                 }
-                catch (final NullPointerException e) {
-                    e.printStackTrace();
-                    log.e("NullPointerCloneWrite");
-                    Toast.makeText(getApplicationContext(),
-                            "NullPointerCloneWrite", Toast.LENGTH_SHORT).show();
-
-                }
-                catch (final FormatException e) {
-                    e.printStackTrace();
-                    log.e("FormatExceptionCloneWrite");
-                    Toast.makeText(getApplicationContext(),
-                            "FormatExceptionCloneWrite", Toast.LENGTH_SHORT)
-                            .show();
-                }
-
             }
             else {
                 final NdefFormatable format = NdefFormatable.get(tag);
@@ -135,26 +116,11 @@ public class CloneWriteNFCActivity extends Activity {
                         format.close();
                         success = 1;
                     }
-                    catch (final IOException e) {
+                    catch (final Exception e) {
                         e.printStackTrace();
-                        log.e("IOExceptionFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "IOExceptionFormat", Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch (final NullPointerException e) {
-                        e.printStackTrace();
-                        log.e("NullPointerFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "NullPointerFormat", Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch (final FormatException e) {
-                        e.printStackTrace();
-                        log.e("FormatExceptionFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "FormatExceptionFormat", Toast.LENGTH_SHORT)
-                                .show();
+                        log.e("Exception: CloneWrite"+e.toString());
+                        Toast.makeText(getApplicationContext(), "Exception: CloneWrite"+e.toString(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 

@@ -43,6 +43,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import pl.net.szafraniec.msfunctions.Tools;
+import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -68,38 +70,6 @@ public class UltralightHEXEDIT extends Activity {
     private static File defaultFile = new File(
             Environment.getExternalStorageDirectory(), "nfctag.bin");
 
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    public static String bytesToHex(byte[] bytes) {
-        if (bytes != null) {
-            final char[] hexChars = new char[bytes.length * 2];
-            for (int j = 0; j < bytes.length; j++) {
-                final int v = bytes[j] & 0xFF;
-                hexChars[j * 2] = hexArray[v >>> 4];
-                hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-            }
-            return new String(hexChars);
-        }
-        else {
-            return null;
-        }
-    }
-
-    public static byte[] hexStringToByteArray(String s) {
-        if (s != null) {
-            final int len = s.length();
-            final byte[] data = new byte[len / 2];
-            for (int i = 0; i < len; i += 2) {
-                data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
-                        .digit(s.charAt(i + 1), 16));
-            }
-            return data;
-        }
-        else {
-            return null;
-        }
-    }
-
     public void exportTag(File file) throws IOException {
 
         final EditText et00 = (EditText) findViewById(R.id.editText00);
@@ -118,22 +88,22 @@ public class UltralightHEXEDIT extends Activity {
         final EditText et0D = (EditText) findViewById(R.id.editText0D);
         final EditText et0E = (EditText) findViewById(R.id.editText0E);
         final EditText et0F = (EditText) findViewById(R.id.editText0F);
-        final byte[] buffer00 = hexStringToByteArray(et00.getText().toString());
-        final byte[] buffer01 = hexStringToByteArray(et01.getText().toString());
-        final byte[] buffer02 = hexStringToByteArray(et02.getText().toString());
-        final byte[] buffer03 = hexStringToByteArray(et03.getText().toString());
-        final byte[] buffer04 = hexStringToByteArray(et04.getText().toString());
-        final byte[] buffer05 = hexStringToByteArray(et05.getText().toString());
-        final byte[] buffer06 = hexStringToByteArray(et06.getText().toString());
-        final byte[] buffer07 = hexStringToByteArray(et07.getText().toString());
-        final byte[] buffer08 = hexStringToByteArray(et08.getText().toString());
-        final byte[] buffer09 = hexStringToByteArray(et09.getText().toString());
-        final byte[] buffer0A = hexStringToByteArray(et0A.getText().toString());
-        final byte[] buffer0B = hexStringToByteArray(et0B.getText().toString());
-        final byte[] buffer0C = hexStringToByteArray(et0C.getText().toString());
-        final byte[] buffer0D = hexStringToByteArray(et0D.getText().toString());
-        final byte[] buffer0E = hexStringToByteArray(et0E.getText().toString());
-        final byte[] buffer0F = hexStringToByteArray(et0F.getText().toString());
+        final byte[] buffer00 = Tools.hexStringToByteArray(et00.getText().toString());
+        final byte[] buffer01 = Tools.hexStringToByteArray(et01.getText().toString());
+        final byte[] buffer02 = Tools.hexStringToByteArray(et02.getText().toString());
+        final byte[] buffer03 = Tools.hexStringToByteArray(et03.getText().toString());
+        final byte[] buffer04 = Tools.hexStringToByteArray(et04.getText().toString());
+        final byte[] buffer05 = Tools.hexStringToByteArray(et05.getText().toString());
+        final byte[] buffer06 = Tools.hexStringToByteArray(et06.getText().toString());
+        final byte[] buffer07 = Tools.hexStringToByteArray(et07.getText().toString());
+        final byte[] buffer08 = Tools.hexStringToByteArray(et08.getText().toString());
+        final byte[] buffer09 = Tools.hexStringToByteArray(et09.getText().toString());
+        final byte[] buffer0A = Tools.hexStringToByteArray(et0A.getText().toString());
+        final byte[] buffer0B = Tools.hexStringToByteArray(et0B.getText().toString());
+        final byte[] buffer0C = Tools.hexStringToByteArray(et0C.getText().toString());
+        final byte[] buffer0D = Tools.hexStringToByteArray(et0D.getText().toString());
+        final byte[] buffer0E = Tools.hexStringToByteArray(et0E.getText().toString());
+        final byte[] buffer0F = Tools.hexStringToByteArray(et0F.getText().toString());
         FileOutputStream fos;
         try {
             if (!file.exists()) {
@@ -234,37 +204,37 @@ public class UltralightHEXEDIT extends Activity {
             fis.read(buffer, 0, 64);
             fis.close();
             buffer2 = Arrays.copyOfRange(buffer, 0, 4);
-            et00.setText(bytesToHex(buffer2));
+            et00.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 4, 8);
-            et01.setText(bytesToHex(buffer2));
+            et01.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 8, 12);
-            et02.setText(bytesToHex(buffer2));
+            et02.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 12, 16);
-            et03.setText(bytesToHex(buffer2));
+            et03.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 16, 20);
-            et04.setText(bytesToHex(buffer2));
+            et04.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 20, 24);
-            et05.setText(bytesToHex(buffer2));
+            et05.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 24, 28);
-            et06.setText(bytesToHex(buffer2));
+            et06.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 28, 32);
-            et07.setText(bytesToHex(buffer2));
+            et07.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 32, 36);
-            et08.setText(bytesToHex(buffer2));
+            et08.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 36, 40);
-            et09.setText(bytesToHex(buffer2));
+            et09.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 40, 44);
-            et0A.setText(bytesToHex(buffer2));
+            et0A.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 44, 48);
-            et0B.setText(bytesToHex(buffer2));
+            et0B.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 48, 52);
-            et0C.setText(bytesToHex(buffer2));
+            et0C.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 52, 56);
-            et0D.setText(bytesToHex(buffer2));
+            et0D.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 56, 60);
-            et0E.setText(bytesToHex(buffer2));
+            et0E.setText(Tools.bytesToHex(buffer2));
             buffer2 = Arrays.copyOfRange(buffer, 60, 64);
-            et0F.setText(bytesToHex(buffer2));
+            et0F.setText(Tools.bytesToHex(buffer2));
             Toast.makeText(getApplicationContext(), getString(R.string.done),
                     Toast.LENGTH_SHORT).show();
         }
@@ -444,70 +414,70 @@ public class UltralightHEXEDIT extends Activity {
                 if (!card_write) {
 
                     byte[] buffer = readpage(tag, 0);
-                    et00.setText(bytesToHex(buffer));
+                    et00.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 1);
-                    et01.setText(bytesToHex(buffer));
+                    et01.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 2);
-                    et02.setText(bytesToHex(buffer));
+                    et02.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 3);
-                    et03.setText(bytesToHex(buffer));
+                    et03.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 4);
-                    et04.setText(bytesToHex(buffer));
+                    et04.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 5);
-                    et05.setText(bytesToHex(buffer));
+                    et05.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 6);
-                    et06.setText(bytesToHex(buffer));
+                    et06.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 7);
-                    et07.setText(bytesToHex(buffer));
+                    et07.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 8);
-                    et08.setText(bytesToHex(buffer));
+                    et08.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 9);
-                    et09.setText(bytesToHex(buffer));
+                    et09.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 10);
-                    et0A.setText(bytesToHex(buffer));
+                    et0A.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 11);
-                    et0B.setText(bytesToHex(buffer));
+                    et0B.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 12);
-                    et0C.setText(bytesToHex(buffer));
+                    et0C.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 13);
-                    et0D.setText(bytesToHex(buffer));
+                    et0D.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 14);
-                    et0E.setText(bytesToHex(buffer));
+                    et0E.setText(Tools.bytesToHex(buffer));
                     buffer = readpage(tag, 15);
-                    et0F.setText(bytesToHex(buffer));
+                    et0F.setText(Tools.bytesToHex(buffer));
                 }
                 else {
-                    final byte[] buffer00 = hexStringToByteArray(et00.getText()
+                    final byte[] buffer00 = Tools.hexStringToByteArray(et00.getText()
                             .toString());
-                    final byte[] buffer01 = hexStringToByteArray(et01.getText()
+                    final byte[] buffer01 = Tools.hexStringToByteArray(et01.getText()
                             .toString());
-                    final byte[] buffer02 = hexStringToByteArray(et02.getText()
+                    final byte[] buffer02 = Tools.hexStringToByteArray(et02.getText()
                             .toString());
-                    final byte[] buffer03 = hexStringToByteArray(et03.getText()
+                    final byte[] buffer03 = Tools.hexStringToByteArray(et03.getText()
                             .toString());
-                    final byte[] buffer04 = hexStringToByteArray(et04.getText()
+                    final byte[] buffer04 = Tools.hexStringToByteArray(et04.getText()
                             .toString());
-                    final byte[] buffer05 = hexStringToByteArray(et05.getText()
+                    final byte[] buffer05 = Tools.hexStringToByteArray(et05.getText()
                             .toString());
-                    final byte[] buffer06 = hexStringToByteArray(et06.getText()
+                    final byte[] buffer06 = Tools.hexStringToByteArray(et06.getText()
                             .toString());
-                    final byte[] buffer07 = hexStringToByteArray(et07.getText()
+                    final byte[] buffer07 = Tools.hexStringToByteArray(et07.getText()
                             .toString());
-                    final byte[] buffer08 = hexStringToByteArray(et08.getText()
+                    final byte[] buffer08 = Tools.hexStringToByteArray(et08.getText()
                             .toString());
-                    final byte[] buffer09 = hexStringToByteArray(et09.getText()
+                    final byte[] buffer09 = Tools.hexStringToByteArray(et09.getText()
                             .toString());
-                    final byte[] buffer0A = hexStringToByteArray(et0A.getText()
+                    final byte[] buffer0A = Tools.hexStringToByteArray(et0A.getText()
                             .toString());
-                    final byte[] buffer0B = hexStringToByteArray(et0B.getText()
+                    final byte[] buffer0B = Tools.hexStringToByteArray(et0B.getText()
                             .toString());
-                    final byte[] buffer0C = hexStringToByteArray(et0C.getText()
+                    final byte[] buffer0C = Tools.hexStringToByteArray(et0C.getText()
                             .toString());
-                    final byte[] buffer0D = hexStringToByteArray(et0D.getText()
+                    final byte[] buffer0D = Tools.hexStringToByteArray(et0D.getText()
                             .toString());
-                    final byte[] buffer0E = hexStringToByteArray(et0E.getText()
+                    final byte[] buffer0E = Tools.hexStringToByteArray(et0E.getText()
                             .toString());
-                    final byte[] buffer0F = hexStringToByteArray(et0F.getText()
+                    final byte[] buffer0F = Tools.hexStringToByteArray(et0F.getText()
                             .toString());
                     final CheckBox cb00 = (CheckBox) findViewById(R.id.checkBox00);
                     final CheckBox cb01 = (CheckBox) findViewById(R.id.checkBox01);

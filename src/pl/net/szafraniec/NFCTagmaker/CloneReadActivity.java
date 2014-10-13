@@ -36,13 +36,11 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.IOException;
-
+import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -104,16 +102,7 @@ public class CloneReadActivity extends Activity {
                 for (int j = 0; j < rawMsgs.length; j++) {
                     msgs[j] = (NdefMessage) rawMsgs[j];
                     final NdefRecord record = msgs[j].getRecords()[0];
-                    // if (record.getTnf() == NdefRecord.TNF_MIME_MEDIA) {
-                    /*
-                     * String mimetype = record.toMimeType(); if
-                     * (mimetype.equals(NFCTagmakerSettings.nfc_mime_type) ||
-                     * mimetype
-                     * .equals(NFCTagmakerSettings.nfc_mime_type_hidden)) {
-                     */
                     payload = record.getPayload();
-                    // }
-                    // }
                 }
             }
         }
@@ -125,33 +114,13 @@ public class CloneReadActivity extends Activity {
                 ndef.connect();
                 Config.nfc_payload = ndef.getNdefMessage();
                 ndef.close();
-                final byte[] bytes = Config.nfc_payload.toByteArray(); // TODO
-                // Temporary
-                // test
-                final String s = UltralightHEXEDIT.bytesToHex(bytes); //
-                Toast.makeText(getApplicationContext(), s, //
-                        Toast.LENGTH_LONG).show(); //
-
             }
-            catch (final IOException e) {
+            catch (final Exception e) {
                 e.printStackTrace();
-                log.e("IOExceptionCloneRead");
-                Toast.makeText(getApplicationContext(), "IOExceptionCloneRead",
+                log.e("Exception: CloneRead"+e.toString());
+                Toast.makeText(getApplicationContext(), "Exception: CloneRead"+e.toString(),
                         Toast.LENGTH_SHORT).show();
 
-            }
-            catch (final NullPointerException e) {
-                e.printStackTrace();
-                log.e("NullPointerCloneRead");
-                Toast.makeText(getApplicationContext(), "NullPointerCloneRead",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-            catch (final FormatException e) {
-                e.printStackTrace();
-                log.e("FormatExceptionCloneRead");
-                Toast.makeText(getApplicationContext(),
-                        "FormatExceptionCloneRead", Toast.LENGTH_SHORT).show();
             }
             final Intent intent2 = new Intent(getApplicationContext(),
                     CloneWriteNFCActivity.class);

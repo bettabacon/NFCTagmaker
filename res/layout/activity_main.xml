@@ -27,8 +27,6 @@
                 android:text="@string/type1uri"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            
-
             <Space
                 android:id="@+id/Space1"
                 android:layout_width="wrap_content"
@@ -44,10 +42,10 @@
                 android:gravity="left"
                 android:text="@string/mimevcard"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -100,20 +98,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/advanced"
-                android:layout_width="wrap_content"
-                android:layout_height="96dp"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/advanced"
-                android:textColor="#CC0000" />
-
-            <Button
-                android:id="@+id/quit"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/Exit" />
         </LinearLayout>
 
         <Button
@@ -132,6 +116,15 @@
             android:layout_below="@+id/relativeLayout2"
             android:text="@string/writevcard" />
 
+        <Button
+            android:id="@+id/advanced"
+            android:layout_width="wrap_content"
+            android:layout_height="96dp"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="@string/advanced"
+            android:textColor="#CC0000" />
     </RelativeLayout>
 
 </ScrollView>

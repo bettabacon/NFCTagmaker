@@ -36,13 +36,11 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.IOException;
-
+import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
@@ -113,27 +111,12 @@ public class WriteNFCActivity extends Activity {
                                         + tag_size, Toast.LENGTH_LONG).show();
                     }
                 }
-                catch (final IOException e) {
+                catch (final Exception e) {
                     e.printStackTrace();
-                    log.e("IOExceptionWrite");
-                    Toast.makeText(getApplicationContext(), "IOExceptionWrite",
+                    log.e("Exception: Write"+e.toString());
+                    Toast.makeText(getApplicationContext(), "Exception: Write"+e.toString(),
                             Toast.LENGTH_SHORT).show();
-
                 }
-                catch (final NullPointerException e) {
-                    e.printStackTrace();
-                    log.e("NullPointerWrite");
-                    Toast.makeText(getApplicationContext(), "NullPointerWrite",
-                            Toast.LENGTH_SHORT).show();
-
-                }
-                catch (final FormatException e) {
-                    e.printStackTrace();
-                    log.e("FormatExceptionWrite");
-                    Toast.makeText(getApplicationContext(),
-                            "FormatExceptionWrite", Toast.LENGTH_SHORT).show();
-                }
-
             }
             else {
                 final NdefFormatable format = NdefFormatable.get(tag);
@@ -149,26 +132,11 @@ public class WriteNFCActivity extends Activity {
                         format.close();
                         success = 1;
                     }
-                    catch (final IOException e) {
+                    catch (final Exception e) {
                         e.printStackTrace();
-                        log.e("IOExceptionFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "IOExceptionFormat", Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch (final NullPointerException e) {
-                        e.printStackTrace();
-                        log.e("NullPointerFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "NullPointerFormat", Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch (final FormatException e) {
-                        e.printStackTrace();
-                        log.e("FormatExceptionFormat");
-                        Toast.makeText(getApplicationContext(),
-                                "FormatExceptionFormat", Toast.LENGTH_SHORT)
-                                .show();
+                        log.e("Exception: Write"+e.toString());
+                        Toast.makeText(getApplicationContext(), "Exception: Write"+e.toString(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }

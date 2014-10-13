@@ -36,15 +36,12 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 
-import javax.security.auth.x500.X500Principal;
-
+import pl.net.szafraniec.msfunctions.AboutDialog;
+import pl.net.szafraniec.msfunctions.Tools;
+import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -53,10 +50,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.Signature;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -74,10 +67,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-    private static final X500Principal DEBUG_DN = new X500Principal(
-            "CN=Android Debug,O=Android,C=US"); //$NON-NLS-1$
-
-    public static String version;
 
     private static NdefRecord createNdefMySmartPosterRecord(String text,
             String[] uri, byte[] type) {
@@ -155,39 +144,6 @@ public class MainActivity extends Activity {
         prefs.commit();
     }
 
-    final public int ABOUT = 0;
-
-    private boolean CheckDebuggable(Context ctx) {
-        boolean debuggable = false;
-
-        try {
-            final PackageInfo pinfo = ctx.getPackageManager().getPackageInfo(
-                    ctx.getPackageName(), PackageManager.GET_SIGNATURES);
-            final Signature signatures[] = pinfo.signatures;
-
-            final CertificateFactory cf = CertificateFactory
-                    .getInstance("X.509"); //$NON-NLS-1$
-
-            for (final Signature signature : signatures) {
-                final ByteArrayInputStream stream = new ByteArrayInputStream(
-                        signature.toByteArray());
-                final X509Certificate cert = (X509Certificate) cf
-                        .generateCertificate(stream);
-                debuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
-                if (debuggable) {
-                    break;
-                }
-            }
-        }
-        catch (final NameNotFoundException e) {
-            // debuggable variable will remain false
-        }
-        catch (final CertificateException e) {
-            // debuggable variable will remain false
-        }
-        return debuggable;
-    }
-
     private String getHex(byte[] bytes) {
         final StringBuilder sb = new StringBuilder();
         for (int i = bytes.length - 1; i >= 0; --i) {
@@ -256,13 +212,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        log.appDebug = CheckDebuggable(this);
-        try {
-            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        }
-        catch (final NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        log.LOG_TAG = Config.LOG_TAG;
+        log.appDebug = Tools.CheckDebuggable(this);
+        log.fullDebug = false; //Tools.isTestDevice(this);
         final NfcAdapter Nfc = NfcAdapter.getDefaultAdapter(this);
         if (Nfc == null) {
             Toast.makeText(getApplicationContext(),
@@ -306,14 +258,6 @@ public class MainActivity extends Activity {
             editor.putString("uri", Config.uri);
             editor.commit();
         }
-        final Button x = (Button) findViewById(R.id.quit);
-        x.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                finish();
-            }
-        });
-
         final Button advanced = (Button) findViewById(R.id.advanced);
         advanced.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -537,9 +481,9 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.ABOUT:
-                final AboutDialog about = new AboutDialog(this);
-                about.setTitle(getString(R.string.About));
-                about.show();
+                final AboutDialog aboutDialog = new AboutDialog(this);
+                aboutDialog.setIcon(R.drawable.ic_launcher);
+                aboutDialog.show();
                 break;
             case R.id.menu_item_rate:
                 showDialog(1);
