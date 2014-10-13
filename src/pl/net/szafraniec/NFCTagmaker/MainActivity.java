@@ -36,16 +36,13 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-
 import pl.net.szafraniec.msfunctions.AboutDialog;
+import pl.net.szafraniec.msfunctions.NfcTools;
 import pl.net.szafraniec.msfunctions.Tools;
 import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,8 +51,6 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -67,83 +62,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
-    private static NdefRecord createNdefMySmartPosterRecord(String text,
-            String[] uri, byte[] type) {
-        final NdefRecord[] records = new NdefRecord[1 + uri.length];
-        records[0] = createNdefTextRecord(text);
-        for (int i = 1; i < records.length; i++) {
-            records[i] = createNdefRecord(uri[i - 1], type[i - 1]);
-        }
-        final NdefMessage nm = new NdefMessage(records);
-        final NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
-        return record;
-    }
-
-    protected static NdefRecord createNdefRecord(String address, byte idCode) {
-        final byte[] uriField = address.getBytes(Charset.forName("UTF-8"));
-        final byte[] payload = new byte[uriField.length + 1];
-        payload[0] = idCode;
-        System.arraycopy(uriField, 0, payload, 1, uriField.length);
-        return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_URI,
-                new byte[0], payload);
-    }
-
-    private static NdefRecord createNdefSmartPosterRecord(String text,
-            String[] uri) {
-        final NdefRecord[] records = new NdefRecord[1 + uri.length];
-        records[0] = createNdefTextRecord(text);
-        for (int i = 1; i < records.length; i++) {
-            records[i] = createNdefTelRecord(uri[i - 1]);
-        }
-        final NdefMessage nm = new NdefMessage(records);
-        final NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                NdefRecord.RTD_SMART_POSTER, new byte[0], nm.toByteArray());
-        return record;
-    }
-
-    protected static NdefRecord createNdefTelRecord(String phone) {
-        return createNdefRecord(phone, (byte) 0x05);
-    }
-
-    protected static NdefRecord createNdefTextRecord(String text) {
-        final String lang = "en";
-        final byte[] textBytes = text.getBytes();
-        byte[] langBytes = null;
-        try {
-            langBytes = lang.getBytes("UTF-8");
-        }
-        catch (final UnsupportedEncodingException e) {
-            log.e(e.getLocalizedMessage());
-        }
-        final int langLength = langBytes.length;
-        final int textLength = textBytes.length;
-        final byte[] payload = new byte[1 + langLength + textLength];
-        payload[0] = (byte) langLength;
-        System.arraycopy(langBytes, 0, payload, 1, langLength);
-        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-        return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT,
-                new byte[0], payload);
-    }
-
-    protected static NdefRecord createNdefUriRecord(String phone) {
-        return createNdefRecord(phone, (byte) 0x00);
-    }
-
-    public static int getRunCount(Context context) {
-        final SharedPreferences prefs = context.getSharedPreferences(
-                Config.PREF_RUNCOUNT, 0);
-        return prefs.getInt(Config.PREF_RUNCOUNT, 0);
-    }
-
-    public static void setRunCount(Context context, int RunCount) {
-        final SharedPreferences.Editor prefs = context.getSharedPreferences(
-                Config.PREF_RUNCOUNT, 0).edit();
-        prefs.putInt(Config.PREF_RUNCOUNT, RunCount);
-        prefs.commit();
-    }
-
+    
     private String getHex(byte[] bytes) {
         final StringBuilder sb = new StringBuilder();
         for (int i = bytes.length - 1; i >= 0; --i) {
@@ -157,54 +76,6 @@ public class MainActivity extends Activity {
             }
         }
         return sb.toString();
-    }
-
-    private String getMifareType(Tag tag) {
-        String type = "Unknown";
-        for (final String tech : tag.getTechList()) {
-            if (tech.equals(MifareClassic.class.getName())) {
-                final MifareClassic mifareTag = MifareClassic.get(tag);
-                switch (mifareTag.getType()) {
-                    case MifareClassic.TYPE_CLASSIC:
-                        type = "Classic";
-                        break;
-                    case MifareClassic.TYPE_PLUS:
-                        type = "Plus";
-                        break;
-                    case MifareClassic.TYPE_PRO:
-                        type = "Pro";
-                        break;
-                }
-            }
-
-            if (tech.equals(MifareUltralight.class.getName())) {
-                final MifareUltralight mifareUlTag = MifareUltralight.get(tag);
-                switch (mifareUlTag.getType()) {
-                    case MifareUltralight.TYPE_ULTRALIGHT:
-                        type = "Ultralight";
-                        break;
-                    case MifareUltralight.TYPE_ULTRALIGHT_C:
-                        type = "Ultralight C";
-                        break;
-                }
-            }
-        }
-        return type;
-    }
-
-    private void nfc_disable() {
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        adapter.disableForegroundDispatch(this);
-    }
-
-    private void nfc_enable() {
-        // Register for any NFC event (only while we're in the foreground)
-
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        final PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        adapter.enableForegroundDispatch(this, pending_intent, null, null);
     }
 
     @SuppressWarnings("deprecation")
@@ -229,13 +100,13 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
             }
         }
-        int RunCount = getRunCount(this);
+        int RunCount = Tools.getRunCount(this);
         if (RunCount == 4) {
             showDialog(1);
         }
         if (RunCount < 6) {
             RunCount = RunCount + 1;
-            setRunCount(this, RunCount);
+            Tools.setRunCount(this, RunCount);
         }
         final SharedPreferences settings = getSharedPreferences(
                 Config.PREFS_NAME, 0);
@@ -295,7 +166,7 @@ public class MainActivity extends Activity {
                 if ((Config.phone.length() != 0) && (Config.name.length() != 0)) {
                     final NdefRecord[] ndef_name = new NdefRecord[1];
                     final String[] uri = new String[] { Config.phone };
-                    ndef_name[0] = createNdefSmartPosterRecord(Config.name, uri);
+                    ndef_name[0] = NfcTools.createNdefSmartPosterRecord(Config.name, uri);
                     Config.nfc_payload = new NdefMessage(ndef_name);
                     final Intent intent = new Intent(getApplicationContext(),
                             WriteNFCActivity.class);
@@ -357,7 +228,7 @@ public class MainActivity extends Activity {
                     type[gdzie] = 0x00;
                     gdzie = gdzie + 1;
                 }
-                ndef_name[0] = createNdefMySmartPosterRecord(Config.name, uri,
+                ndef_name[0] = NfcTools.createNdefMySmartPosterRecord(Config.name, uri,
                         type);
                 Config.nfc_payload = new NdefMessage(ndef_name);
                 final Intent intent = new Intent(getApplicationContext(),
@@ -370,27 +241,7 @@ public class MainActivity extends Activity {
         wvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                String vcardcontent = "BEGIN:VCARD\r\nVERSION:2.1\r\nN:"
-                        + Config.name + "\r\n";
-
-                if (Config.phone.length() > 3) {
-                    vcardcontent = vcardcontent + "TEL;CELL:" + Config.phone
-                            + "\r\n";
-                }
-
-                if (Config.email.length() > 6) {
-                    vcardcontent = vcardcontent + "EMAIL;INTERNET:"
-                            + Config.email + "\r\n";
-                }
-
-                if (Config.web.length() > 6) {
-                    vcardcontent = vcardcontent + "URL:" + Config.web + "\r\n";
-                }
-
-                vcardcontent = vcardcontent + "END:VCARD\r\n";
-                final NdefRecord ndef_records = NdefRecord.createMime(
-                        "text/x-vCard", vcardcontent.getBytes());
-                Config.nfc_payload = new NdefMessage(ndef_records);
+                Config.nfc_payload = NfcTools.ndefVcard(Config.name, Config.phone, Config.email, Config.web);
                 final Intent intent = new Intent(getApplicationContext(),
                         WriteNFCActivity.class);
                 startActivity(intent);
@@ -458,7 +309,7 @@ public class MainActivity extends Activity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
             final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            final String typ_karty = getMifareType(tag);
+            String typ_karty = NfcTools.getMifareType(tag);
             Toast.makeText(getApplicationContext(),
                     getString(R.string.card_type) + typ_karty,
                     Toast.LENGTH_LONG).show();
@@ -500,12 +351,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        nfc_disable();
+        NfcTools.nfc_disable(this,this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        nfc_enable();
+        NfcTools.nfc_enable(this,this,getClass());
     }
 }

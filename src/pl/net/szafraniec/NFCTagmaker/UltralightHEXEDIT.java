@@ -43,15 +43,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import pl.net.szafraniec.msfunctions.NfcTools;
 import pl.net.szafraniec.msfunctions.Tools;
 import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Environment;
@@ -143,40 +142,7 @@ public class UltralightHEXEDIT extends Activity {
 
         // return true;
     }
-
-    private String getMifareType(Tag tag) {
-        String type = "Unknown";
-        for (final String tech : tag.getTechList()) {
-            if (tech.equals(MifareClassic.class.getName())) {
-                final MifareClassic mifareTag = MifareClassic.get(tag);
-                switch (mifareTag.getType()) {
-                    case MifareClassic.TYPE_CLASSIC:
-                        type = "Classic";
-                        break;
-                    case MifareClassic.TYPE_PLUS:
-                        type = "Plus";
-                        break;
-                    case MifareClassic.TYPE_PRO:
-                        type = "Pro";
-                        break;
-                }
-            }
-
-            if (tech.equals(MifareUltralight.class.getName())) {
-                final MifareUltralight mifareUlTag = MifareUltralight.get(tag);
-                switch (mifareUlTag.getType()) {
-                    case MifareUltralight.TYPE_ULTRALIGHT:
-                        type = "Ultralight";
-                        break;
-                    case MifareUltralight.TYPE_ULTRALIGHT_C:
-                        type = "Ultralight C";
-                        break;
-                }
-            }
-        }
-        return type;
-    }
-
+    
     public void importTag(File file) throws IOException {
         final EditText et00 = (EditText) findViewById(R.id.editText00);
         final EditText et01 = (EditText) findViewById(R.id.editText01);
@@ -252,21 +218,6 @@ public class UltralightHEXEDIT extends Activity {
                     Toast.LENGTH_LONG).show();
             ee.printStackTrace();
         }
-    }
-
-    private void nfc_disable() {
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        adapter.disableForegroundDispatch(this);
-    }
-
-    private void nfc_enable() {
-        // Register for any NFC event (only while we're in the foreground)
-
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        final PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        adapter.enableForegroundDispatch(this, pending_intent, null, null);
     }
 
     @Override
@@ -389,7 +340,7 @@ public class UltralightHEXEDIT extends Activity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
             final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            final String typ_karty = getMifareType(tag);
+            final String typ_karty = NfcTools.getMifareType(tag);
             Toast.makeText(getApplicationContext(),
                     getString(R.string.card_type) + typ_karty,
                     Toast.LENGTH_LONG).show();
@@ -496,52 +447,52 @@ public class UltralightHEXEDIT extends Activity {
                     final CheckBox cb0E = (CheckBox) findViewById(R.id.checkBox0E);
                     final CheckBox cb0F = (CheckBox) findViewById(R.id.checkBox0F);
                     if (cb00.isChecked()) {
-                        writeTag(tag, 0, buffer00);
+                        writeUltralightTagByPage(tag, 0, buffer00);
                     }
                     if (cb01.isChecked()) {
-                        writeTag(tag, 1, buffer01);
+                        writeUltralightTagByPage(tag, 1, buffer01);
                     }
                     if (cb02.isChecked()) {
-                        writeTag(tag, 2, buffer02);
+                        writeUltralightTagByPage(tag, 2, buffer02);
                     }
                     if (cb03.isChecked()) {
-                        writeTag(tag, 3, buffer03);
+                        writeUltralightTagByPage(tag, 3, buffer03);
                     }
                     if (cb04.isChecked()) {
-                        writeTag(tag, 4, buffer04);
+                        writeUltralightTagByPage(tag, 4, buffer04);
                     }
                     if (cb05.isChecked()) {
-                        writeTag(tag, 5, buffer05);
+                        writeUltralightTagByPage(tag, 5, buffer05);
                     }
                     if (cb06.isChecked()) {
-                        writeTag(tag, 6, buffer06);
+                        writeUltralightTagByPage(tag, 6, buffer06);
                     }
                     if (cb07.isChecked()) {
-                        writeTag(tag, 7, buffer07);
+                        writeUltralightTagByPage(tag, 7, buffer07);
                     }
                     if (cb08.isChecked()) {
-                        writeTag(tag, 8, buffer08);
+                        writeUltralightTagByPage(tag, 8, buffer08);
                     }
                     if (cb09.isChecked()) {
-                        writeTag(tag, 9, buffer09);
+                        writeUltralightTagByPage(tag, 9, buffer09);
                     }
                     if (cb0A.isChecked()) {
-                        writeTag(tag, 10, buffer0A);
+                        writeUltralightTagByPage(tag, 10, buffer0A);
                     }
                     if (cb0B.isChecked()) {
-                        writeTag(tag, 11, buffer0B);
+                        writeUltralightTagByPage(tag, 11, buffer0B);
                     }
                     if (cb0C.isChecked()) {
-                        writeTag(tag, 12, buffer0C);
+                        writeUltralightTagByPage(tag, 12, buffer0C);
                     }
                     if (cb0D.isChecked()) {
-                        writeTag(tag, 13, buffer0D);
+                        writeUltralightTagByPage(tag, 13, buffer0D);
                     }
                     if (cb0E.isChecked()) {
-                        writeTag(tag, 14, buffer0E);
+                        writeUltralightTagByPage(tag, 14, buffer0E);
                     }
                     if (cb0F.isChecked()) {
-                        writeTag(tag, 15, buffer0F);
+                        writeUltralightTagByPage(tag, 15, buffer0F);
                     }
                 }
                 Toast.makeText(getApplicationContext(),
@@ -561,13 +512,13 @@ public class UltralightHEXEDIT extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        nfc_disable();
+        NfcTools.nfc_disable(this,this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        nfc_enable();
+        NfcTools.nfc_enable(this,this,getClass());
     }
 
     public byte[] readpage(Tag tag, int page) {
@@ -600,7 +551,7 @@ public class UltralightHEXEDIT extends Activity {
         return null;
     }
 
-    public void writeTag(Tag tag, int page, byte[] data) {
+    public void writeUltralightTagByPage(Tag tag, int page, byte[] data) {
         final MifareUltralight ultralight = MifareUltralight.get(tag);
         try {
             ultralight.connect();

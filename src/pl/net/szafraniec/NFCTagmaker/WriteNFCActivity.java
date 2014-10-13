@@ -36,9 +36,9 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
+import pl.net.szafraniec.msfunctions.NfcTools;
 import pl.net.szafraniec.msfunctions.log;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -54,21 +54,6 @@ import android.widget.Toast;
 
 public class WriteNFCActivity extends Activity {
 
-    private void nfc_disable() {
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        adapter.disableForegroundDispatch(this);
-    }
-
-    private void nfc_enable() {
-        // Register for any NFC event (only while we're in the foreground)
-
-        final NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-        final PendingIntent pending_intent = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        adapter.enableForegroundDispatch(this, pending_intent, null, null);
-    }
-
     @Override
     protected void onCreate(Bundle sis) {
         super.onCreate(sis);
@@ -79,7 +64,7 @@ public class WriteNFCActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                nfc_disable();
+                NfcTools.nfc_disable(getApplicationContext(),WriteNFCActivity.this);
                 finish();
             }
         });
@@ -158,12 +143,12 @@ public class WriteNFCActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        nfc_disable();
+        NfcTools.nfc_disable(this,this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        nfc_enable();
+        NfcTools.nfc_enable(this,this,getClass());
     }
 }
