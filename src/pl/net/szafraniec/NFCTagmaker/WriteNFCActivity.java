@@ -44,7 +44,6 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
@@ -65,7 +64,8 @@ public class WriteNFCActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                NfcTools.nfc_disable(getApplicationContext(),WriteNFCActivity.this);
+                NfcTools.nfc_disable(getApplicationContext(),
+                        WriteNFCActivity.this);
                 finish();
             }
         });
@@ -80,7 +80,7 @@ public class WriteNFCActivity extends Activity {
             final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             final Ndef ndef = Ndef.get(tag);
             final int payload_length = Config.nfc_payload.getByteArrayLength();
-            if ((ndef != null) && (ndef.getMaxSize()>0)) {
+            if ((ndef != null) && (ndef.getMaxSize() > 0)) {
                 try {
                     final int tagSize = ndef.getMaxSize();
                     if (tagSize >= payload_length) {
@@ -99,8 +99,9 @@ public class WriteNFCActivity extends Activity {
                 }
                 catch (final Exception e) {
                     e.printStackTrace();
-                    log.e("Exception: Write"+e.toString());
-                    Toast.makeText(getApplicationContext(), "Exception: Write"+e.toString(),
+                    log.e("Exception: Write" + e.toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Exception: Write" + e.toString(),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -119,8 +120,9 @@ public class WriteNFCActivity extends Activity {
                     }
                     catch (final Exception e) {
                         e.printStackTrace();
-                        log.e("Exception: Write"+e.toString());
-                        Toast.makeText(getApplicationContext(), "Exception: Write"+e.toString(),
+                        log.e("Exception: Write" + e.toString());
+                        Toast.makeText(getApplicationContext(),
+                                "Exception: Write" + e.toString(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -143,12 +145,12 @@ public class WriteNFCActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        NfcTools.nfc_disable(this,this);
+        NfcTools.nfc_disable(this, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NfcTools.nfc_enable(this,this,getClass());
+        NfcTools.nfc_enable(this, this, getClass());
     }
 }

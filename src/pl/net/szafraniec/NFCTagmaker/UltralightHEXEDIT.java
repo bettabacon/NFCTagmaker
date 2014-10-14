@@ -87,22 +87,38 @@ public class UltralightHEXEDIT extends Activity {
         final EditText et0D = (EditText) findViewById(R.id.editText0D);
         final EditText et0E = (EditText) findViewById(R.id.editText0E);
         final EditText et0F = (EditText) findViewById(R.id.editText0F);
-        final byte[] buffer00 = Tools.hexStringToByteArray(et00.getText().toString());
-        final byte[] buffer01 = Tools.hexStringToByteArray(et01.getText().toString());
-        final byte[] buffer02 = Tools.hexStringToByteArray(et02.getText().toString());
-        final byte[] buffer03 = Tools.hexStringToByteArray(et03.getText().toString());
-        final byte[] buffer04 = Tools.hexStringToByteArray(et04.getText().toString());
-        final byte[] buffer05 = Tools.hexStringToByteArray(et05.getText().toString());
-        final byte[] buffer06 = Tools.hexStringToByteArray(et06.getText().toString());
-        final byte[] buffer07 = Tools.hexStringToByteArray(et07.getText().toString());
-        final byte[] buffer08 = Tools.hexStringToByteArray(et08.getText().toString());
-        final byte[] buffer09 = Tools.hexStringToByteArray(et09.getText().toString());
-        final byte[] buffer0A = Tools.hexStringToByteArray(et0A.getText().toString());
-        final byte[] buffer0B = Tools.hexStringToByteArray(et0B.getText().toString());
-        final byte[] buffer0C = Tools.hexStringToByteArray(et0C.getText().toString());
-        final byte[] buffer0D = Tools.hexStringToByteArray(et0D.getText().toString());
-        final byte[] buffer0E = Tools.hexStringToByteArray(et0E.getText().toString());
-        final byte[] buffer0F = Tools.hexStringToByteArray(et0F.getText().toString());
+        final byte[] buffer00 = Tools.hexStringToByteArray(et00.getText()
+                .toString());
+        final byte[] buffer01 = Tools.hexStringToByteArray(et01.getText()
+                .toString());
+        final byte[] buffer02 = Tools.hexStringToByteArray(et02.getText()
+                .toString());
+        final byte[] buffer03 = Tools.hexStringToByteArray(et03.getText()
+                .toString());
+        final byte[] buffer04 = Tools.hexStringToByteArray(et04.getText()
+                .toString());
+        final byte[] buffer05 = Tools.hexStringToByteArray(et05.getText()
+                .toString());
+        final byte[] buffer06 = Tools.hexStringToByteArray(et06.getText()
+                .toString());
+        final byte[] buffer07 = Tools.hexStringToByteArray(et07.getText()
+                .toString());
+        final byte[] buffer08 = Tools.hexStringToByteArray(et08.getText()
+                .toString());
+        final byte[] buffer09 = Tools.hexStringToByteArray(et09.getText()
+                .toString());
+        final byte[] buffer0A = Tools.hexStringToByteArray(et0A.getText()
+                .toString());
+        final byte[] buffer0B = Tools.hexStringToByteArray(et0B.getText()
+                .toString());
+        final byte[] buffer0C = Tools.hexStringToByteArray(et0C.getText()
+                .toString());
+        final byte[] buffer0D = Tools.hexStringToByteArray(et0D.getText()
+                .toString());
+        final byte[] buffer0E = Tools.hexStringToByteArray(et0E.getText()
+                .toString());
+        final byte[] buffer0F = Tools.hexStringToByteArray(et0F.getText()
+                .toString());
         FileOutputStream fos;
         try {
             if (!file.exists()) {
@@ -142,7 +158,7 @@ public class UltralightHEXEDIT extends Activity {
 
         // return true;
     }
-    
+
     public void importTag(File file) throws IOException {
         final EditText et00 = (EditText) findViewById(R.id.editText00);
         final EditText et01 = (EditText) findViewById(R.id.editText01);
@@ -223,34 +239,34 @@ public class UltralightHEXEDIT extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case PICK_FILE: {
-                if (resultCode == RESULT_OK && data != null
-                        && data.getData() != null) {
-                    final String theFilePath = data.getData().getPath();
-                    final File file = new File(theFilePath);
-                    try {
-                        importTag(file);
-                    }
-                    catch (final IOException e) {
-                        e.printStackTrace();
-                    }
+        case PICK_FILE: {
+            if (resultCode == RESULT_OK && data != null
+                    && data.getData() != null) {
+                final String theFilePath = data.getData().getPath();
+                final File file = new File(theFilePath);
+                try {
+                    importTag(file);
+                }
+                catch (final IOException e) {
+                    e.printStackTrace();
                 }
             }
-                break;
-            case SAVE_NEW_FILE: {
-                if (resultCode == RESULT_OK && data != null
-                        && data.getData() != null) {
-                    final String theFilePath = data.getData().getPath();
-                    final File file = new File(theFilePath);
-                    try {
-                        exportTag(file);
-                    }
-                    catch (final IOException e) {
-                        e.printStackTrace();
-                    }
+        }
+        break;
+        case SAVE_NEW_FILE: {
+            if (resultCode == RESULT_OK && data != null
+                    && data.getData() != null) {
+                final String theFilePath = data.getData().getPath();
+                final File file = new File(theFilePath);
+                try {
+                    exportTag(file);
+                }
+                catch (final IOException e) {
+                    e.printStackTrace();
                 }
             }
-                break;
+        }
+        break;
         }
     }
 
@@ -294,7 +310,7 @@ public class UltralightHEXEDIT extends Activity {
                     Toast.makeText(
                             getApplicationContext(),
                             getString(R.string.SavingTo)
-                                    + defaultFile.toString(), Toast.LENGTH_LONG)
+                            + defaultFile.toString(), Toast.LENGTH_LONG)
                             .show();
                     try {
                         exportTag(defaultFile);
@@ -398,38 +414,38 @@ public class UltralightHEXEDIT extends Activity {
                     et0F.setText(Tools.bytesToHex(buffer));
                 }
                 else {
-                    final byte[] buffer00 = Tools.hexStringToByteArray(et00.getText()
-                            .toString());
-                    final byte[] buffer01 = Tools.hexStringToByteArray(et01.getText()
-                            .toString());
-                    final byte[] buffer02 = Tools.hexStringToByteArray(et02.getText()
-                            .toString());
-                    final byte[] buffer03 = Tools.hexStringToByteArray(et03.getText()
-                            .toString());
-                    final byte[] buffer04 = Tools.hexStringToByteArray(et04.getText()
-                            .toString());
-                    final byte[] buffer05 = Tools.hexStringToByteArray(et05.getText()
-                            .toString());
-                    final byte[] buffer06 = Tools.hexStringToByteArray(et06.getText()
-                            .toString());
-                    final byte[] buffer07 = Tools.hexStringToByteArray(et07.getText()
-                            .toString());
-                    final byte[] buffer08 = Tools.hexStringToByteArray(et08.getText()
-                            .toString());
-                    final byte[] buffer09 = Tools.hexStringToByteArray(et09.getText()
-                            .toString());
-                    final byte[] buffer0A = Tools.hexStringToByteArray(et0A.getText()
-                            .toString());
-                    final byte[] buffer0B = Tools.hexStringToByteArray(et0B.getText()
-                            .toString());
-                    final byte[] buffer0C = Tools.hexStringToByteArray(et0C.getText()
-                            .toString());
-                    final byte[] buffer0D = Tools.hexStringToByteArray(et0D.getText()
-                            .toString());
-                    final byte[] buffer0E = Tools.hexStringToByteArray(et0E.getText()
-                            .toString());
-                    final byte[] buffer0F = Tools.hexStringToByteArray(et0F.getText()
-                            .toString());
+                    final byte[] buffer00 = Tools.hexStringToByteArray(et00
+                            .getText().toString());
+                    final byte[] buffer01 = Tools.hexStringToByteArray(et01
+                            .getText().toString());
+                    final byte[] buffer02 = Tools.hexStringToByteArray(et02
+                            .getText().toString());
+                    final byte[] buffer03 = Tools.hexStringToByteArray(et03
+                            .getText().toString());
+                    final byte[] buffer04 = Tools.hexStringToByteArray(et04
+                            .getText().toString());
+                    final byte[] buffer05 = Tools.hexStringToByteArray(et05
+                            .getText().toString());
+                    final byte[] buffer06 = Tools.hexStringToByteArray(et06
+                            .getText().toString());
+                    final byte[] buffer07 = Tools.hexStringToByteArray(et07
+                            .getText().toString());
+                    final byte[] buffer08 = Tools.hexStringToByteArray(et08
+                            .getText().toString());
+                    final byte[] buffer09 = Tools.hexStringToByteArray(et09
+                            .getText().toString());
+                    final byte[] buffer0A = Tools.hexStringToByteArray(et0A
+                            .getText().toString());
+                    final byte[] buffer0B = Tools.hexStringToByteArray(et0B
+                            .getText().toString());
+                    final byte[] buffer0C = Tools.hexStringToByteArray(et0C
+                            .getText().toString());
+                    final byte[] buffer0D = Tools.hexStringToByteArray(et0D
+                            .getText().toString());
+                    final byte[] buffer0E = Tools.hexStringToByteArray(et0E
+                            .getText().toString());
+                    final byte[] buffer0F = Tools.hexStringToByteArray(et0F
+                            .getText().toString());
                     final CheckBox cb00 = (CheckBox) findViewById(R.id.checkBox00);
                     final CheckBox cb01 = (CheckBox) findViewById(R.id.checkBox01);
                     final CheckBox cb02 = (CheckBox) findViewById(R.id.checkBox02);
@@ -512,13 +528,13 @@ public class UltralightHEXEDIT extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        NfcTools.nfc_disable(this,this);
+        NfcTools.nfc_disable(this, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NfcTools.nfc_enable(this,this,getClass());
+        NfcTools.nfc_enable(this, this, getClass());
     }
 
     public byte[] readpage(Tag tag, int page) {

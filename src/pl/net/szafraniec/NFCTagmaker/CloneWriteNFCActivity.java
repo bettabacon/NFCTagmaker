@@ -65,7 +65,8 @@ public class CloneWriteNFCActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                NfcTools.nfc_disable(getApplicationContext(),CloneWriteNFCActivity.this);
+                NfcTools.nfc_disable(getApplicationContext(),
+                        CloneWriteNFCActivity.this);
                 finish();
             }
         });
@@ -88,8 +89,9 @@ public class CloneWriteNFCActivity extends Activity {
                 }
                 catch (final Exception e) {
                     e.printStackTrace();
-                    log.e("Exception: CloneWrite"+e.toString());
-                    Toast.makeText(getApplicationContext(), "Exception: CloneWrite"+e.toString(),
+                    log.e("Exception: CloneWrite" + e.toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Exception: CloneWrite" + e.toString(),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -104,8 +106,9 @@ public class CloneWriteNFCActivity extends Activity {
                     }
                     catch (final Exception e) {
                         e.printStackTrace();
-                        log.e("Exception: CloneWrite"+e.toString());
-                        Toast.makeText(getApplicationContext(), "Exception: CloneWrite"+e.toString(),
+                        log.e("Exception: CloneWrite" + e.toString());
+                        Toast.makeText(getApplicationContext(),
+                                "Exception: CloneWrite" + e.toString(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -129,12 +132,12 @@ public class CloneWriteNFCActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        NfcTools.nfc_disable(this,this);
+        NfcTools.nfc_disable(this, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NfcTools.nfc_enable(this,this,getClass());
+        NfcTools.nfc_enable(this, this, getClass());
     }
 }

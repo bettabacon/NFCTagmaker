@@ -68,7 +68,8 @@ public class CloneReadActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                NfcTools.nfc_disable(getApplicationContext(),CloneReadActivity.this);
+                NfcTools.nfc_disable(getApplicationContext(),
+                        CloneReadActivity.this);
                 finish();
             }
         });
@@ -104,8 +105,9 @@ public class CloneReadActivity extends Activity {
             }
             catch (final Exception e) {
                 e.printStackTrace();
-                log.e("Exception: CloneRead"+e.toString());
-                Toast.makeText(getApplicationContext(), "Exception: CloneRead"+e.toString(),
+                log.e("Exception: CloneRead" + e.toString());
+                Toast.makeText(getApplicationContext(),
+                        "Exception: CloneRead" + e.toString(),
                         Toast.LENGTH_SHORT).show();
 
             }
@@ -119,13 +121,13 @@ public class CloneReadActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        NfcTools.nfc_disable(this,this);
+        NfcTools.nfc_disable(this, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NfcTools.nfc_enable(this,this,getClass());
+        NfcTools.nfc_enable(this, this, getClass());
     }
 
 }

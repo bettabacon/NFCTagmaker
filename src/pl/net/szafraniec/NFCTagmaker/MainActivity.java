@@ -62,7 +62,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-    
+
     private String getHex(byte[] bytes) {
         final StringBuilder sb = new StringBuilder();
         for (int i = bytes.length - 1; i >= 0; --i) {
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         log.LOG_TAG = Config.LOG_TAG;
         log.appDebug = Tools.CheckDebuggable(this);
-        log.fullDebug = false; //Tools.isTestDevice(this);
+        log.fullDebug = false; // Tools.isTestDevice(this);
         final NfcAdapter Nfc = NfcAdapter.getDefaultAdapter(this);
         if (Nfc == null) {
             Toast.makeText(getApplicationContext(),
@@ -166,7 +166,8 @@ public class MainActivity extends Activity {
                 if ((Config.phone.length() != 0) && (Config.name.length() != 0)) {
                     final NdefRecord[] ndef_name = new NdefRecord[1];
                     final String[] uri = new String[] { Config.phone };
-                    ndef_name[0] = NfcTools.createNdefSmartPosterRecord(Config.name, uri);
+                    ndef_name[0] = NfcTools.createNdefSmartPosterRecord(
+                            Config.name, uri);
                     Config.nfc_payload = new NdefMessage(ndef_name);
                     final Intent intent = new Intent(getApplicationContext(),
                             WriteNFCActivity.class);
@@ -228,8 +229,8 @@ public class MainActivity extends Activity {
                     type[gdzie] = 0x00;
                     gdzie = gdzie + 1;
                 }
-                ndef_name[0] = NfcTools.createNdefMySmartPosterRecord(Config.name, uri,
-                        type);
+                ndef_name[0] = NfcTools.createNdefMySmartPosterRecord(
+                        Config.name, uri, type);
                 Config.nfc_payload = new NdefMessage(ndef_name);
                 final Intent intent = new Intent(getApplicationContext(),
                         WriteNFCActivity.class);
@@ -241,7 +242,8 @@ public class MainActivity extends Activity {
         wvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View self) {
-                Config.nfc_payload = NfcTools.ndefVcard(Config.name, Config.phone, Config.email, Config.web);
+                Config.nfc_payload = NfcTools.ndefVcard(Config.name,
+                        Config.phone, Config.email, Config.web);
                 final Intent intent = new Intent(getApplicationContext(),
                         WriteNFCActivity.class);
                 startActivity(intent);
@@ -255,42 +257,38 @@ public class MainActivity extends Activity {
         Dialog dialog;
         AlertDialog.Builder builder;
         switch (id) {
-            case 1:
-                builder = new AlertDialog.Builder(this);
-                builder.setMessage(getResources().getString(R.string.rate_text))
-                        .setTitle(
-                                getResources().getString(
-                                        R.string.menu_item_rate))
-                        .setCancelable(false)
-                        .setPositiveButton(
-                                getResources().getString(
-                                        R.string.menu_item_rate),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        // Do something here
-                                        final Intent GooglePlayIntent = new Intent(
-                                                Intent.ACTION_VIEW,
-                                                Config.URI_APP_LINK);
-                                        startActivity(GooglePlayIntent);
-                                    }
-                                })
-                        .setNegativeButton(
-                                getResources().getString(
-                                        android.R.string.cancel),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        // Do something here
-                                    }
-                                });
+        case 1:
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.rate_text))
+            .setTitle(getResources().getString(R.string.menu_item_rate))
+            .setCancelable(false)
+            .setPositiveButton(
+                    getResources().getString(R.string.menu_item_rate),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,
+                                int id) {
+                            // Do something here
+                            final Intent GooglePlayIntent = new Intent(
+                                    Intent.ACTION_VIEW,
+                                    Config.URI_APP_LINK);
+                            startActivity(GooglePlayIntent);
+                        }
+                    })
+                    .setNegativeButton(
+                            getResources().getString(android.R.string.cancel),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    // Do something here
+                                }
+                            });
 
-                dialog = builder.create();
-                break;
-            default:
-                dialog = null;
+            dialog = builder.create();
+            break;
+        default:
+            dialog = null;
         }
         return dialog;
 
@@ -309,7 +307,7 @@ public class MainActivity extends Activity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
             final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String typ_karty = NfcTools.getMifareType(tag);
+            final String typ_karty = NfcTools.getMifareType(tag);
             Toast.makeText(getApplicationContext(),
                     getString(R.string.card_type) + typ_karty,
                     Toast.LENGTH_LONG).show();
@@ -331,19 +329,19 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.ABOUT:
-                final AboutDialog aboutDialog = new AboutDialog(this);
-                aboutDialog.setIcon(R.drawable.ic_launcher);
-                aboutDialog.show();
-                break;
-            case R.id.menu_item_rate:
-                showDialog(1);
-                return true;
-            case R.id.settings:
-                final Intent settings = new Intent(getApplicationContext(),
-                        SettingsActivity.class);
-                startActivity(settings);
-                break;
+        case R.id.ABOUT:
+            final AboutDialog aboutDialog = new AboutDialog(this);
+            aboutDialog.setIcon(R.drawable.ic_launcher);
+            aboutDialog.show();
+            break;
+        case R.id.menu_item_rate:
+            showDialog(1);
+            return true;
+        case R.id.settings:
+            final Intent settings = new Intent(getApplicationContext(),
+                    SettingsActivity.class);
+            startActivity(settings);
+            break;
         }
         return true;
     }
@@ -351,12 +349,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        NfcTools.nfc_disable(this,this);
+        NfcTools.nfc_disable(this, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NfcTools.nfc_enable(this,this,getClass());
+        NfcTools.nfc_enable(this, this, getClass());
     }
 }
