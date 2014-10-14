@@ -44,6 +44,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
+import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
@@ -79,10 +80,10 @@ public class WriteNFCActivity extends Activity {
             final Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             final Ndef ndef = Ndef.get(tag);
             final int payload_length = Config.nfc_payload.getByteArrayLength();
-            if (ndef != null) {
+            if ((ndef != null) && (ndef.getMaxSize()>0)) {
                 try {
-                    final int tag_size = ndef.getMaxSize();
-                    if (tag_size >= payload_length) {
+                    final int tagSize = ndef.getMaxSize();
+                    if (tagSize >= payload_length) {
                         ndef.connect();
                         ndef.writeNdefMessage(Config.nfc_payload);
                         ndef.close();
@@ -93,7 +94,7 @@ public class WriteNFCActivity extends Activity {
                                 getApplicationContext(),
                                 "NFC Tag size is too small\r\nMessage size: "
                                         + payload_length + " Tag size: "
-                                        + tag_size, Toast.LENGTH_LONG).show();
+                                        + tagSize, Toast.LENGTH_LONG).show();
                     }
                 }
                 catch (final Exception e) {
@@ -105,12 +106,11 @@ public class WriteNFCActivity extends Activity {
             }
             else {
                 final NdefFormatable format = NdefFormatable.get(tag);
-                final MifareClassic mifareTag = MifareClassic.get(tag);
-                final int tag_size = mifareTag.getSize();
                 if (format != null) {
                     try {
+                        final int tagSize = MifareClassic.get(tag).getSize();
                         Toast.makeText(getApplicationContext(),
-                                "Format: " + tag_size, Toast.LENGTH_SHORT)
+                                "Format: " + tagSize, Toast.LENGTH_SHORT)
                                 .show();
                         format.connect();
                         format.format(Config.nfc_payload);
