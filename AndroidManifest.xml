@@ -55,8 +55,6 @@
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        <activity android:name="AdvancedActivity" >
-        </activity>
     </application>
 
 </manifest>
