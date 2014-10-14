@@ -1,130 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/sv"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:fillViewport="true"
         android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="125dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:gravity="center_horizontal"
-                android:text="@string/type1uri"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <Space
-                android:id="@+id/Space1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="22dp"
-                android:gravity="left"
-                android:text="@string/mimevcard"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="23dp"
                 android:text="@string/smartposter"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2" >
+                android:layout_height="wrap_content" >
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <Button
-                        android:id="@+id/Writesp"
-                        android:layout_width="120dp"
-                        android:layout_height="96dp"
-                        android:text="@string/writesmartposter" />
-                </FrameLayout>
-
-                <FrameLayout
+                <Button
+                    android:id="@+id/Writesp"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true" >
+                    android:onClick="writeSmartPoster"
+                    android:text="@string/writesmartposter" />
 
-                    <Button
-                        android:id="@+id/Writephone"
-                        android:layout_width="120dp"
-                        android:layout_height="96dp"
-                        android:text="@string/writephonenumber"
-                        android:visibility="visible" />
-                </FrameLayout>
-            </RelativeLayout>
+                <Button
+                    android:id="@+id/Writephone"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="writePhone"
+                    android:text="@string/writephonenumber" />
+            </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/line3"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/holo_blue_light"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dip"
+            android:textIsSelectable="false" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="30dp"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mimevcard"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/WritevCard"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="writeVcard"
+                android:text="@string/writevcard" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/Writeuri"
-            android:layout_width="120dp"
-            android:layout_height="96dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/relativeLayout2"
-            android:text="@string/writeuri" />
+        <TextView
+            android:id="@+id/TextView01"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/holo_blue_light"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dip"
+            android:textIsSelectable="false" />
 
-        <Button
-            android:id="@+id/WritevCard"
-            android:layout_width="120dp"
-            android:layout_height="96dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/relativeLayout2"
-            android:text="@string/writevcard" />
-
-        <Button
-            android:id="@+id/advanced"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="96dp"
-            android:layout_below="@+id/linearLayout1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="@string/advanced"
-            android:textColor="#CC0000" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center_horizontal"
+                android:text="@string/type1uri"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/Writeuri"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="writeUri"
+                android:text="@string/writeuri" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TextView02"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/holo_blue_light"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dip"
+            android:textIsSelectable="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/advanced" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/clone"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="clone"
+                    android:text="@string/CloneNFCTag" />
+
+                <Button
+                    android:id="@+id/ultralight"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="ultraLight"
+                    android:text="Mifare Ultralight HEXEDIT"
+                    android:textColor="#CC0000"
+                    app:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

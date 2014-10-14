@@ -58,10 +58,15 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+
+    public void clone(View view) {
+        final Intent intent = new Intent(getApplicationContext(),
+                CloneReadActivity.class);
+        startActivity(intent);
+    }
 
     private String getHex(byte[] bytes) {
         final StringBuilder sb = new StringBuilder();
@@ -129,126 +134,7 @@ public class MainActivity extends Activity {
             editor.putString("uri", Config.uri);
             editor.commit();
         }
-        final Button advanced = (Button) findViewById(R.id.advanced);
-        advanced.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                final Intent intent = new Intent(getApplicationContext(),
-                        AdvancedActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        final Button wu = (Button) findViewById(R.id.Writeuri);
-        wu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                if (Config.uri.length() != 0) {
-                    final NdefRecord ndef_records = NdefRecord
-                            .createUri(Config.uri);
-                    Config.nfc_payload = new NdefMessage(ndef_records);
-                    final Intent intent = new Intent(getApplicationContext(),
-                            WriteNFCActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    final Intent settings = new Intent(getApplicationContext(),
-                            SettingsActivity.class);
-                    startActivity(settings);
-                }
-            }
-        });
-
-        final Button wp = (Button) findViewById(R.id.Writephone);
-        wp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                if ((Config.phone.length() != 0) && (Config.name.length() != 0)) {
-                    final NdefRecord[] ndef_name = new NdefRecord[1];
-                    final String[] uri = new String[] { Config.phone };
-                    ndef_name[0] = NfcTools.createNdefSmartPosterRecord(
-                            Config.name, uri);
-                    Config.nfc_payload = new NdefMessage(ndef_name);
-                    final Intent intent = new Intent(getApplicationContext(),
-                            WriteNFCActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    final Intent settings = new Intent(getApplicationContext(),
-                            SettingsActivity.class);
-                    startActivity(settings);
-                }
-            }
-        });
-
-        final Button sp = (Button) findViewById(R.id.Writesp);
-        sp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                final NdefRecord[] ndef_name = new NdefRecord[1];
-                int ile = 0;
-                int gdzie = 0;
-
-                if (Config.phone.length() > 3) {
-                    ile = ile + 1;
-                }
-
-                if (Config.uri.length() > 3) {
-                    ile = ile + 1;
-                }
-
-                if (Config.email.length() > 6) {
-                    ile = ile + 1;
-                }
-                if (Config.web.length() > 6) {
-                    ile = ile + 1;
-                }
-
-                final String[] uri = new String[ile];
-                final byte[] type = new byte[ile];
-
-                if (Config.phone.length() > 3) {
-                    uri[gdzie] = Config.phone;
-                    type[gdzie] = 0x05;
-                    gdzie = gdzie + 1;
-                }
-
-                if (Config.uri.length() > 3) {
-                    uri[gdzie] = Config.uri;
-                    type[gdzie] = 0x00;
-                    gdzie = gdzie + 1;
-                }
-
-                if (Config.email.length() > 6) {
-                    uri[gdzie] = Config.email;
-                    type[gdzie] = 0x06;
-                    gdzie = gdzie + 1;
-                }
-                if (Config.web.length() > 6) {
-                    uri[gdzie] = Config.web;
-                    type[gdzie] = 0x00;
-                    gdzie = gdzie + 1;
-                }
-                ndef_name[0] = NfcTools.createNdefMySmartPosterRecord(
-                        Config.name, uri, type);
-                Config.nfc_payload = new NdefMessage(ndef_name);
-                final Intent intent = new Intent(getApplicationContext(),
-                        WriteNFCActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        final Button wvc = (Button) findViewById(R.id.WritevCard);
-        wvc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View self) {
-                Config.nfc_payload = NfcTools.ndefVcard(Config.name,
-                        Config.phone, Config.email, Config.web);
-                final Intent intent = new Intent(getApplicationContext(),
-                        WriteNFCActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -356,5 +242,105 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         NfcTools.nfc_enable(this, this, getClass());
+    }
+
+    public void ultraLight(View view) {
+        final Intent intent = new Intent(getApplicationContext(),
+                UltralightHEXEDIT.class);
+        startActivity(intent);
+    }
+
+    public void writePhone(View view) {
+        if ((Config.phone.length() != 0) && (Config.name.length() != 0)) {
+            final NdefRecord[] ndef_name = new NdefRecord[1];
+            final String[] uri = new String[] { Config.phone };
+            ndef_name[0] = NfcTools.createNdefSmartPosterRecord(Config.name,
+                    uri);
+            Config.nfc_payload = new NdefMessage(ndef_name);
+            final Intent intent = new Intent(getApplicationContext(),
+                    WriteNFCActivity.class);
+            startActivity(intent);
+        }
+        else {
+            final Intent settings = new Intent(getApplicationContext(),
+                    SettingsActivity.class);
+            startActivity(settings);
+        }
+    }
+
+    public void writeSmartPoster(View view) {
+        final NdefRecord[] ndef_name = new NdefRecord[1];
+        int ile = 0;
+        int gdzie = 0;
+
+        if (Config.phone.length() > 3) {
+            ile = ile + 1;
+        }
+
+        if (Config.uri.length() > 3) {
+            ile = ile + 1;
+        }
+
+        if (Config.email.length() > 6) {
+            ile = ile + 1;
+        }
+        if (Config.web.length() > 6) {
+            ile = ile + 1;
+        }
+
+        final String[] uri = new String[ile];
+        final byte[] type = new byte[ile];
+
+        if (Config.phone.length() > 3) {
+            uri[gdzie] = Config.phone;
+            type[gdzie] = 0x05;
+            gdzie = gdzie + 1;
+        }
+
+        if (Config.uri.length() > 3) {
+            uri[gdzie] = Config.uri;
+            type[gdzie] = 0x00;
+            gdzie = gdzie + 1;
+        }
+
+        if (Config.email.length() > 6) {
+            uri[gdzie] = Config.email;
+            type[gdzie] = 0x06;
+            gdzie = gdzie + 1;
+        }
+        if (Config.web.length() > 6) {
+            uri[gdzie] = Config.web;
+            type[gdzie] = 0x00;
+            gdzie = gdzie + 1;
+        }
+        ndef_name[0] = NfcTools.createNdefMySmartPosterRecord(Config.name, uri,
+                type);
+        Config.nfc_payload = new NdefMessage(ndef_name);
+        final Intent intent = new Intent(getApplicationContext(),
+                WriteNFCActivity.class);
+        startActivity(intent);
+    }
+
+    public void writeUri(View view) {
+        if (Config.uri.length() != 0) {
+            final NdefRecord ndef_records = NdefRecord.createUri(Config.uri);
+            Config.nfc_payload = new NdefMessage(ndef_records);
+            final Intent intent = new Intent(getApplicationContext(),
+                    WriteNFCActivity.class);
+            startActivity(intent);
+        }
+        else {
+            final Intent settings = new Intent(getApplicationContext(),
+                    SettingsActivity.class);
+            startActivity(settings);
+        }
+    }
+
+    public void writeVcard(View view) {
+        Config.nfc_payload = NfcTools.ndefVcard(Config.name, Config.phone,
+                Config.email, Config.web);
+        final Intent intent = new Intent(getApplicationContext(),
+                WriteNFCActivity.class);
+        startActivity(intent);
     }
 }
