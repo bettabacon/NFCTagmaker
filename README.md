@@ -7,10 +7,6 @@ Requires:
 
 * A phone which can write to, and read from, NFC tags (such as the Nexus 4,Xperia S, Xperia Z, Galaxy S3)
 
-## Build
-
-1. ``ant debug``
-
 ## Credits 
 Developed by Mateusz Szafraniec (https://github.com/mateusz-szafraniec)
 

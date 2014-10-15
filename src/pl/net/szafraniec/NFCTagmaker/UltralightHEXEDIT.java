@@ -43,9 +43,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import pl.net.szafraniec.msfunctions.NfcTools;
-import pl.net.szafraniec.msfunctions.Tools;
-import pl.net.szafraniec.msfunctions.log;
+import pl.net.szafraniec.msfunctions.lite.NfcTools;
+import pl.net.szafraniec.msfunctions.lite.Tools;
+import pl.net.szafraniec.msfunctions.lite.log;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

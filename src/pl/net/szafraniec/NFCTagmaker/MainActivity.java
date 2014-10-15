@@ -36,10 +36,10 @@
  */
 package pl.net.szafraniec.NFCTagmaker;
 
-import pl.net.szafraniec.msfunctions.AboutDialog;
-import pl.net.szafraniec.msfunctions.NfcTools;
-import pl.net.szafraniec.msfunctions.Tools;
-import pl.net.szafraniec.msfunctions.log;
+import pl.net.szafraniec.msfunctions.lite.AboutDialog;
+import pl.net.szafraniec.msfunctions.lite.NfcTools;
+import pl.net.szafraniec.msfunctions.lite.Tools;
+import pl.net.szafraniec.msfunctions.lite.log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
