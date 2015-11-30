@@ -1,3 +1,4 @@
+## !!! This project is abandonned !!!
 # NFC Tag maker
 
 Use your NFC-equipped Android phone to make Smart posters, write URIs, vCards, phone numbers to any NFC Tag.
